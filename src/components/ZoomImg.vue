@@ -1,9 +1,8 @@
 <template>
   <figure
     class="iiz"
-    ref="img"
+    ref="imgRef"
     v-bind:class="{
-      [className]: className,
       'iiz--drag': currentMoveType === 'drag',
     }"
     v-bind:style="{
@@ -167,291 +166,299 @@
   </figure>
 </template>
 
-<script>
-export default {
-  name: "InnerImageZoom",
-  props: {
-    moveType: {
-      type: String,
-      default: "pan",
-    },
-    zoomType: {
-      type: String,
-      default: "click",
-    },
-    src: {
-      type: String,
-      required: true,
-    },
-    srcSet: String,
-    sizes: String,
-    sources: Array,
-    width: Number,
-    height: Number,
-    hasSpacer: Boolean,
-    zoomSrc: String,
-    zoomScale: {
-      type: Number,
-      default: 1,
-    },
-    zoomPreload: Boolean,
-    alt: String,
-    fadeDuration: {
-      type: Number,
-      default: 150,
-    },
-    fullscreenOnMobile: Boolean,
-    mobileBreakpoint: {
-      type: Number,
-      default: 640,
-    },
-    hideHint: Boolean,
-    hideCloseButton: Boolean,
-    className: String,
-    afterZoomIn: Function,
-    afterZoomOut: Function,
-  },
-  data() {
-    return {
-      isActive: this.zoomPreload || false,
-      isTouch: false,
-      isZoomed: false,
-      isFullscreen: false,
-      isDragging: false,
-      currentMoveType: this.moveType,
-      left: 0,
-      top: 0,
-      imgProps: {},
-    };
-  },
-  created() {
-    this.setDefaults();
+<script setup lang="ts">
+import { computed, onMounted, ref } from "vue";
 
-    if (getFullscreenStatus(this.fullscreenOnMobile, this.mobileBreakpoint)) {
-      this.isActive = false;
+const props = defineProps({
+  moveType: {
+    type: String,
+    default: "pan",
+  },
+  zoomType: {
+    type: String,
+    default: "click",
+  },
+  src: {
+    type: String,
+    required: true,
+  },
+  srcSet: String,
+  sizes: String,
+  sources: Array,
+  width: Number,
+  height: Number,
+  hasSpacer: Boolean,
+  zoomSrc: String,
+  zoomScale: {
+    type: Number,
+    default: 1,
+  },
+  zoomPreload: Boolean,
+  alt: String,
+  fadeDuration: {
+    type: Number,
+    default: 150,
+  },
+  fullscreenOnMobile: Boolean,
+  mobileBreakpoint: {
+    type: Number,
+    default: 640,
+  },
+  hideHint: Boolean,
+  hideCloseButton: Boolean,
+  className: String,
+  afterZoomIn: Function,
+  afterZoomOut: Function,
+});
+
+const isActive = ref(props.zoomPreload || false);
+const isTouch = ref(false);
+const isZoomed = ref(false);
+const isFullscreen = ref(false);
+const isDragging = ref(false);
+const currentMoveType = ref(props.moveType);
+const left = ref(0);
+const top = ref(0);
+const imgProps = ref({});
+const imgRef = ref();
+
+onMounted(() => {
+  setDefaults();
+
+  if (getFullscreenStatus(props.fullscreenOnMobile, props.mobileBreakpoint)) {
+    isActive.value = false;
+  }
+});
+
+const validSources = computed(() => {
+  return props.sources?.filter((source: any) => source.srcSet) ?? [];
+});
+
+const createSpacer = computed(() => {
+  return props.width && props.height && props.hasSpacer;
+});
+
+const handleMouseEnter = (e: any) => {
+  isActive.value = true;
+  if (props.zoomType === "hover" && !isZoomed.value) {
+    handleClick(e);
+  }
+};
+
+const handleTouchStart = () => {
+  isTouch.value = true;
+  isFullscreen.value = getFullscreenStatus(
+    props.fullscreenOnMobile,
+    props.mobileBreakpoint,
+  );
+  currentMoveType.value = "drag";
+};
+
+const handleClick = (e: any) => {
+  if (isZoomed.value) {
+    if (isTouch.value) {
+      if (props.hideCloseButton) {
+        handleClose();
+      }
+    } else if (!isDragging.value) {
+      zoomOut();
     }
-  },
-  computed: {
-    validSources: function () {
-      return this.sources ? this.sources.filter((source) => source.srcSet) : [];
+    return;
+  }
+
+  if (isTouch.value) {
+    isActive.value = true;
+  }
+
+  if (imgProps.value.zoomImg) {
+    handleLoad({ target: imgProps.value.zoomImg });
+    zoomIn(e.pageX, e.pageY);
+  } else {
+    imgProps.value.onLoadCallback = zoomIn.bind(null, e.pageX, e.pageY);
+  }
+};
+
+const handleLoad = (e: any) => {
+  const scaledDimensions = getScaledDimensions(e.target, props.zoomScale);
+  imgProps.value.zoomImg = e.target;
+  imgProps.value.zoomImg.setAttribute("width", scaledDimensions.width);
+  imgProps.value.zoomImg.setAttribute("height", scaledDimensions.height);
+  imgProps.value.scaledDimensions = scaledDimensions;
+  imgProps.value.bounds = getBounds(imgRef.value, false); // Use `imgRef` to reference the image element
+  imgProps.value.ratios = getRatios(imgProps.value.bounds, scaledDimensions);
+
+  if (imgProps.value.onLoadCallback) {
+    imgProps.value.onLoadCallback();
+    imgProps.value.onLoadCallback = null;
+  }
+};
+
+const handleMouseMove = (e: any) => {
+  let leftVal = e.pageX - imgProps.value.offsets.x;
+  let topVal = e.pageY - imgProps.value.offsets.y;
+
+  leftVal = Math.max(Math.min(leftVal, imgProps.value.bounds.width), 0);
+  topVal = Math.max(Math.min(topVal, imgProps.value.bounds.height), 0);
+
+  left.value = leftVal * -imgProps.value.ratios.x;
+  top.value = topVal * -imgProps.value.ratios.y;
+};
+
+const handleDragStart = (e: any) => {
+  imgProps.value.offsets = getOffsets(
+    e.pageX || e.changedTouches[0].pageX,
+    e.pageY || e.changedTouches[0].pageY,
+    imgProps.value.zoomImg.offsetLeft,
+    imgProps.value.zoomImg.offsetTop,
+  );
+
+  imgProps.value.zoomImg.addEventListener(
+    isTouch.value ? "touchmove" : "mousemove",
+    handleDragMove,
+    {
+      passive: true,
     },
-    createSpacer: function () {
-      return this.width && this.height && this.hasSpacer;
-    },
-  },
-  methods: {
-    handleMouseEnter(e) {
-      this.isActive = true;
-      this.zoomType === "hover" && !this.isZoomed && this.handleClick(e);
-    },
-    handleTouchStart() {
-      this.isTouch = true;
-      this.isFullscreen = getFullscreenStatus(
-        this.fullscreenOnMobile,
-        this.mobileBreakpoint
-      );
-      this.currentMoveType = "drag";
-    },
-    handleClick(e) {
-      if (this.isZoomed) {
-        if (this.isTouch) {
-          this.hideCloseButton && this.handleClose();
-        } else {
-          !this.isDragging && this.zoomOut();
+  );
+
+  if (!isTouch.value) {
+    imgProps.value.eventPosition = {
+      x: e.pageX,
+      y: e.pageY,
+    };
+  }
+};
+
+const handleDragMove = (e: any) => {
+  let leftVal =
+    (e.pageX || e.changedTouches[0].pageX) - imgProps.value.offsets.x;
+  let topVal =
+    (e.pageY || e.changedTouches[0].pageY) - imgProps.value.offsets.y;
+
+  leftVal = Math.max(
+    Math.min(leftVal, 0),
+    (imgProps.value.scaledDimensions.width - imgProps.value.bounds.width) * -1,
+  );
+  topVal = Math.max(
+    Math.min(topVal, 0),
+    (imgProps.value.scaledDimensions.height - imgProps.value.bounds.height) *
+      -1,
+  );
+
+  left.value = leftVal;
+  top.value = topVal;
+};
+
+const handleDragEnd = (e: any) => {
+  imgProps.value.zoomImg.removeEventListener(
+    isTouch.value ? "touchmove" : "mousemove",
+    handleDragMove,
+  );
+
+  if (!isTouch.value) {
+    const moveX = Math.abs(e.pageX - imgProps.value.eventPosition.x);
+    const moveY = Math.abs(e.pageY - imgProps.value.eventPosition.y);
+    isDragging.value = moveX > 5 || moveY > 5;
+  }
+};
+
+const handleMouseLeave = (e: any) => {
+  if (currentMoveType.value === "drag" && isZoomed.value) {
+    handleDragEnd(e);
+  } else {
+    handleClose();
+  }
+};
+
+const handleClose = () => {
+  zoomOut(() => {
+    setTimeout(
+      () => {
+        if ((props.zoomPreload && isTouch.value) || !props.zoomPreload) {
+          isActive.value = false;
+          setDefaults();
         }
 
-        return;
-      }
+        isTouch.value = false;
+        isFullscreen.value = false;
+        currentMoveType.value = props.moveType;
+      },
+      isFullscreen.value ? 0 : props.fadeDuration,
+    );
+  });
+};
 
-      if (this.isTouch) {
-        this.isActive = true;
-      }
+const initialMove = (pageX, pageY) => {
+  imgProps.value.offsets = getOffsets(
+    window.pageXOffset,
+    window.pageYOffset,
+    -imgProps.value.bounds.left,
+    -imgProps.value.bounds.top,
+  );
+  handleMouseMove({ pageX, pageY });
+};
 
-      if (this.imgProps.zoomImg) {
-        this.handleLoad({ target: this.imgProps.zoomImg });
-        this.zoomIn(e.pageX, e.pageY);
-      } else {
-        this.imgProps.onLoadCallback = this.zoomIn.bind(this, e.pageX, e.pageY);
-      }
-    },
-    handleLoad(e) {
-      const scaledDimensions = getScaledDimensions(e.target, this.zoomScale);
+const initialDragMove = (pageX, pageY) => {
+  let initialPageX =
+    (pageX - (window.pageXOffset + imgProps.value.bounds.left)) *
+    -imgProps.value.ratios.x;
+  let initialPageY =
+    (pageY - (window.pageYOffset + imgProps.value.bounds.top)) *
+    -imgProps.value.ratios.y;
 
-      this.imgProps.zoomImg = e.target;
-      this.imgProps.zoomImg.setAttribute("width", scaledDimensions.width);
-      this.imgProps.zoomImg.setAttribute("height", scaledDimensions.height);
-      this.imgProps.scaledDimensions = scaledDimensions;
-      this.imgProps.bounds = getBounds(this.$refs.img, false);
-      this.imgProps.ratios = getRatios(this.imgProps.bounds, scaledDimensions);
+  initialPageX += isFullscreen.value
+    ? (window.innerWidth - imgProps.value.bounds.width) / 2
+    : 0;
+  initialPageY += isFullscreen.value
+    ? (window.innerHeight - imgProps.value.bounds.height) / 2
+    : 0;
 
-      if (this.imgProps.onLoadCallback) {
-        this.imgProps.onLoadCallback();
-        this.imgProps.onLoadCallback = null;
-      }
-    },
-    handleMouseMove(e) {
-      let left = e.pageX - this.imgProps.offsets.x;
-      let top = e.pageY - this.imgProps.offsets.y;
+  imgProps.value.bounds = getBounds(imgRef.value, isFullscreen.value);
+  imgProps.value.offsets = getOffsets(0, 0, 0, 0);
 
-      left = Math.max(Math.min(left, this.imgProps.bounds.width), 0);
-      top = Math.max(Math.min(top, this.imgProps.bounds.height), 0);
+  handleDragMove({
+    changedTouches: [
+      {
+        pageX: initialPageX,
+        pageY: initialPageY,
+      },
+    ],
+    preventDefault: () => {},
+    stopPropagation: () => {},
+  });
+};
 
-      this.left = left * -this.imgProps.ratios.x;
-      this.top = top * -this.imgProps.ratios.y;
-    },
-    handleDragStart(e) {
-      this.imgProps.offsets = getOffsets(
-        e.pageX || e.changedTouches[0].pageX,
-        e.pageY || e.changedTouches[0].pageY,
-        this.imgProps.zoomImg.offsetLeft,
-        this.imgProps.zoomImg.offsetTop
-      );
+const zoomIn = (pageX, pageY) => {
+  const initialMoveMethod =
+    currentMoveType.value === "drag" ? initialDragMove : initialMove;
 
-      this.imgProps.zoomImg.addEventListener(
-        this.isTouch ? "touchmove" : "mousemove",
-        this.handleDragMove,
-        {
-          passive: true,
-        }
-      );
+  isZoomed.value = true;
+  initialMoveMethod(pageX, pageY);
 
-      if (!this.isTouch) {
-        this.imgProps.eventPosition = {
-          x: e.pageX,
-          y: e.pageY,
-        };
-      }
-    },
-    handleDragMove(e) {
-      let left =
-        (e.pageX || e.changedTouches[0].pageX) - this.imgProps.offsets.x;
-      let top =
-        (e.pageY || e.changedTouches[0].pageY) - this.imgProps.offsets.y;
+  if (props.afterZoomIn) {
+    props.afterZoomIn();
+  }
+};
 
-      left = Math.max(
-        Math.min(left, 0),
-        (this.imgProps.scaledDimensions.width - this.imgProps.bounds.width) * -1
-      );
-      top = Math.max(
-        Math.min(top, 0),
-        (this.imgProps.scaledDimensions.height - this.imgProps.bounds.height) *
-          -1
-      );
+const zoomOut = (callback) => {
+  isZoomed.value = false;
 
-      this.left = left;
-      this.top = top;
-    },
-    handleDragEnd(e) {
-      this.imgProps.zoomImg.removeEventListener(
-        this.isTouch ? "touchmove" : "mousemove",
-        this.handleDragMove
-      );
+  if (props.afterZoomOut) {
+    props.afterZoomOut();
+  }
 
-      if (!this.isTouch) {
-        const moveX = Math.abs(e.pageX - this.imgProps.eventPosition.x);
-        const moveY = Math.abs(e.pageY - this.imgProps.eventPosition.y);
-        this.isDragging = moveX > 5 || moveY > 5;
-      }
-    },
-    handleMouseLeave(e) {
-      this.currentMoveType === "drag" && this.isZoomed
-        ? this.handleDragEnd(e)
-        : this.handleClose();
-    },
-    handleClose() {
-      this.zoomOut(() => {
-        setTimeout(
-          () => {
-            if ((this.zoomPreload && this.isTouch) || !this.zoomPreload) {
-              this.isActive = false;
-              this.setDefaults();
-            }
+  if (callback) {
+    callback();
+  }
+};
 
-            this.isTouch = false;
-            this.isFullscreen = false;
-            this.currentMoveType = this.moveType;
-          },
-          this.isFullscreen ? 0 : this.fadeDuration
-        );
-      });
-    },
-    initialMove(pageX, pageY) {
-      this.imgProps.offsets = getOffsets(
-        window.pageXOffset,
-        window.pageYOffset,
-        -this.imgProps.bounds.left,
-        -this.imgProps.bounds.top
-      );
-
-      this.handleMouseMove({ pageX, pageY });
-    },
-    initialDragMove(pageX, pageY) {
-      let initialPageX =
-        (pageX - (window.pageXOffset + this.imgProps.bounds.left)) *
-        -this.imgProps.ratios.x;
-      let initialPageY =
-        (pageY - (window.pageYOffset + this.imgProps.bounds.top)) *
-        -this.imgProps.ratios.y;
-
-      initialPageX =
-        initialPageX +
-        (this.isFullscreen
-          ? (window.innerWidth - this.imgProps.bounds.width) / 2
-          : 0);
-      initialPageY =
-        initialPageY +
-        (this.isFullscreen
-          ? (window.innerHeight - this.imgProps.bounds.height) / 2
-          : 0);
-
-      this.imgProps.bounds = getBounds(this.$refs.img, this.isFullscreen);
-      this.imgProps.offsets = getOffsets(0, 0, 0, 0);
-
-      this.handleDragMove({
-        changedTouches: [
-          {
-            pageX: initialPageX,
-            pageY: initialPageY,
-          },
-        ],
-        preventDefault: () => {},
-        stopPropagation: () => {},
-      });
-    },
-    zoomIn(pageX, pageY) {
-      const initialMove =
-        this.currentMoveType === "drag"
-          ? this.initialDragMove
-          : this.initialMove;
-
-      this.isZoomed = true;
-      initialMove(pageX, pageY);
-
-      if (this.afterZoomIn) {
-        this.afterZoomIn();
-      }
-    },
-    zoomOut(callback) {
-      this.isZoomed = false;
-
-      if (this.afterZoomOut) {
-        this.afterZoomOut();
-      }
-
-      if (callback) {
-        callback();
-      }
-    },
-    setDefaults() {
-      this.imgProps.onLoadCallback = null;
-      this.imgProps.zoomImg = null;
-      this.imgProps.bounds = {};
-      this.imgProps.offsets = {};
-      this.imgProps.ratios = {};
-      this.imgProps.eventPosition = {};
-      this.imgProps.scaledDimensions = {};
-    },
-  },
+const setDefaults = () => {
+  imgProps.value.onLoadCallback = null;
+  imgProps.value.zoomImg = null;
+  imgProps.value.bounds = {};
+  imgProps.value.offsets = {};
+  imgProps.value.ratios = {};
+  imgProps.value.eventPosition = {};
+  imgProps.value.scaledDimensions = {};
 };
 
 function getBounds(img, isFullscreen) {
@@ -621,7 +628,9 @@ function getScaledDimensions(zoomImg, zoomScale) {
   width: 29px;
   height: 29px;
   background-image: linear-gradient(#222, #222), linear-gradient(#222, #222);
-  background-size: 100% 1px, 1px 100%;
+  background-size:
+    100% 1px,
+    1px 100%;
   -webkit-transform: rotate(45deg);
   transform: rotate(45deg);
 }
