@@ -1,5 +1,5 @@
 <template>
-  <div class="h-screen w-screen flex justify-center items-center">
+  <div class="flex h-screen w-screen items-center justify-center">
     <div class="h-1/2 w-1/2">
       <ZoomImg :src="red" />
     </div>
