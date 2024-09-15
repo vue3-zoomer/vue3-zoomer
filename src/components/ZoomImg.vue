@@ -2,10 +2,10 @@
   <figure
     class="iiz"
     ref="imgRef"
-    v-bind:class="{
+    :class="{
       'iiz--drag': currentMoveType === 'drag',
     }"
-    v-bind:style="{
+    :style="{
       width: `${width}px`,
     }"
     v-on="{
@@ -18,35 +18,35 @@
     }"
   >
     <div
-      v-bind:style="{
-        paddingTop: createSpacer ? `${(height / width) * 100}%` : null,
+      :style="{
+        paddingTop: createSpacer ? `${(height / width) * 100}%` : '',
       }"
     >
       <template v-if="validSources">
         <picture>
           <source
             v-for="(source, i) in validSources"
-            v-bind:key="i"
-            v-bind:srcSet="source.srcSet"
-            v-bind:sizes="source.sizes"
-            v-bind:media="source.media"
-            v-bind:type="source.type"
+            :key="i"
+            :srcSet="source.srcSet"
+            :sizes="source.sizes"
+            :media="source.media"
+            :type="source.type"
           />
           <img
             class="iiz__img"
-            v-bind:class="{
+            :class="{
               'iiz__img--hidden': isZoomed,
               'iiz__img--abs': createSpacer,
             }"
-            v-bind:style="{
+            :style="{
               transition: `linear 0ms opacity ${
                 isZoomed ? fadeDuration : 0
               }ms, linear 0ms visibility ${isZoomed ? fadeDuration : 0}ms`,
             }"
-            v-bind:src="src"
-            v-bind:srcSet="srcSet"
-            v-bind:sizes="sizes"
-            v-bind:alt="alt"
+            :src="src"
+            :srcSet="srcSet"
+            :sizes="sizes"
+            :alt="alt"
           />
         </picture>
       </template>
@@ -54,19 +54,19 @@
       <template v-else>
         <img
           class="iiz__img"
-          v-bind:class="{
+          :class="{
             'iiz__img--hidden': isZoomed,
             'iiz__img--abs': createSpacer,
           }"
-          v-bind:style="{
+          :style="{
             transition: `linear 0ms opacity ${
               isZoomed ? fadeDuration : 0
             }ms, linear 0ms visibility ${isZoomed ? fadeDuration : 0}ms`,
           }"
-          v-bind:src="src"
-          v-bind:srcSet="srcSet"
-          v-bind:sizes="sizes"
-          v-bind:alt="alt"
+          :src="src"
+          :srcSet="srcSet"
+          :sizes="sizes"
+          :alt="alt"
         />
       </template>
     </div>
@@ -79,8 +79,8 @@
               class="iiz__zoom-img"
               alt=""
               :draggable="false"
-              v-bind:class="{ 'iiz__zoom-img--visible': isZoomed }"
-              v-bind:style="{
+              :class="{ 'iiz__zoom-img--visible': isZoomed }"
+              :style="{
                 top: `${top}px`,
                 left: `${left}px`,
                 transition: `linear ${
@@ -89,7 +89,7 @@
                   isFullscreen ? 0 : fadeDuration
                 }ms visibility`,
               }"
-              v-bind:src="zoomSrc || src"
+              :src="zoomSrc || src"
               v-on="{
                 load: handleLoad,
                 touchstart: handleDragStart,
@@ -105,8 +105,8 @@
               type="button"
               class="iiz__btn iiz__close"
               aria-label="Zoom Out"
-              v-bind:class="{ 'iiz__close--visible': isZoomed }"
-              v-bind:style="{
+              :class="{ 'iiz__close--visible': isZoomed }"
+              :style="{
                 transition: `linear ${
                   isFullscreen ? 0 : fadeDuration
                 }ms opacity, linear ${
@@ -124,8 +124,8 @@
           class="iiz__zoom-img"
           alt=""
           :draggable="false"
-          v-bind:class="{ 'iiz__zoom-img--visible': isZoomed }"
-          v-bind:style="{
+          :class="{ 'iiz__zoom-img--visible': isZoomed }"
+          :style="{
             top: `${top}px`,
             left: `${left}px`,
             transition: `linear ${
@@ -134,7 +134,7 @@
               isFullscreen ? 0 : fadeDuration
             }ms visibility`,
           }"
-          v-bind:src="zoomSrc || src"
+          :src="zoomSrc || src"
           v-on="{
             load: handleLoad,
             touchstart: handleDragStart,
@@ -149,8 +149,8 @@
           class="iiz__btn iiz__close"
           type="button"
           aria-label="Zoom Out"
-          v-bind:class="{ 'iiz__close--visible': isZoomed }"
-          v-bind:style="{
+          :class="{ 'iiz__close--visible': isZoomed }"
+          :style="{
             transition: `linear ${
               isFullscreen ? 0 : fadeDuration
             }ms opacity, linear ${
@@ -168,6 +168,7 @@
 
 <script setup lang="ts">
 import { computed, onMounted, ref } from "vue";
+import { ImgPropsType } from "../types";
 
 const props = defineProps({
   moveType: {
@@ -219,7 +220,28 @@ const isDragging = ref(false);
 const currentMoveType = ref(props.moveType);
 const left = ref(0);
 const top = ref(0);
-const imgProps = ref({});
+const imgProps = ref<ImgPropsType>({
+  zoomImg: undefined,
+  scaledDimensions: {
+    width: 0,
+    height: 0,
+  },
+  bounds: {
+    width: 0,
+    height: 0,
+    left: 0,
+    top: 0,
+  },
+  ratios: {
+    x: 0,
+    y: 0,
+  },
+  offsets: {
+    x: 0,
+    y: 0,
+  },
+  onLoadCallback: null,
+});
 const imgRef = ref();
 
 onMounted(() => {
@@ -278,13 +300,19 @@ const handleClick = (e: any) => {
   }
 };
 
-const handleLoad = (e: any) => {
+const handleLoad = (e: Event) => {
   const scaledDimensions = getScaledDimensions(e.target, props.zoomScale);
-  imgProps.value.zoomImg = e.target;
-  imgProps.value.zoomImg.setAttribute("width", scaledDimensions.width);
-  imgProps.value.zoomImg.setAttribute("height", scaledDimensions.height);
+  imgProps.value.zoomImg = e.target as HTMLImageElement;
+  imgProps.value.zoomImg.setAttribute(
+    "width",
+    scaledDimensions.width.toString(),
+  );
+  imgProps.value.zoomImg.setAttribute(
+    "height",
+    scaledDimensions.height.toString(),
+  );
   imgProps.value.scaledDimensions = scaledDimensions;
-  imgProps.value.bounds = getBounds(imgRef.value, false); // Use `imgRef` to reference the image element
+  imgProps.value.bounds = getBounds(imgRef.value, false);
   imgProps.value.ratios = getRatios(imgProps.value.bounds, scaledDimensions);
 
   if (imgProps.value.onLoadCallback) {
@@ -308,11 +336,11 @@ const handleDragStart = (e: any) => {
   imgProps.value.offsets = getOffsets(
     e.pageX || e.changedTouches[0].pageX,
     e.pageY || e.changedTouches[0].pageY,
-    imgProps.value.zoomImg.offsetLeft,
-    imgProps.value.zoomImg.offsetTop,
+    imgProps.value.zoomImg?.offsetLeft,
+    imgProps.value.zoomImg?.offsetTop,
   );
 
-  imgProps.value.zoomImg.addEventListener(
+  imgProps.value.zoomImg?.addEventListener(
     isTouch.value ? "touchmove" : "mousemove",
     handleDragMove,
     {
@@ -349,14 +377,14 @@ const handleDragMove = (e: any) => {
 };
 
 const handleDragEnd = (e: any) => {
-  imgProps.value.zoomImg.removeEventListener(
+  imgProps.value.zoomImg?.removeEventListener(
     isTouch.value ? "touchmove" : "mousemove",
     handleDragMove,
   );
 
   if (!isTouch.value) {
-    const moveX = Math.abs(e.pageX - imgProps.value.eventPosition.x);
-    const moveY = Math.abs(e.pageY - imgProps.value.eventPosition.y);
+    const moveX = Math.abs(e.pageX - imgProps.value.eventPosition?.x);
+    const moveY = Math.abs(e.pageY - imgProps.value.eventPosition?.y);
     isDragging.value = moveX > 5 || moveY > 5;
   }
 };
@@ -387,7 +415,7 @@ const handleClose = () => {
   });
 };
 
-const initialMove = (pageX, pageY) => {
+const initialMove = (pageX: number, pageY: number) => {
   imgProps.value.offsets = getOffsets(
     window.pageXOffset,
     window.pageYOffset,
@@ -397,7 +425,7 @@ const initialMove = (pageX, pageY) => {
   handleMouseMove({ pageX, pageY });
 };
 
-const initialDragMove = (pageX, pageY) => {
+const initialDragMove = (pageX: number, pageY: number) => {
   let initialPageX =
     (pageX - (window.pageXOffset + imgProps.value.bounds.left)) *
     -imgProps.value.ratios.x;
@@ -427,7 +455,7 @@ const initialDragMove = (pageX, pageY) => {
   });
 };
 
-const zoomIn = (pageX, pageY) => {
+const zoomIn = (pageX: number, pageY: number) => {
   const initialMoveMethod =
     currentMoveType.value === "drag" ? initialDragMove : initialMove;
 
@@ -439,7 +467,7 @@ const zoomIn = (pageX, pageY) => {
   }
 };
 
-const zoomOut = (callback) => {
+const zoomOut = (callback?: () => void) => {
   isZoomed.value = false;
 
   if (props.afterZoomOut) {
@@ -452,16 +480,31 @@ const zoomOut = (callback) => {
 };
 
 const setDefaults = () => {
-  imgProps.value.onLoadCallback = null;
-  imgProps.value.zoomImg = null;
-  imgProps.value.bounds = {};
-  imgProps.value.offsets = {};
-  imgProps.value.ratios = {};
-  imgProps.value.eventPosition = {};
-  imgProps.value.scaledDimensions = {};
+  imgProps.value = {
+    zoomImg: undefined,
+    scaledDimensions: {
+      width: 0,
+      height: 0,
+    },
+    bounds: {
+      width: 0,
+      height: 0,
+      left: 0,
+      top: 0,
+    },
+    ratios: {
+      x: 0,
+      y: 0,
+    },
+    offsets: {
+      x: 0,
+      y: 0,
+    },
+    onLoadCallback: null,
+  };
 };
 
-function getBounds(img, isFullscreen) {
+function getBounds(img: HTMLImageElement, isFullscreen: boolean) {
   if (isFullscreen) {
     return {
       width: window.innerWidth,
@@ -474,21 +517,27 @@ function getBounds(img, isFullscreen) {
   return img.getBoundingClientRect();
 }
 
-function getOffsets(pageX, pageY, left, top) {
+function getOffsets(pageX: number, pageY: number, left: number, top: number) {
   return {
     x: pageX - left,
     y: pageY - top,
   };
 }
 
-function getRatios(bounds, dimensions) {
+function getRatios(
+  bounds: { width: number; height: number; left: number; top: number },
+  dimensions: { width: any; height: any },
+) {
   return {
     x: (dimensions.width - bounds.width) / bounds.width,
     y: (dimensions.height - bounds.height) / bounds.height,
   };
 }
 
-function getFullscreenStatus(fullscreenOnMobile, mobileBreakpoint) {
+function getFullscreenStatus(
+  fullscreenOnMobile: boolean,
+  mobileBreakpoint: number,
+) {
   return (
     fullscreenOnMobile &&
     window.matchMedia &&
@@ -496,7 +545,7 @@ function getFullscreenStatus(fullscreenOnMobile, mobileBreakpoint) {
   );
 }
 
-function getScaledDimensions(zoomImg, zoomScale) {
+function getScaledDimensions(zoomImg: HTMLImageElement, zoomScale: number) {
   return {
     width: zoomImg.naturalWidth * zoomScale,
     height: zoomImg.naturalHeight * zoomScale,
