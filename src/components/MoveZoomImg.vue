@@ -2,9 +2,10 @@
   <div
     class="cursor-zoom-in overflow-clip border-none"
     ref="containerRef"
-    @mouseenter="handleMouseEnter"
-    @mouseleave="handleMouseLeave"
+    @mouseenter="trigger === 'hover' && handleMouseEnter()"
+    @mouseleave="trigger === 'hover' && handleMouseLeave()"
     @mousemove="handleMouseMove"
+    @click="trigger === 'click' && handleClick()"
   >
     <img
       class="zoom-effect h-full w-full object-contain"
@@ -21,7 +22,7 @@
 <script setup lang="ts">
 import { useMouseInElement } from "@vueuse/core";
 
-import { ref } from "vue";
+import { PropType, ref } from "vue";
 const props = defineProps({
   src: {
     type: String,
@@ -31,23 +32,31 @@ const props = defineProps({
     type: Number,
     default: 2,
   },
+  trigger: {
+    type: String as PropType<"click" | "hover">,
+    default: "hover",
+  },
 });
 
 const imgRef = ref<HTMLImageElement>();
 const containerRef = ref<HTMLDivElement>();
 const left = ref(0);
 const top = ref(0);
+const isZoomed = ref(false);
 
 const { elementX, elementY, elementHeight, elementWidth, isOutside } =
   useMouseInElement(containerRef);
 
 const handleMouseEnter = () => {
-  // console.log("enter");
+  console.log("enter");
+  isZoomed.value = true;
   if (imgRef.value) imgRef.value.style.scale = props.zoomScale.toString();
 };
 
 const handleMouseLeave = () => {
-  // console.log("leave");
+  console.log("leave");
+  isZoomed.value = false;
+
   if (imgRef.value) imgRef.value.style.scale = "1";
   left.value = 0;
   top.value = 0;
@@ -55,7 +64,8 @@ const handleMouseLeave = () => {
 
 const handleMouseMove = () => {
   // console.log("move");
-  if (!isOutside.value) {
+
+  if (!isOutside.value && isZoomed.value) {
     const xRatio =
       (elementX.value - elementWidth.value / 2) / (elementWidth.value / 2);
     const yRatio =
@@ -63,6 +73,19 @@ const handleMouseMove = () => {
     left.value = (-xRatio * elementWidth.value) / 4;
     top.value = (-yRatio * elementHeight.value) / 4;
   }
+};
+
+const handleClick = () => {
+  console.log("click");
+
+  if (!isZoomed.value) {
+    if (imgRef.value) imgRef.value.style.scale = props.zoomScale.toString();
+  } else {
+    if (imgRef.value) imgRef.value.style.scale = "1";
+    left.value = 0;
+    top.value = 0;
+  }
+  isZoomed.value = !isZoomed.value;
 };
 </script>
 
