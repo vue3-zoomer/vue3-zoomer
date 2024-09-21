@@ -2,10 +2,10 @@
   <div
     class="cursor-zoom-in overflow-clip border-none"
     ref="containerRef"
-    @mouseenter="trigger === 'hover' && handleMouseEnter()"
-    @mouseleave="trigger === 'hover' && handleMouseLeave()"
+    @mouseenter="handleMouseEnter"
+    @mouseleave="handleMouseLeave"
     @mousemove="handleMouseMove"
-    @click="trigger === 'click' && handleClick()"
+    @click="handleClick"
   >
     <img
       class="zoom-effect h-full w-full object-contain"
@@ -21,8 +21,8 @@
 
 <script setup lang="ts">
 import { useMouseInElement } from "@vueuse/core";
-
 import { PropType, ref } from "vue";
+
 const props = defineProps({
   src: {
     type: String,
@@ -47,24 +47,28 @@ const isZoomed = ref(false);
 const { elementX, elementY, elementHeight, elementWidth, isOutside } =
   useMouseInElement(containerRef);
 
-const handleMouseEnter = () => {
-  console.log("enter");
-  isZoomed.value = true;
+const zoomIn = () => {
   if (imgRef.value) imgRef.value.style.scale = props.zoomScale.toString();
 };
 
-const handleMouseLeave = () => {
-  console.log("leave");
-  isZoomed.value = false;
-
+const zoomOut = () => {
   if (imgRef.value) imgRef.value.style.scale = "1";
-  left.value = 0;
-  top.value = 0;
+  resetPosition();
+};
+
+const handleMouseEnter = () => {
+  if (props.trigger === "hover") {
+    isZoomed.value = true;
+    zoomIn();
+  }
+};
+
+const handleMouseLeave = () => {
+  isZoomed.value = false;
+  zoomOut();
 };
 
 const handleMouseMove = () => {
-  // console.log("move");
-
   if (!isOutside.value && isZoomed.value) {
     const xRatio =
       (elementX.value - elementWidth.value / 2) / (elementWidth.value / 2);
@@ -76,16 +80,19 @@ const handleMouseMove = () => {
 };
 
 const handleClick = () => {
-  console.log("click");
-
-  if (!isZoomed.value) {
-    if (imgRef.value) imgRef.value.style.scale = props.zoomScale.toString();
-  } else {
-    if (imgRef.value) imgRef.value.style.scale = "1";
-    left.value = 0;
-    top.value = 0;
+  if (props.trigger === "click") {
+    if (!isZoomed.value) {
+      zoomIn();
+    } else {
+      zoomOut();
+    }
+    isZoomed.value = !isZoomed.value;
   }
-  isZoomed.value = !isZoomed.value;
+};
+
+const resetPosition = () => {
+  left.value = 0;
+  top.value = 0;
 };
 </script>
 
