@@ -1,6 +1,7 @@
 <template>
   <div
     class="cursor-zoom-in overflow-clip border-none"
+    :style="{ cursor: cursorStyle }"
     ref="containerRef"
     @mouseenter="handleMouseEnter"
     @mouseleave="handleMouseLeave"
@@ -21,7 +22,7 @@
 
 <script setup lang="ts">
 import { useMouseInElement } from "@vueuse/core";
-import { PropType, ref } from "vue";
+import { PropType, ref, computed } from "vue";
 
 const props = defineProps({
   src: {
@@ -55,6 +56,9 @@ const zoomOut = () => {
   if (imgRef.value) imgRef.value.style.scale = "1";
   resetPosition();
 };
+const cursorStyle = computed(() => {
+  return isZoomed.value ? "zoom-out" : "zoom-in";
+});
 
 const handleMouseEnter = () => {
   if (props.trigger === "hover") {
