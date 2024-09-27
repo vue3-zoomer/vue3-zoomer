@@ -62,10 +62,7 @@ const calculateZoomPosition = (x: number, y: number) => {
   const zoomedWidth = elementWidth.value * props.zoomScale;
   const zoomedHeight = elementHeight.value * props.zoomScale;
 
-  //  zoom based on the mouse's x position
   let newLeft = -(zoomedWidth - elementWidth.value) * xRatio;
-
-  //  zoomed based on the mouse's y position
   let newTop = -(zoomedHeight - elementHeight.value) * yRatio;
 
   // Ensure left position does not move the image out of bounds
