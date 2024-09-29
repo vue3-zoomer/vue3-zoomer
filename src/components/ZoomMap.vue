@@ -36,7 +36,6 @@ import { computed, ref, useTemplateRef } from "vue";
 import red from "~/assets/images/red.jpg";
 
 /*
-  1. adjust initail position of moving window to be in the middle
   2. make the window size dynamic related to amount of zoom
 */
 
@@ -57,8 +56,6 @@ const dragPosition = computed(() => {
 
 // Adjust initial position
 const moveToCursor = () => {
-  console.log("in", movableWindow.value?.clientWidth);
-
   clickPosition.value = getMovableWindowNewPosition();
 };
 
