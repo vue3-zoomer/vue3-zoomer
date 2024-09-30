@@ -24,3 +24,8 @@ export type ImgPropsType = {
   };
   onLoadCallback: null | (() => void);
 };
+
+export type PositionType = {
+  left: number;
+  top: number;
+};
