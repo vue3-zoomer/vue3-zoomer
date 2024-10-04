@@ -1,13 +1,13 @@
 <template>
   <div
-    class="relative h-[32rem] select-none overflow-clip border-none"
+    class="relative h-full w-full select-none overflow-clip border-none"
     ref="containerRef"
   >
     <img
-      class="zoom-effect h-full w-full object-contain"
+      class="zoom-effect h-full w-full object-fill"
       ref="imgRef"
       alt="zoom-image"
-      :src="red"
+      :src="src"
     />
 
     <div
@@ -16,12 +16,14 @@
       @click="moveToCursor"
     >
       <div
-        class="absolute h-1/2 w-1/2 bg-white/40 hover:cursor-pointer active:cursor-move"
-        :class="{ '-z-10 opacity-0': !clickPosition }"
+        class="absolute bg-white/40 hover:cursor-pointer active:cursor-move"
         ref="movableWindowRef"
+        :class="{ '-z-10 opacity-0': !clickPosition }"
         :style="{
           left: `${dragPosition?.left}px`,
           top: `${dragPosition?.top}px`,
+          width: `${(1 / zoomScale) * 100}%`,
+          height: `${(1 / zoomScale) * 100}%`,
         }"
         @mousedown="startMoving"
         @mouseup="stopMoving"
@@ -33,11 +35,17 @@
 <script setup lang="ts">
 import { useMouseInElement } from "@vueuse/core";
 import { computed, ref, useTemplateRef } from "vue";
-import red from "~/assets/images/red.jpg";
 
-/*
-  2. make the window size dynamic related to amount of zoom
-*/
+defineProps({
+  src: {
+    type: String,
+    required: true,
+  },
+  zoomScale: {
+    type: Number,
+    default: 2,
+  },
+});
 
 const mouseHold = ref(false);
 const clickPosition = ref<{ top: number; left: number }>();

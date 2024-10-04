@@ -9,7 +9,7 @@
     @click="handleClick"
   >
     <img
-      class="zoom-effect h-full w-full object-contain"
+      class="zoom-effect h-full w-full object-fill"
       ref="imgRef"
       alt="zoom-image"
       :src="src"
