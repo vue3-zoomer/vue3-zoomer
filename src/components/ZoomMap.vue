@@ -18,10 +18,10 @@
       <div
         class="absolute bg-white/40 hover:cursor-pointer active:cursor-move"
         ref="movableWindowRef"
-        :class="{ '-z-10 opacity-0': !clickPosition }"
+        :class="{ '-z-10 opacity-0': !position }"
         :style="{
-          left: `${dragPosition?.left}px`,
-          top: `${dragPosition?.top}px`,
+          left: `${currentPosition?.left}px`,
+          top: `${currentPosition?.top}px`,
           width: `${(1 / zoomScale) * 100}%`,
           height: `${(1 / zoomScale) * 100}%`,
         }"
@@ -34,7 +34,8 @@
 
 <script setup lang="ts">
 import { useMouseInElement } from "@vueuse/core";
-import { computed, ref, useTemplateRef } from "vue";
+import { computed, PropType, ref, useTemplateRef } from "vue";
+import { PositionType } from "~/types";
 
 defineProps({
   src: {
@@ -47,24 +48,27 @@ defineProps({
   },
 });
 
+const position = defineModel("position", {
+  type: Object as PropType<PositionType>,
+});
+
 const mouseHold = ref(false);
-const clickPosition = ref<{ top: number; left: number }>();
 const backdropRef = useTemplateRef("backdropRef");
 const movableWindow = useTemplateRef("movableWindowRef");
 
 const { elementX, elementY } = useMouseInElement(backdropRef);
 
-const dragPosition = computed(() => {
+const currentPosition = computed(() => {
   if (mouseHold.value) {
-    return getMovableWindowNewPosition();
+    moveToCursor();
+    return position.value;
   } else {
-    return clickPosition.value;
+    return position.value;
   }
 });
 
-// Adjust initial position
 const moveToCursor = () => {
-  clickPosition.value = getMovableWindowNewPosition();
+  position.value = getMovableWindowNewPosition();
 };
 
 const startMoving = () => {
