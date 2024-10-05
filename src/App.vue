@@ -1,13 +1,11 @@
 <template>
   <div class="flex h-screen w-screen items-center justify-center">
-    <ZoomMap :src="red" trigger="click" :zoom-scale="5" />
+    <ZoomMapWrapper class="h-1/2 w-1/2" :src="red" />
   </div>
 </template>
 
 <script setup lang="ts">
 import "./assets/css/main.css";
 import red from "./assets/images/red.jpg";
-import MoveZoomImg from "./components/MoveZoomImg.vue";
-import ZoomImg from "./components/ZoomImg.vue";
-import ZoomMap from "./components/ZoomMap.vue";
+import ZoomMapWrapper from "./components/Wrapper/ZoomMapWrapper.vue";
 </script>
