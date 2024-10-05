@@ -1,7 +1,8 @@
 <template>
   <div
-    class="relative h-full w-full select-none overflow-clip border-none"
-    ref="containerRef"
+    class="relative select-none overflow-clip border-none"
+    ref="backdropRef"
+    @click="moveToCursor"
   >
     <img
       class="zoom-effect h-full w-full object-fill"
@@ -11,30 +12,24 @@
     />
 
     <div
-      class="absolute left-0 top-0 h-full w-full bg-black/40"
-      ref="backdropRef"
-      @click="moveToCursor"
-    >
-      <div
-        class="absolute bg-white/40 hover:cursor-pointer active:cursor-move"
-        ref="movableWindowRef"
-        :class="{ '-z-10 opacity-0': !position }"
-        :style="{
-          left: `${currentPosition?.left}px`,
-          top: `${currentPosition?.top}px`,
-          width: `${(1 / zoomScale) * 100}%`,
-          height: `${(1 / zoomScale) * 100}%`,
-        }"
-        @mousedown="startMoving"
-        @mouseup="stopMoving"
-      />
-    </div>
+      class="absolute bg-white/20 hover:cursor-pointer active:cursor-move"
+      ref="movableWindowRef"
+      :class="{ '-z-10 opacity-0': !position }"
+      :style="{
+        left: `${position?.left}px`,
+        top: `${position?.top}px`,
+        width: `${(1 / zoomScale) * 100}%`,
+        height: `${(1 / zoomScale) * 100}%`,
+      }"
+      @mousedown="startMoving"
+      @mouseup="stopMoving"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
 import { useMouseInElement } from "@vueuse/core";
-import { computed, PropType, ref, useTemplateRef } from "vue";
+import { PropType, ref, useTemplateRef, watchEffect } from "vue";
 import { PositionType } from "~/types";
 
 defineProps({
@@ -58,12 +53,10 @@ const movableWindow = useTemplateRef("movableWindowRef");
 
 const { elementX, elementY } = useMouseInElement(backdropRef);
 
-const currentPosition = computed(() => {
+// Drag window functionality: which updates position constantly while the cursor is pressing on the movable window
+watchEffect(() => {
   if (mouseHold.value) {
     moveToCursor();
-    return position.value;
-  } else {
-    return position.value;
   }
 });
 
