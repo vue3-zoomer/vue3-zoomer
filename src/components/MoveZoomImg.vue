@@ -1,8 +1,8 @@
 <template>
   <div
     class="h-full w-full cursor-zoom-in overflow-clip border-none"
-    :style="{ cursor: cursorStyle }"
     ref="containerRef"
+    :style="{ cursor: cursorStyle }"
     @mouseenter="handleMouseEnter"
     @mouseleave="handleMouseLeave"
     @mousemove="handleMouseMove"
@@ -44,15 +44,20 @@ const props = defineProps({
 const imgRef = ref<HTMLImageElement>();
 const containerRef = ref<HTMLDivElement>();
 const isZoomed = ref(false);
+const zoomedImgOffset = defineModel("zoomedImgOffset", {
+  default: {
+    left: 0,
+    top: 0,
+  },
+});
+const currentScale = defineModel("currentScale", {
+  default: 1,
+});
 
-const {
-  position,
-  leftSource: left,
-  topSource: top,
-  scale,
-  scaleSource,
-  isTransition,
-} = useZoomTransition({ left: 0, top: 0 }, 1);
+const { position, scale, isTransition } = useZoomTransition(
+  zoomedImgOffset,
+  currentScale,
+);
 
 const { elementX, elementY, elementHeight, elementWidth, isOutside } =
   useMouseInElement(containerRef);
@@ -85,7 +90,7 @@ const calculateZoomPosition = (x: number, y: number) => {
 const handleMouseEnter = () => {
   if (props.trigger === "hover") {
     isZoomed.value = true;
-    scaleSource.value = props.zoomScale;
+    currentScale.value = props.zoomScale;
 
     // Calculate the new position for the zoomed image based on the current mouse coordinates
     const { newLeft, newTop } = calculateZoomPosition(
@@ -94,8 +99,10 @@ const handleMouseEnter = () => {
     );
 
     // Update the left and top translation values to position the zoomed image correctly
-    left.value = newLeft;
-    top.value = newTop;
+    zoomedImgOffset.value = {
+      left: newLeft,
+      top: newTop,
+    };
   }
 };
 
@@ -107,7 +114,7 @@ const handleMouseLeave = () => {
 const handleClick = (event: MouseEvent) => {
   if (props.trigger === "click") {
     isZoomed.value = !isZoomed.value;
-    scaleSource.value = props.zoomScale;
+    currentScale.value = props.zoomScale;
 
     if (isZoomed.value) {
       // Get the bounding rectangle of the container to determine its position. getBoundingClientRect=> method in DOM to get the size of element relative to the viewport
@@ -121,8 +128,10 @@ const handleClick = (event: MouseEvent) => {
         const { newLeft, newTop } = calculateZoomPosition(x, y);
 
         // Update the left and top translation values to position the zoomed image correctly
-        left.value = newLeft;
-        top.value = newTop;
+        zoomedImgOffset.value = {
+          left: newLeft,
+          top: newTop,
+        };
       }
     } else {
       resetPosition();
@@ -136,14 +145,18 @@ const handleMouseMove = () => {
       elementX.value,
       elementY.value,
     );
-    left.value = newLeft;
-    top.value = newTop;
+    zoomedImgOffset.value = {
+      left: newLeft,
+      top: newTop,
+    };
   }
 };
 
 const resetPosition = () => {
-  scaleSource.value = 1;
-  left.value = 0;
-  top.value = 0;
+  currentScale.value = 1;
+  zoomedImgOffset.value = {
+    left: 0,
+    top: 0,
+  };
 };
 </script>
