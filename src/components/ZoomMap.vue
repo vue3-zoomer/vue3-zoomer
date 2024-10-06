@@ -5,7 +5,7 @@
     @click="moveToCursor"
   >
     <img
-      class="zoom-effect h-full w-full object-fill"
+      class="h-full w-full object-fill"
       ref="imgRef"
       alt="zoom-image"
       :src="src"
