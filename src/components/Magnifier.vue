@@ -5,7 +5,7 @@
     @mousemove="handleMouseMove"
     @wheel="handleWheel"
   >
-    <img alt="image" :src="src" />
+    <img class="h-full w-full object-fill" alt="image" :src="src" />
     <div
       class="absolute z-10 overflow-clip rounded-full"
       :class="{ 'opacity-20': !test, hidden: isOutside }"
@@ -19,10 +19,11 @@
       @click="test = !test"
     >
       <img
+        class="h-full w-full object-fill"
         alt="zoom-image"
         :src="src"
         :style="{
-          transform: `translate(${offset.left}px, ${offset.top}px) scale(${scale})`,
+          transform: `translate(${zoomedImgOffset.left}px, ${zoomedImgOffset.top}px) scaleX(${(zoomScale * elementWidth) / magnifierSize}) scaleY(${(zoomScale * elementHeight) / magnifierSize})`,
           transformOrigin: '0 0',
         }"
       />
@@ -51,20 +52,21 @@ const containerRef = useTemplateRef("containerRef");
 const test = ref(true);
 const position = ref<PositionType>({ left: 0, top: 0 });
 
-const { elementWidth, isOutside } = useMouseInElement(containerRef);
+const { elementWidth, elementHeight, isOutside } =
+  useMouseInElement(containerRef);
 
 const magnifierSize = ref(200);
 
-const scale = computed(
-  () => (props.zoomScale * elementWidth.value) / magnifierSize.value,
-);
-
-const offset = computed(() => {
+const zoomedImgOffset = computed(() => {
   return {
-    left:
-      -(position.value.left + magnifierSize.value / 4) / (props.zoomScale / 4),
-    top:
-      -(position.value.top + magnifierSize.value / 4) / (props.zoomScale / 4),
+    left: -(
+      (position.value.left + magnifierSize.value / 2) * props.zoomScale -
+      magnifierSize.value / 2
+    ),
+    top: -(
+      (position.value.top + magnifierSize.value / 2) * props.zoomScale -
+      magnifierSize.value / 2
+    ),
   };
 });
 
@@ -76,6 +78,7 @@ const handleMouseMove = (event: MouseEvent) => {
     top: event.clientY - containerRect?.top - magnifierSize.value / 2,
   };
 };
+
 const handleWheel = (event: WheelEvent) => {
   if (event.deltaY > 0) {
     magnifierSize.value = Math.max(
