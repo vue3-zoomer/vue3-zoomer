@@ -43,7 +43,7 @@ const props = defineProps({
 const containerRef = ref<HTMLElement | null>(null);
 const imgRef = ref<HTMLImageElement | null>(null);
 
-const prevOffset = ref({ x: 0, y: 0 });
+const prevPosition = ref({ x: 0, y: 0 });
 const offset = ref({ left: 0, top: 0 });
 
 const isZoomed = ref(false);
@@ -64,7 +64,7 @@ const startDrag = (event: MouseEvent) => {
   if (!isZoomed.value) return;
 
   isDragging.value = true;
-  prevOffset.value = {
+  prevPosition.value = {
     x: event.clientX,
     y: event.clientY,
   };
@@ -81,15 +81,15 @@ const drag = (event: MouseEvent) => {
   const maxXOffset =
     (elementWidth * props.zoomScale - elementWidth) / (props.zoomScale * 2);
 
-  const dx = (event.clientX - prevOffset.value.x) / props.zoomScale;
-  const dy = (event.clientY - prevOffset.value.y) / props.zoomScale;
+  const dx = (event.clientX - prevPosition.value.x) / props.zoomScale;
+  const dy = (event.clientY - prevPosition.value.y) / props.zoomScale;
 
   offset.value = {
     left: Math.min(maxXOffset, Math.max(offset.value.left + dx, -maxXOffset)),
     top: Math.min(maxYOffset, Math.max(offset.value.top + dy, -maxYOffset)),
   };
 
-  prevOffset.value = {
+  prevPosition.value = {
     x: event.clientX,
     y: event.clientY,
   };
