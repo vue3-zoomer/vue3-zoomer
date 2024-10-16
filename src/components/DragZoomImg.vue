@@ -8,17 +8,17 @@
       'cursor-zoom-in': !isZoomed,
     }"
     @mouseenter="handleMouseEnter"
-    @mouseleave="handleMouseLeave"
     @mousedown="startDrag"
     @mousemove="drag"
     @mouseup="stopDrag"
+    @mouseleave="handleMouseLeave"
+    @contextmenu="handleRightClick"
   >
     <img
-      ref="imgRef"
-      :src="src"
       alt="zoom-image"
       draggable="false"
       class="zoom-effect h-full w-full object-fill"
+      :src="src"
       :style="{
         transform: `scale(${scale}) translate(${offset.left}px, ${offset.top}px)`,
       }"
@@ -27,7 +27,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from "vue";
+import { ref, computed, useTemplateRef, PropType } from "vue";
 
 const props = defineProps({
   src: {
@@ -38,13 +38,17 @@ const props = defineProps({
     type: Number,
     default: 2,
   },
+  trigger: {
+    type: String as PropType<"click" | "hover">,
+    default: "hover",
+  },
 });
 
-const containerRef = ref<HTMLElement | null>(null);
-const imgRef = ref<HTMLImageElement | null>(null);
+const containerRef = useTemplateRef("containerRef");
 
 const prevPosition = ref({ x: 0, y: 0 });
 const offset = ref({ left: 0, top: 0 });
+const mouseDownPosition = ref({ x: 0, y: 0 });
 
 const isZoomed = ref(false);
 const isDragging = ref(false);
@@ -52,16 +56,20 @@ const isDragging = ref(false);
 const scale = computed(() => (isZoomed.value ? props.zoomScale : 1));
 
 const handleMouseEnter = () => {
-  isZoomed.value = true;
-};
-
-const handleMouseLeave = () => {
-  isZoomed.value = false;
-  offset.value = { left: 0, top: 0 };
+  if (props.trigger === "hover") {
+    isZoomed.value = true;
+  }
 };
 
 const startDrag = (event: MouseEvent) => {
-  if (!isZoomed.value) return;
+  if (props.trigger === "click") {
+    mouseDownPosition.value = {
+      x: event.clientX,
+      y: event.clientY,
+    };
+  }
+
+  if (!isZoomed.value && props.trigger === "hover") return;
 
   isDragging.value = true;
   prevPosition.value = {
@@ -95,7 +103,36 @@ const drag = (event: MouseEvent) => {
   };
 };
 
-const stopDrag = () => {
+const stopDrag = (event: MouseEvent) => {
   isDragging.value = false;
+
+  if (props.trigger === "click") {
+    if (!isZoomed.value) {
+      isZoomed.value = true;
+    } else if (
+      mouseDownPosition.value.x === event.clientX &&
+      mouseDownPosition.value.y === event.clientY
+    ) {
+      resetPosition();
+    }
+  }
+};
+
+const handleMouseLeave = () => {
+  if (props.trigger === "hover") {
+    resetPosition();
+  }
+};
+
+const handleRightClick = (event: MouseEvent) => {
+  if (props.trigger === "click") {
+    event.preventDefault();
+    resetPosition();
+  }
+};
+
+const resetPosition = () => {
+  isZoomed.value = false;
+  offset.value = { left: 0, top: 0 };
 };
 </script>
