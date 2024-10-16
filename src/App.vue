@@ -1,8 +1,6 @@
 <template>
   <div class="flex h-screen w-screen items-center justify-center">
-    <div class="h-[30rem] w-[30rem]">
-      <DragZoomImg class="h-[30rem] w-[30rem]" :src="red" :zoom-scale="5" />
-    </div>
+    <DragZoomImg class="h-[30rem] w-[30rem]" :src="red" :zoom-scale="5" />
   </div>
 </template>
 
