@@ -1,7 +1,7 @@
 <template>
   <div
     ref="containerRef"
-    class="overflow-hidden"
+    class="h-full w-full overflow-hidden"
     :class="{
       'cursor-grab': isZoomed && !isDragging,
       'cursor-grabbing': isZoomed && isDragging,
@@ -18,9 +18,9 @@
       :src="src"
       alt="zoom-image"
       draggable="false"
-      class="zoom-effect h-full w-full object-contain"
+      class="zoom-effect h-full w-full object-fill"
       :style="{
-        transform: `scale(${scale}) translate(${position.x}px, ${position.y}px)`,
+        transform: `scale(${scale}) translate(${offset.left}px, ${offset.top}px)`,
       }"
     />
   </div>
@@ -28,7 +28,6 @@
 
 <script setup lang="ts">
 import { ref, computed } from "vue";
-import { useMouseInElement } from "@vueuse/core";
 
 const props = defineProps({
   src: {
@@ -44,59 +43,59 @@ const props = defineProps({
 const containerRef = ref<HTMLElement | null>(null);
 const imgRef = ref<HTMLImageElement | null>(null);
 
-const dragStart = ref({ x: 0, y: 0 });
-const position = ref({ x: 0, y: 0 });
+const prevPosition = ref({ x: 0, y: 0 });
+const offset = ref({ left: 0, top: 0 });
 
 const isZoomed = ref(false);
 const isDragging = ref(false);
 
-const { elementPositionX, elementPositionY } = useMouseInElement(containerRef);
-
 const scale = computed(() => (isZoomed.value ? props.zoomScale : 1));
-
-const maxX = computed(() => Math.max(0, elementPositionX.value));
-const maxY = computed(() => Math.max(0, elementPositionY.value));
 
 const handleMouseEnter = () => {
   isZoomed.value = true;
-  position.value = { x: 0, y: 0 };
 };
 
 const handleMouseLeave = () => {
   isZoomed.value = false;
-  isDragging.value = false;
-  position.value = { x: 0, y: 0 };
+  offset.value = { left: 0, top: 0 };
 };
 
 const startDrag = (event: MouseEvent) => {
-  if (isZoomed.value) {
-    isDragging.value = true;
-    dragStart.value = {
-      x: event.clientX - position.value.x,
-      y: event.clientY - position.value.y,
-    };
-  }
+  if (!isZoomed.value) return;
+
+  isDragging.value = true;
+  prevPosition.value = {
+    x: event.clientX,
+    y: event.clientY,
+  };
 };
 
 const drag = (event: MouseEvent) => {
-  if (isDragging.value) {
-    const newX = event.clientX - dragStart.value.x;
-    const newY = event.clientY - dragStart.value.y;
+  if (!isDragging.value) return;
+  const elementHeight = containerRef.value?.clientHeight ?? 0;
+  const elementWidth = containerRef.value?.clientWidth ?? 0;
 
-    position.value = {
-      x: Math.max(Math.min(newX, maxX.value), -maxX.value),
-      y: Math.max(Math.min(newY, maxY.value), -maxY.value),
-    };
-  }
+  const maxYOffset =
+    (elementHeight * props.zoomScale - elementHeight) / (props.zoomScale * 2);
+
+  const maxXOffset =
+    (elementWidth * props.zoomScale - elementWidth) / (props.zoomScale * 2);
+
+  const dx = (event.clientX - prevPosition.value.x) / props.zoomScale;
+  const dy = (event.clientY - prevPosition.value.y) / props.zoomScale;
+
+  offset.value = {
+    left: Math.min(maxXOffset, Math.max(offset.value.left + dx, -maxXOffset)),
+    top: Math.min(maxYOffset, Math.max(offset.value.top + dy, -maxYOffset)),
+  };
+
+  prevPosition.value = {
+    x: event.clientX,
+    y: event.clientY,
+  };
 };
 
 const stopDrag = () => {
   isDragging.value = false;
 };
 </script>
-
-<style scoped>
-.zoom-effect {
-  transition: transform 200ms;
-}
-</style>
