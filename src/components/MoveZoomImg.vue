@@ -9,13 +9,14 @@
     @click="handleClick"
   >
     <img
-      class="zoom-effect h-full w-full object-fill"
+      class="h-full w-full object-fill"
       ref="imgRef"
       alt="zoom-image"
       :src="src"
       :style="{
-        transform: `translate(${position.left}px, ${position.top}px) scale(${scale})`,
+        transform: `translate(${zoomedImgOffset.left}px, ${zoomedImgOffset.top}px) scale(${currentScale})`,
         transformOrigin: '0 0',
+        transition: isTransition ? 'transform 200ms ease-in-out' : 'none',
       }"
     />
   </div>
@@ -24,7 +25,6 @@
 <script setup lang="ts">
 import { useMouseInElement } from "@vueuse/core";
 import { PropType, ref, computed } from "vue";
-import useZoomTransition from "~/composables/useZoomTransition";
 
 const props = defineProps({
   src: {
@@ -44,27 +44,23 @@ const props = defineProps({
 const imgRef = ref<HTMLImageElement>();
 const containerRef = ref<HTMLDivElement>();
 const isZoomed = ref(false);
+const isTransition = ref(true);
+
 const zoomedImgOffset = defineModel("zoomedImgOffset", {
   default: {
     left: 0,
     top: 0,
   },
 });
+
 const currentScale = defineModel("currentScale", {
   default: 1,
 });
 
-const { position, scale, isTransition } = useZoomTransition(
-  zoomedImgOffset,
-  currentScale,
-);
-
 const { elementX, elementY, elementHeight, elementWidth, isOutside } =
   useMouseInElement(containerRef);
 
-const cursorStyle = computed(() => {
-  return isZoomed.value ? "zoom-out" : "zoom-in";
-});
+const cursorStyle = computed(() => (isZoomed.value ? "zoom-out" : "zoom-in"));
 
 const calculateZoomPosition = (x: number, y: number) => {
   // Calculate the ratio of the mouse position relative to the element's dimensions
@@ -91,6 +87,7 @@ const handleMouseEnter = () => {
   if (props.trigger === "hover") {
     isZoomed.value = true;
     currentScale.value = props.zoomScale;
+    setTimeout(() => (isTransition.value = false), 250);
 
     // Calculate the new position for the zoomed image based on the current mouse coordinates
     const { newLeft, newTop } = calculateZoomPosition(
@@ -114,9 +111,11 @@ const handleMouseLeave = () => {
 const handleClick = (event: MouseEvent) => {
   if (props.trigger === "click") {
     isZoomed.value = !isZoomed.value;
-    currentScale.value = props.zoomScale;
 
     if (isZoomed.value) {
+      currentScale.value = props.zoomScale;
+      setTimeout(() => (isTransition.value = false), 250);
+
       // Get the bounding rectangle of the container to determine its position. getBoundingClientRect=> method in DOM to get the size of element relative to the viewport
       const rect = containerRef.value?.getBoundingClientRect();
 
@@ -153,6 +152,7 @@ const handleMouseMove = () => {
 };
 
 const resetPosition = () => {
+  isTransition.value = true;
   currentScale.value = 1;
   zoomedImgOffset.value = {
     left: 0,
