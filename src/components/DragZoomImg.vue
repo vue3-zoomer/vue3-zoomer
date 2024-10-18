@@ -1,7 +1,7 @@
 <template>
   <div
     ref="containerRef"
-    class="h-full w-full overflow-hidden"
+    class="overflow-hidden"
     :class="{
       'cursor-grab': isZoomed && !isDragging,
       'cursor-grabbing': isZoomed && isDragging,
@@ -12,7 +12,6 @@
     @mousemove="drag"
     @mouseup="stopDrag"
     @mouseleave="handleMouseLeave"
-    @contextmenu="handleRightClick"
   >
     <img
       alt="zoom-image"
@@ -40,7 +39,7 @@ const props = defineProps({
   },
   trigger: {
     type: String as PropType<"click" | "hover">,
-    default: "hover",
+    default: "click",
   },
 });
 
@@ -120,13 +119,6 @@ const stopDrag = (event: MouseEvent) => {
 
 const handleMouseLeave = () => {
   if (props.trigger === "hover") {
-    resetPosition();
-  }
-};
-
-const handleRightClick = (event: MouseEvent) => {
-  if (props.trigger === "click") {
-    event.preventDefault();
     resetPosition();
   }
 };
