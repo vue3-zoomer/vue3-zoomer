@@ -4,6 +4,7 @@
     ref="containerRef"
     @mousemove="handleMouseMove"
     @wheel="handleWheel"
+    @touchmove.prevent="handleTouchMove"
   >
     <img class="h-full w-full object-fill" alt="image" :src="src" />
     <div
@@ -92,5 +93,15 @@ const handleWheel = (event: WheelEvent) => {
       magnifierSize.value + 10,
     );
   }
+};
+
+const handleTouchMove = (event: TouchEvent) => {
+  const containerRect = containerRef.value?.getBoundingClientRect() as DOMRect;
+
+  const touch = event.touches[0];
+  position.value = {
+    left: touch.clientX - containerRect.left - magnifierSize.value / 2,
+    top: touch.clientY - containerRect.top - magnifierSize.value / 2,
+  };
 };
 </script>
