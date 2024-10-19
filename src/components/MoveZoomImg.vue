@@ -1,12 +1,15 @@
 <template>
   <div
-    class="h-full w-full cursor-zoom-in overflow-clip border-none"
+    class="cursor-zoom-in overflow-clip border-none"
     ref="containerRef"
     :style="{ cursor: cursorStyle }"
     @mouseenter="handleMouseEnter"
     @mouseleave="handleMouseLeave"
     @mousemove="handleMouseMove"
     @click="handleClick"
+    @touchstart="handleTouchStart"
+    @touchmove="handleTouchMove"
+    @touchend="resetPosition"
   >
     <img
       class="h-full w-full object-fill"
@@ -37,7 +40,7 @@ const props = defineProps({
   },
   trigger: {
     type: String as PropType<"click" | "hover">,
-    default: "hover",
+    default: "click",
   },
 });
 
@@ -148,6 +151,39 @@ const handleMouseMove = () => {
       left: newLeft,
       top: newTop,
     };
+  }
+};
+const handleTouchStart = (event: TouchEvent) => {
+  if (props.trigger === "click") {
+    isZoomed.value = true;
+    currentScale.value = props.zoomScale;
+    setTimeout(() => (isTransition.value = false), 250);
+
+    const touch = event.touches[0];
+    const rect = containerRef.value?.getBoundingClientRect();
+
+    if (rect) {
+      const x = touch.clientX - rect.left;
+      const y = touch.clientY - rect.top;
+
+      const { newLeft, newTop } = calculateZoomPosition(x, y);
+      zoomedImgOffset.value = { left: newLeft, top: newTop };
+    }
+  }
+};
+
+const handleTouchMove = (event: TouchEvent) => {
+  if (isZoomed.value && !isTransition.value) {
+    const touch = event.touches[0];
+    const rect = containerRef.value?.getBoundingClientRect();
+
+    if (rect) {
+      const x = touch.clientX - rect.left;
+      const y = touch.clientY - rect.top;
+
+      const { newLeft, newTop } = calculateZoomPosition(x, y);
+      zoomedImgOffset.value = { left: newLeft, top: newTop };
+    }
   }
 };
 
