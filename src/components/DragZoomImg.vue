@@ -12,6 +12,9 @@
     @mousemove="drag"
     @mouseup="stopDrag"
     @mouseleave="handleMouseLeave"
+    @touchstart.prevent="startTouch"
+    @touchmove.prevent="touchDrag"
+    @touchend.prevent="stopTouch"
   >
     <img
       alt="zoom-image"
@@ -26,7 +29,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, useTemplateRef, PropType } from "vue";
+import { ref, computed, useTemplateRef, PropType, onMounted } from "vue";
 
 const props = defineProps({
   src: {
@@ -51,24 +54,56 @@ const mouseDownPosition = ref({ x: 0, y: 0 });
 
 const isZoomed = ref(false);
 const isDragging = ref(false);
+const isMobileDrag = ref(false);
 
 const scale = computed(() => (isZoomed.value ? props.zoomScale : 1));
 
+const checkIfMobile = () => {
+  isMobileDrag.value = window.innerWidth <= 768;
+};
+
 const handleMouseEnter = () => {
-  if (props.trigger === "hover") {
+  if (props.trigger === "hover" && !isMobileDrag.value) {
     isZoomed.value = true;
   }
 };
 
+const calcDragOffset = (event: MouseEvent | TouchEvent) => {
+  const elementHeight = containerRef.value?.clientHeight ?? 0;
+  const elementWidth = containerRef.value?.clientWidth ?? 0;
+
+  const maxYOffset =
+    (elementHeight * props.zoomScale - elementHeight) / (props.zoomScale * 2);
+
+  const maxXOffset =
+    (elementWidth * props.zoomScale - elementWidth) / (props.zoomScale * 2);
+
+  const clientX = "clientX" in event ? event.clientX : event.touches[0].clientX;
+  const clientY = "clientY" in event ? event.clientY : event.touches[0].clientY;
+
+  const dx = (clientX - prevPosition.value.x) / props.zoomScale;
+  const dy = (clientY - prevPosition.value.y) / props.zoomScale;
+
+  offset.value = {
+    left: Math.min(maxXOffset, Math.max(offset.value.left + dx, -maxXOffset)),
+    top: Math.min(maxYOffset, Math.max(offset.value.top + dy, -maxYOffset)),
+  };
+  prevPosition.value = {
+    x: "clientX" in event ? event.clientX : event.touches[0].clientX,
+    y: "clientY" in event ? event.clientY : event.touches[0].clientY,
+  };
+};
+
 const startDrag = (event: MouseEvent) => {
-  if (props.trigger === "click") {
+  if (props.trigger === "click" || isMobileDrag.value) {
     mouseDownPosition.value = {
       x: event.clientX,
       y: event.clientY,
     };
   }
 
-  if (!isZoomed.value && props.trigger === "hover") return;
+  if (!isZoomed.value && props.trigger === "hover" && !isMobileDrag.value)
+    return;
 
   isDragging.value = true;
   prevPosition.value = {
@@ -79,33 +114,13 @@ const startDrag = (event: MouseEvent) => {
 
 const drag = (event: MouseEvent) => {
   if (!isDragging.value) return;
-  const elementHeight = containerRef.value?.clientHeight ?? 0;
-  const elementWidth = containerRef.value?.clientWidth ?? 0;
-
-  const maxYOffset =
-    (elementHeight * props.zoomScale - elementHeight) / (props.zoomScale * 2);
-
-  const maxXOffset =
-    (elementWidth * props.zoomScale - elementWidth) / (props.zoomScale * 2);
-
-  const dx = (event.clientX - prevPosition.value.x) / props.zoomScale;
-  const dy = (event.clientY - prevPosition.value.y) / props.zoomScale;
-
-  offset.value = {
-    left: Math.min(maxXOffset, Math.max(offset.value.left + dx, -maxXOffset)),
-    top: Math.min(maxYOffset, Math.max(offset.value.top + dy, -maxYOffset)),
-  };
-
-  prevPosition.value = {
-    x: event.clientX,
-    y: event.clientY,
-  };
+  calcDragOffset(event);
 };
 
 const stopDrag = (event: MouseEvent) => {
   isDragging.value = false;
 
-  if (props.trigger === "click") {
+  if (props.trigger === "click" || isMobileDrag.value) {
     if (!isZoomed.value) {
       isZoomed.value = true;
     } else if (
@@ -118,7 +133,45 @@ const stopDrag = (event: MouseEvent) => {
 };
 
 const handleMouseLeave = () => {
-  if (props.trigger === "hover") {
+  if (props.trigger === "hover" && !isMobileDrag.value) {
+    resetPosition();
+  }
+};
+
+const startTouch = (event: TouchEvent) => {
+  event.preventDefault();
+
+  const touch = event.touches[0];
+  mouseDownPosition.value = {
+    x: touch.clientX,
+    y: touch.clientY,
+  };
+
+  isDragging.value = true;
+  prevPosition.value = {
+    x: touch.clientX,
+    y: touch.clientY,
+  };
+};
+
+const touchDrag = (event: TouchEvent) => {
+  if (!isDragging.value) return;
+
+  calcDragOffset(event);
+};
+
+const stopTouch = (event: TouchEvent) => {
+  event.preventDefault();
+
+  isDragging.value = false;
+
+  const touch = event.changedTouches[0];
+  if (!isZoomed.value) {
+    isZoomed.value = true;
+  } else if (
+    mouseDownPosition.value.x === touch.clientX &&
+    mouseDownPosition.value.y === touch.clientY
+  ) {
     resetPosition();
   }
 };
@@ -127,4 +180,9 @@ const resetPosition = () => {
   isZoomed.value = false;
   offset.value = { left: 0, top: 0 };
 };
+
+onMounted(() => {
+  checkIfMobile();
+  window.addEventListener("resize", checkIfMobile);
+});
 </script>
