@@ -1,11 +1,12 @@
 <template>
   <div class="relative">
     <MoveZoomImg
+      trigger="click"
       v-model:zoomed-img-offset="zoomedImgOffset"
       v-model:current-scale="scale"
       :src="src"
+      :step="1"
       :zoom-scale="zoomScale"
-      trigger="click"
     />
     <ZoomMap
       class="absolute -top-[26%] left-[1%] h-[25%] w-[25%] !border-2 !border-solid !border-white"

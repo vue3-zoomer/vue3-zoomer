@@ -14,7 +14,7 @@
     <div
       class="absolute bg-white/20 hover:cursor-pointer active:cursor-move"
       ref="movableWindowRef"
-      :class="{ '-z-10 opacity-0': !position }"
+      :class="{ 'invisible -z-10': !position }"
       :style="{
         left: `${position?.left}px`,
         top: `${position?.top}px`,
