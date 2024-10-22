@@ -28,9 +28,16 @@
 </template>
 
 <script setup lang="ts">
-import { useMouseInElement } from "@vueuse/core";
-import { PropType, ref, useTemplateRef, watchEffect } from "vue";
+import {
+  onBeforeUnmount,
+  onMounted,
+  PropType,
+  ref,
+  useTemplateRef,
+  watchEffect,
+} from "vue";
 import { PositionType } from "~/types";
+import { getCursorPosition } from "~/utils/cursorPosition";
 
 defineProps({
   src: {
@@ -51,9 +58,34 @@ const mouseHold = ref(false);
 const backdropRef = useTemplateRef("backdropRef");
 const movableWindow = useTemplateRef("movableWindowRef");
 
-const { elementX, elementY } = useMouseInElement(backdropRef);
+// Store the elementX and elementY as reactive values
+const elementX = ref(0);
+const elementY = ref(0);
 
-// Drag window functionality: which updates position constantly while the cursor is pressing on the movable window
+// Mousemove listener to track cursor position within the element
+const updateCursorPosition = (event: MouseEvent) => {
+  if (backdropRef.value) {
+    const { relativeX, relativeY } = getCursorPosition(
+      event,
+      backdropRef.value,
+    );
+    elementX.value = relativeX;
+    elementY.value = relativeY;
+  }
+};
+
+onMounted(() => {
+  if (backdropRef.value) {
+    backdropRef.value.addEventListener("mousemove", updateCursorPosition);
+  }
+});
+
+onBeforeUnmount(() => {
+  if (backdropRef.value) {
+    backdropRef.value.removeEventListener("mousemove", updateCursorPosition);
+  }
+});
+
 watchEffect(() => {
   if (mouseHold.value) {
     moveToCursor();
@@ -76,7 +108,7 @@ const getMovableWindowNewPosition = () => {
   if (backdropRef.value && movableWindow.value) {
     const maxTop =
       backdropRef.value?.clientHeight - movableWindow.value?.clientHeight;
-    const maxleft =
+    const maxLeft =
       backdropRef.value?.clientWidth - movableWindow.value?.clientWidth;
 
     const top = Math.min(
@@ -92,12 +124,9 @@ const getMovableWindowNewPosition = () => {
         elementX.value - Number(movableWindow.value?.clientWidth) / 2,
         0,
       ),
-      maxleft,
+      maxLeft,
     );
-    return {
-      top,
-      left,
-    };
+    return { top, left };
   } else {
     console.error("couldn't get movable window new position");
   }
