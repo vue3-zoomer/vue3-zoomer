@@ -89,7 +89,7 @@ const handleMouseEnter = () => {
   if (props.trigger === "hover") {
     isZoomed.value = true;
     currentScale.value = props.zoomScale;
-    startTransition();
+    startTransition(250);
 
     // Calculate the new position for the zoomed image based on the current mouse coordinates
     const { newLeft, newTop } = calculateZoomPosition(
@@ -116,7 +116,7 @@ const handleClick = (event: MouseEvent) => {
 
     if (isZoomed.value) {
       currentScale.value = props.zoomScale;
-      startTransition();
+      startTransition(250);
 
       // Get the bounding rectangle of the container to determine its position. getBoundingClientRect=> method in DOM to get the size of element relative to the viewport
       const rect = containerRef.value?.getBoundingClientRect();
