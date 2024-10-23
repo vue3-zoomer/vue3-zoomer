@@ -9,6 +9,7 @@
       :zoom-scale="zoomScale"
     />
     <ZoomMap
+      v-if="windowPosition"
       class="absolute -top-[26%] left-[1%] h-[25%] w-[25%] !border-2 !border-solid !border-white"
       :src="src"
       :zoom-scale="scale"
@@ -48,10 +49,6 @@ const windowPosition = computed(() => {
 });
 
 const updateOffset = (newPosition?: PositionType) => {
-  if (scale.value === 1) {
-    scale.value = props.zoomScale;
-  }
-
   zoomedImgOffset.value = {
     left: -Number(newPosition?.left ?? 0) * (props.zoomScale * 4),
     top: -Number(newPosition?.top ?? 0) * (props.zoomScale * 4),
