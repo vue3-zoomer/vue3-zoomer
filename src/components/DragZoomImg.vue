@@ -29,7 +29,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, useTemplateRef, PropType, onMounted } from "vue";
+import { ref, computed, useTemplateRef, PropType } from "vue";
 
 const props = defineProps({
   src: {
@@ -54,16 +54,11 @@ const mouseDownPosition = ref({ x: 0, y: 0 });
 
 const isZoomed = ref(false);
 const isDragging = ref(false);
-const isMobileDrag = ref(false);
 
 const scale = computed(() => (isZoomed.value ? props.zoomScale : 1));
 
-const checkIfMobile = () => {
-  isMobileDrag.value = window.innerWidth <= 768;
-};
-
 const handleMouseEnter = () => {
-  if (props.trigger === "hover" && !isMobileDrag.value) {
+  if (props.trigger === "hover") {
     isZoomed.value = true;
   }
 };
@@ -95,15 +90,14 @@ const calcDragOffset = (event: MouseEvent | TouchEvent) => {
 };
 
 const startDrag = (event: MouseEvent) => {
-  if (props.trigger === "click" || isMobileDrag.value) {
+  if (props.trigger === "click") {
     mouseDownPosition.value = {
       x: event.clientX,
       y: event.clientY,
     };
   }
 
-  if (!isZoomed.value && props.trigger === "hover" && !isMobileDrag.value)
-    return;
+  if (!isZoomed.value && props.trigger === "hover") return;
 
   isDragging.value = true;
   prevPosition.value = {
@@ -120,7 +114,7 @@ const drag = (event: MouseEvent) => {
 const stopDrag = (event: MouseEvent) => {
   isDragging.value = false;
 
-  if (props.trigger === "click" || isMobileDrag.value) {
+  if (props.trigger === "click") {
     if (!isZoomed.value) {
       isZoomed.value = true;
     } else if (
@@ -133,14 +127,12 @@ const stopDrag = (event: MouseEvent) => {
 };
 
 const handleMouseLeave = () => {
-  if (props.trigger === "hover" && !isMobileDrag.value) {
+  if (props.trigger === "hover") {
     resetPosition();
   }
 };
 
 const startTouch = (event: TouchEvent) => {
-  event.preventDefault();
-
   const touch = event.touches[0];
   mouseDownPosition.value = {
     x: touch.clientX,
@@ -161,8 +153,6 @@ const touchDrag = (event: TouchEvent) => {
 };
 
 const stopTouch = (event: TouchEvent) => {
-  event.preventDefault();
-
   isDragging.value = false;
 
   const touch = event.changedTouches[0];
@@ -180,9 +170,4 @@ const resetPosition = () => {
   isZoomed.value = false;
   offset.value = { left: 0, top: 0 };
 };
-
-onMounted(() => {
-  checkIfMobile();
-  window.addEventListener("resize", checkIfMobile);
-});
 </script>
