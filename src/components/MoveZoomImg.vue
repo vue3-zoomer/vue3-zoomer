@@ -106,8 +106,7 @@ const handleClick = () => {
   // multi click
   else if (props.step) {
     const scale = zoomInOut(currentScale.value, props.zoomScale, props.step);
-    setTimeout(() => (isTransition.value = false), 250);
-
+    startTransition();
     currentScale.value = scale;
     zoomedImgOffset.value = calZoomedImgOffset(
       elementX.value,
@@ -138,5 +137,10 @@ const resetPosition = () => {
     left: 0,
     top: 0,
   };
+};
+
+const startTransition = () => {
+  isTransition.value = true;
+  setTimeout(() => (isTransition.value = false), 150);
 };
 </script>
