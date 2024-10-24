@@ -67,7 +67,7 @@ const handleMouseEnter = () => {
   }
 };
 
-const calculatePrevPosition = (event: MouseEvent | TouchEvent) => {
+const getCurrentPos = (event: MouseEvent | TouchEvent) => {
   let clientX, clientY;
   if (event instanceof TouchEvent) {
     const touch = getTouchPosition(event);
@@ -77,7 +77,10 @@ const calculatePrevPosition = (event: MouseEvent | TouchEvent) => {
     clientX = event.clientX;
     clientY = event.clientY;
   }
-  prevPosition.value = { x: clientX, y: clientY };
+  return {
+    clientX,
+    clientY,
+  };
 };
 
 const calcDragOffset = (event: MouseEvent | TouchEvent) => {
@@ -90,16 +93,7 @@ const calcDragOffset = (event: MouseEvent | TouchEvent) => {
   const maxXOffset =
     (elementWidth * props.zoomScale - elementWidth) / (props.zoomScale * 2);
 
-  let clientX, clientY;
-
-  if (event instanceof TouchEvent) {
-    const touch = getTouchPosition(event);
-    clientX = touch.clientX;
-    clientY = touch.clientY;
-  } else {
-    clientX = event.clientX;
-    clientY = event.clientY;
-  }
+  let { clientX, clientY } = getCurrentPos(event);
 
   const dx = (clientX - prevPosition.value.x) / props.zoomScale;
   const dy = (clientY - prevPosition.value.y) / props.zoomScale;
@@ -109,7 +103,7 @@ const calcDragOffset = (event: MouseEvent | TouchEvent) => {
     top: Math.min(maxYOffset, Math.max(offset.value.top + dy, -maxYOffset)),
   };
 
-  calculatePrevPosition(event);
+  prevPosition.value = { x: clientX, y: clientY };
 };
 
 const drag = (event: MouseEvent | TouchEvent) => {
@@ -145,16 +139,7 @@ const startDrag = (event: MouseEvent | TouchEvent) => {
 const stopDrag = (event: TouchEvent | MouseEvent) => {
   isDragging.value = false;
 
-  let clientX, clientY;
-
-  if (event instanceof TouchEvent) {
-    const touch = getTouchChangedPosition(event);
-    clientX = touch.clientX;
-    clientY = touch.clientY;
-  } else if (event instanceof MouseEvent) {
-    clientX = event.clientX;
-    clientY = event.clientY;
-  }
+  let { clientX, clientY } = getCurrentPos(event);
 
   if (props.trigger === "click" || event instanceof TouchEvent) {
     if (!isZoomed.value) {
