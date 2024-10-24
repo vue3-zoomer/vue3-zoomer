@@ -20,6 +20,7 @@
       :src="src"
       :style="{
         transform: `scale(${scale}) translate(${offset.left}px, ${offset.top}px)`,
+        transition: isTransition ? 'transform 200ms ease-in-out' : 'none',
       }"
     />
   </div>
@@ -27,6 +28,7 @@
 
 <script setup lang="ts">
 import { ref, computed, useTemplateRef, PropType } from "vue";
+import { useTransition } from "~/composables/useTransition";
 
 const props = defineProps({
   src: {
@@ -45,6 +47,7 @@ const props = defineProps({
 
 const containerRef = useTemplateRef("containerRef");
 
+const { isTransition, startTransition } = useTransition();
 const prevPosition = ref({ x: 0, y: 0 });
 const offset = ref({ left: 0, top: 0 });
 const mouseDownPosition = ref({ x: 0, y: 0 });
@@ -57,6 +60,7 @@ const scale = computed(() => (isZoomed.value ? props.zoomScale : 1));
 const handleMouseEnter = () => {
   if (props.trigger === "hover") {
     isZoomed.value = true;
+    startTransition(250);
   }
 };
 
@@ -66,9 +70,11 @@ const startDrag = (event: MouseEvent) => {
       x: event.clientX,
       y: event.clientY,
     };
+    startTransition(250);
   }
 
-  if (!isZoomed.value && props.trigger === "hover") return;
+  if (!isZoomed.value && props.trigger === "hover" && !isTransition.value)
+    return;
 
   isDragging.value = true;
   prevPosition.value = {
@@ -124,6 +130,7 @@ const handleMouseLeave = () => {
 };
 
 const resetPosition = () => {
+  isTransition.value = true;
   isZoomed.value = false;
   offset.value = { left: 0, top: 0 };
 };
