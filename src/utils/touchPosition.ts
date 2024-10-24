@@ -1,4 +1,4 @@
 export function getTouchPosition(event: TouchEvent) {
-  const { clientX, clientY } = event.changedTouches[0];
-  return { clientX, clientY };
+  const { clientX: clientLeft, clientY: clientTop } = event.changedTouches[0];
+  return { clientLeft, clientTop };
 }
