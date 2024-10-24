@@ -44,6 +44,9 @@ const props = defineProps({
   step: {
     type: Number,
   },
+  presist: {
+    type: Boolean,
+  },
 });
 
 const imgRef = ref<HTMLImageElement>();
@@ -82,6 +85,7 @@ const handleMouseEnter = () => {
 };
 
 const handleMouseLeave = () => {
+  if (props.presist) return;
   resetPosition();
 };
 
@@ -105,6 +109,8 @@ const handleClick = () => {
   }
   // multi click
   else if (props.step) {
+    console.log("click");
+
     const scale = zoomInOut(currentScale.value, props.zoomScale, props.step);
     startTransition();
     currentScale.value = scale;

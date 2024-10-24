@@ -1,16 +1,17 @@
 <template>
   <div class="relative">
     <MoveZoomImg
-      trigger="click"
       v-model:zoomed-img-offset="zoomedImgOffset"
       v-model:current-scale="scale"
+      trigger="click"
       :src="src"
       :step="1"
       :zoom-scale="zoomScale"
+      :presist="true"
     />
     <ZoomMap
-      v-if="windowPosition"
-      class="absolute -top-[26%] left-[1%] h-[25%] w-[25%] !border-2 !border-solid !border-white"
+      v-show="windowPosition"
+      class="absolute bottom-[25%] left-0 box-border h-[25%] w-[25%] p-2 outline outline-2 outline-offset-[-0.5rem] outline-white"
       :src="src"
       :zoom-scale="scale"
       :position="windowPosition"
@@ -50,8 +51,8 @@ const windowPosition = computed(() => {
 
 const updateOffset = (newPosition?: PositionType) => {
   zoomedImgOffset.value = {
-    left: -Number(newPosition?.left ?? 0) * (props.zoomScale * 4),
-    top: -Number(newPosition?.top ?? 0) * (props.zoomScale * 4),
+    left: -Number(newPosition?.left ?? 0) * (scale.value * 4),
+    top: -Number(newPosition?.top ?? 0) * (scale.value * 4),
   };
 };
 </script>

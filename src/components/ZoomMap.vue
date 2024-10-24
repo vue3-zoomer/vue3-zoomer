@@ -1,6 +1,6 @@
 <template>
   <div
-    class="relative select-none overflow-clip border-none"
+    class="relative select-none overflow-clip"
     ref="backdropRef"
     @click="moveToCursor"
   >
