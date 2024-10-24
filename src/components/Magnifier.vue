@@ -54,8 +54,6 @@ const props = defineProps({
 
 const containerRef = useTemplateRef("containerRef");
 
-const containerRect = containerRef.value?.getBoundingClientRect() as DOMRect;
-
 const position = ref<PositionType>({ left: 0, top: 0 });
 
 const { isOutside } = useMouseInElement(containerRef);
@@ -76,6 +74,7 @@ const zoomedImgOffset = computed(() => {
 });
 
 const handleMouseMove = (event: MouseEvent) => {
+  const containerRect = containerRef.value?.getBoundingClientRect() as DOMRect;
   position.value = {
     left: event.clientX - containerRect?.left - magnifierSize.value / 2,
     top: event.clientY - containerRect?.top - magnifierSize.value / 2,
@@ -97,6 +96,7 @@ const handleWheel = (event: WheelEvent) => {
 };
 
 const handleTouchMove = (event: TouchEvent) => {
+  const containerRect = containerRef.value?.getBoundingClientRect() as DOMRect;
   const touch = getTouchPosition(event);
   position.value = {
     left: touch.clientX - containerRect.left - magnifierSize.value / 2,
