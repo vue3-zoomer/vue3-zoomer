@@ -63,6 +63,13 @@ const handleMouseEnter = () => {
   }
 };
 
+const calculatePrevPosition = (event: MouseEvent | TouchEvent) => {
+  prevPosition.value = {
+    x: "clientX" in event ? event.clientX : event.touches[0].clientX,
+    y: "clientY" in event ? event.clientY : event.touches[0].clientY,
+  };
+};
+
 const calcDragOffset = (event: MouseEvent | TouchEvent) => {
   const elementHeight = containerRef.value?.clientHeight ?? 0;
   const elementWidth = containerRef.value?.clientWidth ?? 0;
@@ -84,10 +91,7 @@ const calcDragOffset = (event: MouseEvent | TouchEvent) => {
     top: Math.min(maxYOffset, Math.max(offset.value.top + dy, -maxYOffset)),
   };
 
-  prevPosition.value = {
-    x: "clientX" in event ? event.clientX : event.touches[0].clientX,
-    y: "clientY" in event ? event.clientY : event.touches[0].clientY,
-  };
+  calculatePrevPosition(event);
 };
 
 const drag = (event: MouseEvent | TouchEvent) => {
