@@ -12,9 +12,9 @@
     @mousemove="drag"
     @mouseup="stopDrag"
     @mouseleave="handleMouseLeave"
-    @touchstart.prevent="startTouch"
-    @touchmove.prevent="touchDrag"
-    @touchend.prevent="stopTouch"
+    @touchstart.prevent="startDrag"
+    @touchmove.prevent="drag"
+    @touchend.prevent="stopDrag"
   >
     <img
       alt="zoom-image"
@@ -83,47 +83,16 @@ const calcDragOffset = (event: MouseEvent | TouchEvent) => {
     left: Math.min(maxXOffset, Math.max(offset.value.left + dx, -maxXOffset)),
     top: Math.min(maxYOffset, Math.max(offset.value.top + dy, -maxYOffset)),
   };
+
   prevPosition.value = {
     x: "clientX" in event ? event.clientX : event.touches[0].clientX,
     y: "clientY" in event ? event.clientY : event.touches[0].clientY,
   };
 };
 
-const startDrag = (event: MouseEvent) => {
-  if (props.trigger === "click") {
-    mouseDownPosition.value = {
-      x: event.clientX,
-      y: event.clientY,
-    };
-  }
-
-  if (!isZoomed.value && props.trigger === "hover") return;
-
-  isDragging.value = true;
-  prevPosition.value = {
-    x: event.clientX,
-    y: event.clientY,
-  };
-};
-
-const drag = (event: MouseEvent) => {
+const drag = (event: MouseEvent | TouchEvent) => {
   if (!isDragging.value) return;
   calcDragOffset(event);
-};
-
-const stopDrag = (event: MouseEvent) => {
-  isDragging.value = false;
-
-  if (props.trigger === "click") {
-    if (!isZoomed.value) {
-      isZoomed.value = true;
-    } else if (
-      mouseDownPosition.value.x === event.clientX &&
-      mouseDownPosition.value.y === event.clientY
-    ) {
-      resetPosition();
-    }
-  }
 };
 
 const handleMouseLeave = () => {
@@ -132,37 +101,41 @@ const handleMouseLeave = () => {
   }
 };
 
-const startTouch = (event: TouchEvent) => {
-  const touch = event.touches[0];
-  mouseDownPosition.value = {
-    x: touch.clientX,
-    y: touch.clientY,
-  };
+const startDrag = (event: MouseEvent | TouchEvent) => {
+  const { clientX, clientY } =
+    event instanceof TouchEvent ? event.touches[0] : event;
+
+  mouseDownPosition.value = { x: clientX, y: clientY };
+  prevPosition.value = { x: clientX, y: clientY };
+
+  if (!isZoomed.value && props.trigger === "hover") return;
 
   isDragging.value = true;
-  prevPosition.value = {
-    x: touch.clientX,
-    y: touch.clientY,
-  };
 };
 
-const touchDrag = (event: TouchEvent) => {
-  if (!isDragging.value) return;
-
-  calcDragOffset(event);
-};
-
-const stopTouch = (event: TouchEvent) => {
+const stopDrag = (event: TouchEvent | MouseEvent) => {
   isDragging.value = false;
 
-  const touch = event.changedTouches[0];
-  if (!isZoomed.value) {
-    isZoomed.value = true;
-  } else if (
-    mouseDownPosition.value.x === touch.clientX &&
-    mouseDownPosition.value.y === touch.clientY
-  ) {
-    resetPosition();
+  let clientX, clientY;
+
+  if (event instanceof TouchEvent) {
+    const touch = event.changedTouches[0];
+    clientX = touch.clientX;
+    clientY = touch.clientY;
+  } else if (event instanceof MouseEvent) {
+    clientX = event.clientX;
+    clientY = event.clientY;
+  }
+
+  if (props.trigger === "click" || event instanceof TouchEvent) {
+    if (!isZoomed.value) {
+      isZoomed.value = true;
+    } else if (
+      mouseDownPosition.value.x === clientX &&
+      mouseDownPosition.value.y === clientY
+    ) {
+      resetPosition();
+    }
   }
 };
 
