@@ -30,10 +30,7 @@
 
 <script setup lang="ts">
 import { ref, computed, useTemplateRef, PropType } from "vue";
-import {
-  getTouchPosition,
-  getTouchChangedPosition,
-} from "~/utils/touchPosition";
+import { getTouchPosition } from "~/utils/touchPosition";
 
 const props = defineProps({
   src: {
@@ -118,15 +115,7 @@ const handleMouseLeave = () => {
 };
 
 const startDrag = (event: MouseEvent | TouchEvent) => {
-  let clientX, clientY;
-  if (event instanceof TouchEvent) {
-    const touch = getTouchPosition(event);
-    clientX = touch.clientX;
-    clientY = touch.clientY;
-  } else {
-    clientX = event.clientX;
-    clientY = event.clientY;
-  }
+  let { clientX, clientY } = getCurrentPos(event);
 
   mouseDownPosition.value = { x: clientX, y: clientY };
   prevPosition.value = { x: clientX, y: clientY };
