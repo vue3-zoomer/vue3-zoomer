@@ -35,6 +35,7 @@
 import type { PositionType } from "~/types";
 import { computed, ref, useTemplateRef } from "vue";
 import { useMouseInElement } from "@vueuse/core";
+import { getTouchPosition } from "~/utils/touchPosition";
 
 const props = defineProps({
   src: {
@@ -96,7 +97,7 @@ const handleWheel = (event: WheelEvent) => {
 };
 
 const handleTouchMove = (event: TouchEvent) => {
-  const touch = event.touches[0];
+  const touch = getTouchPosition(event);
   position.value = {
     left: touch.clientX - containerRect.left - magnifierSize.value / 2,
     top: touch.clientY - containerRect.top - magnifierSize.value / 2,
