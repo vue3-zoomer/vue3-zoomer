@@ -34,6 +34,7 @@
 import type { PositionType } from "~/types";
 import { computed, ref, useTemplateRef } from "vue";
 import { useMouseInElement } from "@vueuse/core";
+import { pos2offset } from "~/utilities/zoomCalculations";
 
 const props = defineProps({
   src: {
@@ -59,15 +60,17 @@ const { isOutside } = useMouseInElement(containerRef);
 const magnifierSize = ref(props.magnifierInitialSize);
 
 const zoomedImgOffset = computed(() => {
+  // Add half magnifier size to the position before converting to offset
+  const pos = {
+    left: position.value.left + magnifierSize.value / 2,
+    top: position.value.top + magnifierSize.value / 2,
+  };
+  const offset = pos2offset(pos, props.zoomScale);
+
+  // Remove the added size after conversion
   return {
-    left: -(
-      (position.value.left + magnifierSize.value / 2) * props.zoomScale -
-      magnifierSize.value / 2
-    ),
-    top: -(
-      (position.value.top + magnifierSize.value / 2) * props.zoomScale -
-      magnifierSize.value / 2
-    ),
+    left: offset.left + magnifierSize.value / 2,
+    top: offset.top + magnifierSize.value / 2,
   };
 });
 
