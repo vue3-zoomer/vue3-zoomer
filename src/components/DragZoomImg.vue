@@ -30,6 +30,10 @@
 
 <script setup lang="ts">
 import { ref, computed, useTemplateRef, PropType } from "vue";
+import {
+  getTouchPosition,
+  getTouchChangedPosition,
+} from "~/utils/touchPosition";
 
 const props = defineProps({
   src: {
@@ -64,10 +68,16 @@ const handleMouseEnter = () => {
 };
 
 const calculatePrevPosition = (event: MouseEvent | TouchEvent) => {
-  prevPosition.value = {
-    x: "clientX" in event ? event.clientX : event.touches[0].clientX,
-    y: "clientY" in event ? event.clientY : event.touches[0].clientY,
-  };
+  let clientX, clientY;
+  if (event instanceof TouchEvent) {
+    const touch = getTouchPosition(event);
+    clientX = touch.clientX;
+    clientY = touch.clientY;
+  } else {
+    clientX = event.clientX;
+    clientY = event.clientY;
+  }
+  prevPosition.value = { x: clientX, y: clientY };
 };
 
 const calcDragOffset = (event: MouseEvent | TouchEvent) => {
@@ -80,8 +90,16 @@ const calcDragOffset = (event: MouseEvent | TouchEvent) => {
   const maxXOffset =
     (elementWidth * props.zoomScale - elementWidth) / (props.zoomScale * 2);
 
-  const clientX = "clientX" in event ? event.clientX : event.touches[0].clientX;
-  const clientY = "clientY" in event ? event.clientY : event.touches[0].clientY;
+  let clientX, clientY;
+
+  if (event instanceof TouchEvent) {
+    const touch = getTouchPosition(event);
+    clientX = touch.clientX;
+    clientY = touch.clientY;
+  } else {
+    clientX = event.clientX;
+    clientY = event.clientY;
+  }
 
   const dx = (clientX - prevPosition.value.x) / props.zoomScale;
   const dy = (clientY - prevPosition.value.y) / props.zoomScale;
@@ -106,8 +124,15 @@ const handleMouseLeave = () => {
 };
 
 const startDrag = (event: MouseEvent | TouchEvent) => {
-  const { clientX, clientY } =
-    event instanceof TouchEvent ? event.touches[0] : event;
+  let clientX, clientY;
+  if (event instanceof TouchEvent) {
+    const touch = getTouchPosition(event);
+    clientX = touch.clientX;
+    clientY = touch.clientY;
+  } else {
+    clientX = event.clientX;
+    clientY = event.clientY;
+  }
 
   mouseDownPosition.value = { x: clientX, y: clientY };
   prevPosition.value = { x: clientX, y: clientY };
@@ -123,7 +148,7 @@ const stopDrag = (event: TouchEvent | MouseEvent) => {
   let clientX, clientY;
 
   if (event instanceof TouchEvent) {
-    const touch = event.changedTouches[0];
+    const touch = getTouchChangedPosition(event);
     clientX = touch.clientX;
     clientY = touch.clientY;
   } else if (event instanceof MouseEvent) {
