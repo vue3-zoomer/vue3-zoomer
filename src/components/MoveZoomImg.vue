@@ -24,6 +24,7 @@
 <script setup lang="ts">
 import { PropType, ref, computed, useTemplateRef } from "vue";
 import { getCursorPosition } from "~/utils/cursorPosition";
+import { useTransition } from "~/composables/useTransition";
 
 const props = defineProps({
   src: {
@@ -36,14 +37,15 @@ const props = defineProps({
   },
   trigger: {
     type: String as PropType<"click" | "hover">,
-    default: "hover",
+    default: "click",
   },
 });
 
 const containerRef = useTemplateRef("containerRef");
 
+const { startTransition, isTransition } = useTransition();
+
 const isZoomed = ref(false);
-const isTransition = ref(true);
 
 const zoomedImgOffset = defineModel("zoomedImgOffset", {
   default: {
@@ -86,7 +88,7 @@ const handleMouseEnter = (event: MouseEvent) => {
   if (props.trigger === "hover") {
     isZoomed.value = true;
     currentScale.value = props.zoomScale;
-    setTimeout(() => (isTransition.value = false), 250);
+    startTransition(250);
 
     const cursorPosition = getCursorPosition(event, containerRef.value);
 
@@ -115,7 +117,7 @@ const handleClick = (event: MouseEvent) => {
 
     if (isZoomed.value) {
       currentScale.value = props.zoomScale;
-      setTimeout(() => (isTransition.value = false), 250);
+      startTransition(250);
 
       // Get the bounding rectangle of the container to determine its position. getBoundingClientRect=> method in DOM to get the size of element relative to the viewport
       const rect = containerRef.value?.getBoundingClientRect();
