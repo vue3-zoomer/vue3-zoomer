@@ -4,6 +4,7 @@
     ref="containerRef"
     @mousemove="handleMouseMove"
     @wheel="handleWheel"
+    @touchmove.prevent="handleTouchMove"
   >
     <img class="h-full w-full object-fill" alt="image" :src="src" />
     <div
@@ -34,6 +35,7 @@
 import type { PositionType } from "~/types";
 import { computed, ref, useTemplateRef } from "vue";
 import { useMouseInElement } from "@vueuse/core";
+import { getTouchPosition } from "~/utils/touchPosition";
 import { pos2offset } from "~/utilities/zoomCalculations";
 
 const props = defineProps({
@@ -76,7 +78,6 @@ const zoomedImgOffset = computed(() => {
 
 const handleMouseMove = (event: MouseEvent) => {
   const containerRect = containerRef.value?.getBoundingClientRect() as DOMRect;
-
   position.value = {
     left: event.clientX - containerRect?.left - magnifierSize.value / 2,
     top: event.clientY - containerRect?.top - magnifierSize.value / 2,
@@ -95,5 +96,14 @@ const handleWheel = (event: WheelEvent) => {
       magnifierSize.value + 10,
     );
   }
+};
+
+const handleTouchMove = (event: TouchEvent) => {
+  const containerRect = containerRef.value?.getBoundingClientRect() as DOMRect;
+  const touch = getTouchPosition(event);
+  position.value = {
+    left: touch.clientX - containerRect.left - magnifierSize.value / 2,
+    top: touch.clientY - containerRect.top - magnifierSize.value / 2,
+  };
 };
 </script>

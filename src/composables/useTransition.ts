@@ -3,11 +3,11 @@ import { ref } from "vue";
 export function useTransition() {
   const isTransition = ref(false);
 
-  const startTransition = (time: number) => {
+  const startTransition = (time: number = 250) => {
     isTransition.value = true;
     setTimeout(() => {
       isTransition.value = false;
-    }, time || 250);
+    }, time);
   };
 
   return { isTransition, startTransition };
