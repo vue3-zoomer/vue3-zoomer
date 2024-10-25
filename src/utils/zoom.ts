@@ -1,33 +1,38 @@
 import { PositionType } from "~/types";
 
 export function calZoomedImgOffset(
-  x: number,
-  y: number,
-  w: number,
-  h: number,
+  pos: PositionType,
+  element: HTMLDivElement | null,
   scale: number,
 ) {
-  // Calculate the ratio of the mouse position relative to the element's dimensions
-  const xRatio = x / w;
-  const yRatio = y / h;
+  if (element) {
+    const w = element.clientWidth;
+    const h = element.clientHeight;
 
-  // Calculate the dimensions of the zoomed image
-  const zoomedWidth = w * scale;
-  const zoomedHeight = h * scale;
+    // Calculate the ratio of the mouse position relative to the element's dimensions
+    const xRatio = pos.left / w;
+    const yRatio = pos.top / h;
 
-  let left = -(zoomedWidth - w) * xRatio;
-  let top = -(zoomedHeight - h) * yRatio;
+    // Calculate the dimensions of the zoomed image
+    const zoomedWidth = w * scale;
+    const zoomedHeight = h * scale;
 
-  // Ensure left position does not move the image out of bounds
-  left = Math.max(Math.min(left, 0), w - zoomedWidth);
+    let left = -(zoomedWidth - w) * xRatio;
+    let top = -(zoomedHeight - h) * yRatio;
 
-  // Ensure top position does not move the image out of bounds
-  top = Math.max(Math.min(top, 0), h - zoomedHeight);
+    // Ensure left position does not move the image out of bounds
+    left = Math.max(Math.min(left, 0), w - zoomedWidth);
 
-  return {
-    left,
-    top,
-  };
+    // Ensure top position does not move the image out of bounds
+    top = Math.max(Math.min(top, 0), h - zoomedHeight);
+    return {
+      left,
+      top,
+    } as PositionType;
+  } else {
+    console.error("element not found");
+    return { left: 0, top: 0 } as PositionType;
+  }
 }
 
 export function calcDragOffset(
@@ -44,7 +49,6 @@ export function calcDragOffset(
 
   const dx = pos2.left - pos1.left;
   const dy = pos2.top - pos1.top;
-  console.log(dx, dy);
 
   const offset = {
     left: Math.max(Math.min(oldOffset.left + dx, 0), maxXOffset),
