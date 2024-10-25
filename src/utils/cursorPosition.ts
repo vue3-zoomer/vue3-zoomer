@@ -1,6 +1,6 @@
 import { PositionType } from "~/types";
 
-export function getRelativeCursorPosition(
+export function getRelCursorPosition(
   event: MouseEvent,
   element: HTMLDivElement | null,
 ) {
