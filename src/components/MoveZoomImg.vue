@@ -25,6 +25,7 @@
 <script setup lang="ts">
 import { useMouseInElement } from "@vueuse/core";
 import { PropType, ref, computed } from "vue";
+import { useTransition } from "~/composables/useTransition";
 
 const props = defineProps({
   src: {
@@ -41,10 +42,11 @@ const props = defineProps({
   },
 });
 
+const { startTransition, isTransition } = useTransition();
+
 const imgRef = ref<HTMLImageElement>();
 const containerRef = ref<HTMLDivElement>();
 const isZoomed = ref(false);
-const isTransition = ref(true);
 
 const zoomedImgOffset = defineModel("zoomedImgOffset", {
   default: {
@@ -87,7 +89,7 @@ const handleMouseEnter = () => {
   if (props.trigger === "hover") {
     isZoomed.value = true;
     currentScale.value = props.zoomScale;
-    setTimeout(() => (isTransition.value = false), 250);
+    startTransition(250);
 
     // Calculate the new position for the zoomed image based on the current mouse coordinates
     const { newLeft, newTop } = calculateZoomPosition(
@@ -114,7 +116,7 @@ const handleClick = (event: MouseEvent) => {
 
     if (isZoomed.value) {
       currentScale.value = props.zoomScale;
-      setTimeout(() => (isTransition.value = false), 250);
+      startTransition(250);
 
       // Get the bounding rectangle of the container to determine its position. getBoundingClientRect=> method in DOM to get the size of element relative to the viewport
       const rect = containerRef.value?.getBoundingClientRect();
