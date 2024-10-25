@@ -24,7 +24,7 @@
 <script setup lang="ts">
 import { PropType, computed, useTemplateRef } from "vue";
 import { calZoomedImgOffset } from "~/utils/zoom";
-import { getCursorPosition } from "~/utils/cursorPosition";
+import { getRelCursorPosition } from "~/utils/cursorPosition";
 import { useTransition } from "~/composables/useTransition";
 import useMultiZoom from "~/composables/useMultiZoom";
 
@@ -71,14 +71,12 @@ const handleMouseEnter = (event: MouseEvent) => {
     currentScale.value = props.zoomScale;
     startTransition(250);
 
-    const cursorPosition = getCursorPosition(event, containerRef.value);
+    const { pos: currentPos } = getRelCursorPosition(event, containerRef.value);
 
     // Calculate the new position for the zoomed image based on the current mouse coordinates
     zoomedImgOffset.value = calZoomedImgOffset(
-      cursorPosition.relativeX,
-      cursorPosition.relativeY,
-      containerRef.value.clientWidth,
-      containerRef.value.clientHeight,
+      currentPos,
+      containerRef.value,
       props.zoomScale,
     );
   }
@@ -96,13 +94,14 @@ const handleClick = (event: MouseEvent) => {
       currentScale.value = props.zoomScale;
       startTransition(150);
 
-      const cursorPosition = getCursorPosition(event, containerRef.value);
+      const { pos: cursorPosition } = getRelCursorPosition(
+        event,
+        containerRef.value,
+      );
 
       zoomedImgOffset.value = calZoomedImgOffset(
-        cursorPosition.relativeX,
-        cursorPosition.relativeY,
-        containerRef.value.clientWidth,
-        containerRef.value.clientHeight,
+        cursorPosition,
+        containerRef.value,
         props.zoomScale,
       );
     } else {
@@ -112,29 +111,31 @@ const handleClick = (event: MouseEvent) => {
   // multi click
   else if (props.step) {
     const scale = zoomInOut(currentScale.value, props.zoomScale, props.step);
-    const cursorPosition = getCursorPosition(event, containerRef.value);
+    const { pos: cursorPosition } = getRelCursorPosition(
+      event,
+      containerRef.value,
+    );
 
     startTransition(150);
     currentScale.value = scale;
     zoomedImgOffset.value = calZoomedImgOffset(
-      cursorPosition.relativeX,
-      cursorPosition.relativeY,
-      containerRef.value.clientWidth,
-      containerRef.value.clientHeight,
+      cursorPosition,
+      containerRef.value,
       scale,
     );
   }
 };
 
 const handleMouseMove = (event: MouseEvent) => {
-  const cursorPosition = getCursorPosition(event, containerRef.value);
+  const { pos: cursorPosition, isOutside } = getRelCursorPosition(
+    event,
+    containerRef.value,
+  );
 
-  if (!cursorPosition.isOutside && isZoomed.value && !isTransition.value) {
+  if (!isOutside && isZoomed.value && !isTransition.value) {
     zoomedImgOffset.value = calZoomedImgOffset(
-      cursorPosition.relativeX,
-      cursorPosition.relativeY,
-      containerRef.value.clientWidth,
-      containerRef.value.clientHeight,
+      cursorPosition,
+      containerRef.value,
       currentScale.value,
     );
   }
