@@ -1,3 +1,5 @@
+import { PositionType } from "~/types";
+
 export function calZoomedImgOffset(
   x: number,
   y: number,
@@ -26,4 +28,28 @@ export function calZoomedImgOffset(
     left,
     top,
   };
+}
+
+export function calcDragOffset(
+  pos1: PositionType,
+  pos2: PositionType,
+  oldOffset: PositionType,
+  w: number,
+  h: number,
+  scale: number,
+) {
+  const maxYOffset = h - h * scale;
+
+  const maxXOffset = w - w * scale;
+
+  const dx = pos2.left - pos1.left;
+  const dy = pos2.top - pos1.top;
+  console.log(dx, dy);
+
+  const offset = {
+    left: Math.max(Math.min(oldOffset.left + dx, 0), maxXOffset),
+    top: Math.max(Math.min(oldOffset.top + dy, 0), maxYOffset),
+  };
+
+  return offset;
 }
