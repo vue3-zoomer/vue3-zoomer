@@ -10,7 +10,6 @@
   >
     <img
       class="h-full w-full object-fill"
-      ref="imgRef"
       alt="zoom-image"
       :src="src"
       :style="{
@@ -23,8 +22,8 @@
 </template>
 
 <script setup lang="ts">
-import { useMouseInElement } from "@vueuse/core";
-import { PropType, ref, computed } from "vue";
+import { PropType, ref, computed, useTemplateRef } from "vue";
+import { getCursorPosition } from "~/utils/cursorPosition";
 import { useTransition } from "~/composables/useTransition";
 
 const props = defineProps({
@@ -42,10 +41,10 @@ const props = defineProps({
   },
 });
 
+const containerRef = useTemplateRef("containerRef");
+
 const { startTransition, isTransition } = useTransition();
 
-const imgRef = ref<HTMLImageElement>();
-const containerRef = ref<HTMLDivElement>();
 const isZoomed = ref(false);
 
 const zoomedImgOffset = defineModel("zoomedImgOffset", {
@@ -59,42 +58,44 @@ const currentScale = defineModel("currentScale", {
   default: 1,
 });
 
-const { elementX, elementY, elementHeight, elementWidth, isOutside } =
-  useMouseInElement(containerRef);
-
 const cursorStyle = computed(() => (isZoomed.value ? "zoom-out" : "zoom-in"));
 
 const calculateZoomPosition = (x: number, y: number) => {
+  const elementWidth = containerRef.value?.clientWidth ?? 1;
+  const elementHeight = containerRef.value?.clientHeight ?? 1;
+
   // Calculate the ratio of the mouse position relative to the element's dimensions
-  const xRatio = x / elementWidth.value;
-  const yRatio = y / elementHeight.value;
+  const xRatio = x / elementWidth;
+  const yRatio = y / elementHeight;
 
   // Calculate the dimensions of the zoomed image
-  const zoomedWidth = elementWidth.value * props.zoomScale;
-  const zoomedHeight = elementHeight.value * props.zoomScale;
+  const zoomedWidth = elementWidth * props.zoomScale;
+  const zoomedHeight = elementHeight * props.zoomScale;
 
-  let newLeft = -(zoomedWidth - elementWidth.value) * xRatio;
-  let newTop = -(zoomedHeight - elementHeight.value) * yRatio;
+  let newLeft = -(zoomedWidth - elementWidth) * xRatio;
+  let newTop = -(zoomedHeight - elementHeight) * yRatio;
 
   // Ensure left position does not move the image out of bounds
-  newLeft = Math.max(Math.min(newLeft, 0), elementWidth.value - zoomedWidth);
+  newLeft = Math.max(Math.min(newLeft, 0), elementWidth - zoomedWidth);
 
   // Ensure top position does not move the image out of bounds
-  newTop = Math.max(Math.min(newTop, 0), elementHeight.value - zoomedHeight);
+  newTop = Math.max(Math.min(newTop, 0), elementHeight - zoomedHeight);
 
   return { newLeft, newTop };
 };
 
-const handleMouseEnter = () => {
+const handleMouseEnter = (event: MouseEvent) => {
   if (props.trigger === "hover") {
     isZoomed.value = true;
     currentScale.value = props.zoomScale;
     startTransition(250);
 
+    const cursorPosition = getCursorPosition(event, containerRef.value);
+
     // Calculate the new position for the zoomed image based on the current mouse coordinates
     const { newLeft, newTop } = calculateZoomPosition(
-      elementX.value,
-      elementY.value,
+      cursorPosition.relativeX,
+      cursorPosition.relativeY,
     );
 
     // Update the left and top translation values to position the zoomed image correctly
@@ -140,11 +141,13 @@ const handleClick = (event: MouseEvent) => {
   }
 };
 
-const handleMouseMove = () => {
-  if (!isOutside.value && isZoomed.value && !isTransition.value) {
+const handleMouseMove = (event: MouseEvent) => {
+  const cursorPosition = getCursorPosition(event, containerRef.value);
+
+  if (!cursorPosition.isOutside && isZoomed.value && !isTransition.value) {
     const { newLeft, newTop } = calculateZoomPosition(
-      elementX.value,
-      elementY.value,
+      cursorPosition.relativeX,
+      cursorPosition.relativeY,
     );
     zoomedImgOffset.value = {
       left: newLeft,
