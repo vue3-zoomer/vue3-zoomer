@@ -1,6 +1,6 @@
 <template>
   <div
-    class="h-full w-full cursor-zoom-in overflow-clip border-none"
+    class="cursor-zoom-in overflow-clip border-none"
     ref="containerRef"
     :style="{ cursor: zoomDir === 'OUT' ? 'zoom-out' : 'zoom-in' }"
     @mouseenter="handleMouseEnter"
@@ -10,7 +10,6 @@
   >
     <img
       class="h-full w-full object-fill"
-      ref="imgRef"
       alt="zoom-image"
       :src="src"
       :style="{
@@ -23,10 +22,11 @@
 </template>
 
 <script setup lang="ts">
-import { PropType, ref, computed } from "vue";
-import { useMouseInElement } from "@vueuse/core";
+import { PropType, computed, useTemplateRef } from "vue";
 import { calZoomedImgOffset } from "~/utils/zoom";
 import useMultiZoom from "~/composables/useMultiZoom";
+import { getCursorPosition } from "~/utils/cursorPosition";
+import { useTransition } from "~/composables/useTransition";
 
 const props = defineProps({
   src: {
@@ -39,7 +39,7 @@ const props = defineProps({
   },
   trigger: {
     type: String as PropType<"click" | "hover">,
-    default: "hover",
+    default: "click",
   },
   step: {
     type: Number,
@@ -49,12 +49,13 @@ const props = defineProps({
   },
 });
 
-const imgRef = ref<HTMLImageElement>();
-const containerRef = ref<HTMLDivElement>();
-const isTransition = ref(true);
 const currentScale = defineModel("currentScale", {
   default: 1,
 });
+const containerRef = useTemplateRef("containerRef");
+
+const { startTransition, isTransition } = useTransition();
+
 const zoomedImgOffset = defineModel("zoomedImgOffset", {
   default: {
     left: 0,
@@ -65,20 +66,19 @@ const zoomedImgOffset = defineModel("zoomedImgOffset", {
 const isZoomed = computed(() => currentScale.value > 1);
 const { zoomDir, zoomInOut } = useMultiZoom();
 
-const { elementX, elementY, elementHeight, elementWidth, isOutside } =
-  useMouseInElement(containerRef);
-
-const handleMouseEnter = () => {
+const handleMouseEnter = (event: MouseEvent) => {
   if (props.trigger === "hover") {
     currentScale.value = props.zoomScale;
-    setTimeout(() => (isTransition.value = false), 250);
+    startTransition(250);
+
+    const cursorPosition = getCursorPosition(event, containerRef.value);
 
     // Calculate the new position for the zoomed image based on the current mouse coordinates
     zoomedImgOffset.value = calZoomedImgOffset(
-      elementX.value,
-      elementY.value,
-      elementWidth.value,
-      elementHeight.value,
+      cursorPosition.relativeX,
+      cursorPosition.relativeY,
+      containerRef.value.clientWidth,
+      containerRef.value.clientHeight,
       props.zoomScale,
     );
   }
@@ -89,18 +89,20 @@ const handleMouseLeave = () => {
   resetPosition();
 };
 
-const handleClick = () => {
+const handleClick = (event: MouseEvent) => {
   // single click
   if (!props.step && props.trigger === "click") {
     if (!isZoomed.value) {
       currentScale.value = props.zoomScale;
-      setTimeout(() => (isTransition.value = false), 250);
+      startTransition(150);
+
+      const cursorPosition = getCursorPosition(event, containerRef.value);
 
       zoomedImgOffset.value = calZoomedImgOffset(
-        elementX.value,
-        elementY.value,
-        elementWidth.value,
-        elementHeight.value,
+        cursorPosition.relativeX,
+        cursorPosition.relativeY,
+        containerRef.value.clientWidth,
+        containerRef.value.clientHeight,
         props.zoomScale,
       );
     } else {
@@ -109,28 +111,30 @@ const handleClick = () => {
   }
   // multi click
   else if (props.step) {
-    console.log("click");
-
     const scale = zoomInOut(currentScale.value, props.zoomScale, props.step);
-    startTransition();
+    const cursorPosition = getCursorPosition(event, containerRef.value);
+
+    startTransition(150);
     currentScale.value = scale;
     zoomedImgOffset.value = calZoomedImgOffset(
-      elementX.value,
-      elementY.value,
-      elementWidth.value,
-      elementHeight.value,
+      cursorPosition.relativeX,
+      cursorPosition.relativeY,
+      containerRef.value.clientWidth,
+      containerRef.value.clientHeight,
       scale,
     );
   }
 };
 
-const handleMouseMove = () => {
-  if (!isOutside.value && isZoomed.value && !isTransition.value) {
+const handleMouseMove = (event: MouseEvent) => {
+  const cursorPosition = getCursorPosition(event, containerRef.value);
+
+  if (!cursorPosition.isOutside && isZoomed.value && !isTransition.value) {
     zoomedImgOffset.value = calZoomedImgOffset(
-      elementX.value,
-      elementY.value,
-      elementWidth.value,
-      elementHeight.value,
+      cursorPosition.relativeX,
+      cursorPosition.relativeY,
+      containerRef.value.clientWidth,
+      containerRef.value.clientHeight,
       currentScale.value,
     );
   }
@@ -143,10 +147,5 @@ const resetPosition = () => {
     left: 0,
     top: 0,
   };
-};
-
-const startTransition = () => {
-  isTransition.value = true;
-  setTimeout(() => (isTransition.value = false), 150);
 };
 </script>
