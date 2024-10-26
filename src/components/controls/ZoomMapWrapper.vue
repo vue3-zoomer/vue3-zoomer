@@ -11,7 +11,6 @@
       :presist="true"
     />
     <ZoomMap
-      v-show="windowPosition"
       class="absolute bottom-[28%] left-0 box-content h-[25%] w-[25%] border-8 border-transparent outline outline-2 outline-offset-[-8px] outline-white"
       :src="src"
       :zoom-scale="scale"
@@ -23,7 +22,7 @@
 
 <script setup lang="ts">
 import MoveZoomImg from "~/components/core/MoveZoomImg.vue";
-import ZoomMap from "~/components/ZoomMap.vue";
+import ZoomMap from "~/components/core/ZoomMap.vue";
 import { computed, ref } from "vue";
 import { PositionType } from "~/types";
 import { offset2pos, pos2offset } from "~/utilities/zoomCalculations";
