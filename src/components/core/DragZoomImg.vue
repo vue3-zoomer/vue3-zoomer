@@ -39,6 +39,7 @@ import {
 import { useTransition } from "~/composables/useTransition";
 import { calcDragOffset, calZoomedImgOffset } from "~/utils/zoom";
 import { getRelCursorPosition } from "~/utils/cursorPosition";
+import useMultiZoom from "~/composables/useMultiZoom";
 
 const props = defineProps({
   src: {
@@ -52,6 +53,9 @@ const props = defineProps({
   trigger: {
     type: String as PropType<"click" | "hover">,
     default: "click",
+  },
+  step: {
+    type: Number,
   },
 });
 
@@ -75,6 +79,12 @@ const containerRef = useTemplateRef("containerRef");
 const isZoomed = computed(() => currentScale.value > 1);
 
 const { isTransition, startTransition } = useTransition();
+const { multiStepZoomIn } = useMultiZoom(
+  currentScale,
+  zoomedImgOffset,
+  containerRef,
+  props.zoomScale,
+);
 
 const handleMouseEnter = () => {
   if (props.trigger === "hover") {
@@ -117,24 +127,24 @@ const drag = (event: MouseEvent | TouchEvent) => {
 const handlePressUp = (event: TouchEvent | MouseEvent) => {
   isDragging.value = false;
 
-  const currentPos = getAbsPos(event);
+  const absPos = getAbsPos(event);
+  const relPos = getRelPos(event);
 
   if (props.trigger === "click") {
     if (!isZoomed.value) {
-      const currentRelPos = getRelPos(event);
       startTransition();
-      currentScale.value = props.zoomScale;
-      zoomedImgOffset.value = calZoomedImgOffset(
-        currentRelPos,
-        containerRef.value,
-        props.zoomScale,
-      );
+      multiStepZoomIn(currentScale.value, relPos, props.step ?? 1);
     } else if (
-      mouseDownPosition.value.left === currentPos.left &&
-      mouseDownPosition.value.top === currentPos.top &&
+      mouseDownPosition.value.left === absPos.left &&
+      mouseDownPosition.value.top === absPos.top &&
       isZoomed.value
     ) {
-      resetPosition();
+      if (props.step) {
+        startTransition();
+        multiStepZoomIn(currentScale.value, relPos, props.step);
+      } else {
+        resetPosition();
+      }
     }
   }
 };

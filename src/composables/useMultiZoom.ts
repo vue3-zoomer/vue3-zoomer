@@ -1,9 +1,20 @@
-import { ref } from "vue";
+import { Ref, ref } from "vue";
+import { PositionType } from "~/types";
+import { calZoomedImgOffset } from "~/utils/zoom";
 
-export default function useMultiZoom() {
+export default function useMultiZoom(
+  scaleRef: Ref<number>,
+  offsetRef: Ref<PositionType>,
+  imgContainer: Ref<HTMLDivElement | null>,
+  maxScale: number = 2,
+) {
   const zoomDir = ref<"IN" | "OUT">("IN");
 
-  const zoomInOut = (scale: number, maxScale: number, step: number) => {
+  const multiStepZoomIn = (
+    scale: number,
+    relPos: PositionType,
+    step: number,
+  ) => {
     let zoomScale = scale;
 
     if (zoomDir.value === "IN") {
@@ -18,8 +29,9 @@ export default function useMultiZoom() {
       zoomDir.value = "OUT";
     }
 
-    return zoomScale;
+    scaleRef.value = zoomScale;
+    offsetRef.value = calZoomedImgOffset(relPos, imgContainer.value, zoomScale);
   };
 
-  return { zoomDir, zoomInOut };
+  return { zoomDir, multiStepZoomIn };
 }

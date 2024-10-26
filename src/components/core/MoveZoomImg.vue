@@ -52,10 +52,6 @@ const props = defineProps({
 const currentScale = defineModel("currentScale", {
   default: 1,
 });
-const containerRef = useTemplateRef("containerRef");
-
-const { startTransition, isTransition } = useTransition();
-
 const zoomedImgOffset = defineModel("zoomedImgOffset", {
   default: {
     left: 0,
@@ -63,22 +59,23 @@ const zoomedImgOffset = defineModel("zoomedImgOffset", {
   },
 });
 
+const containerRef = useTemplateRef("containerRef");
+
 const isZoomed = computed(() => currentScale.value > 1);
-const { zoomDir, zoomInOut } = useMultiZoom();
+
+const { isTransition, startTransition } = useTransition();
+const { zoomDir, multiStepZoomIn } = useMultiZoom(
+  currentScale,
+  zoomedImgOffset,
+  containerRef,
+  props.zoomScale,
+);
 
 const handleMouseEnter = (event: MouseEvent) => {
   if (props.trigger === "hover") {
-    currentScale.value = props.zoomScale;
-    startTransition(250);
-
-    const { pos: currentPos } = getRelCursorPosition(event, containerRef.value);
-
-    // Calculate the new position for the zoomed image based on the current mouse coordinates
-    zoomedImgOffset.value = calZoomedImgOffset(
-      currentPos,
-      containerRef.value,
-      props.zoomScale,
-    );
+    const { pos: relPos } = getRelCursorPosition(event, containerRef.value);
+    startTransition(150);
+    multiStepZoomIn(currentScale.value, relPos, props.step ?? props.zoomScale);
   }
 };
 
@@ -88,42 +85,9 @@ const handleMouseLeave = () => {
 };
 
 const handleClick = (event: MouseEvent) => {
-  // single click
-  if (!props.step && props.trigger === "click") {
-    if (!isZoomed.value) {
-      currentScale.value = props.zoomScale;
-      startTransition(150);
-
-      const { pos: cursorPosition } = getRelCursorPosition(
-        event,
-        containerRef.value,
-      );
-
-      zoomedImgOffset.value = calZoomedImgOffset(
-        cursorPosition,
-        containerRef.value,
-        props.zoomScale,
-      );
-    } else {
-      resetPosition();
-    }
-  }
-  // multi click
-  else if (props.step) {
-    const scale = zoomInOut(currentScale.value, props.zoomScale, props.step);
-    const { pos: cursorPosition } = getRelCursorPosition(
-      event,
-      containerRef.value,
-    );
-
-    startTransition(150);
-    currentScale.value = scale;
-    zoomedImgOffset.value = calZoomedImgOffset(
-      cursorPosition,
-      containerRef.value,
-      scale,
-    );
-  }
+  const { pos: relPos } = getRelCursorPosition(event, containerRef.value);
+  startTransition(150);
+  multiStepZoomIn(currentScale.value, relPos, props.step ?? props.zoomScale);
 };
 
 const handleMouseMove = (event: MouseEvent) => {
