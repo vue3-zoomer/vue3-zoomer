@@ -29,6 +29,7 @@ const { theme, page, frontmatter } = useData()
 
 <script setup>
 import { useData } from 'vitepress'
+import red from "../src/assets/images/red.jpg";
 import DragZoomImg from '../src/components/DragZoomImg.vue';
 const { site, theme, page, frontmatter } = useData()
 </script>
