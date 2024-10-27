@@ -1,9 +1,17 @@
 import { defineConfig } from 'vitepress'
+import path, { resolve } from 'path'
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
   title: "Vue Zoom Components",
   description: "A VitePress Site",
+  vite: {
+    resolve: {
+      alias: {
+        '~': path.resolve(__dirname, './src'),
+      },
+    },
+  },
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     nav: [
