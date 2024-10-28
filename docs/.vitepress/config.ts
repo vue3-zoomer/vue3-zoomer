@@ -8,7 +8,7 @@ export default defineConfig({
   vite: {
     resolve: {
       alias: {
-        '~': path.resolve(__dirname, './src'),
+        "~": path.join(process.cwd(),"/src"),
       },
     },
   },
