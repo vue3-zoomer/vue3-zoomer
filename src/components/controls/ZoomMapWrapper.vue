@@ -21,14 +21,13 @@
 </template>
 
 <script setup lang="ts">
-import MoveZoomImg from "~/components/core/MoveZoomImg.vue";
 import ZoomMap from "~/components/core/ZoomMap.vue";
 import { computed, ref } from "vue";
 import { PositionType } from "~/types";
 import { offset2pos, pos2offset } from "~/utilities/zoomCalculations";
 import DragZoomImg from "../core/DragZoomImg.vue";
 
-const props = defineProps({
+defineProps({
   src: {
     type: String,
     required: true,
