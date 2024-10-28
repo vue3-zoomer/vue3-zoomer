@@ -117,8 +117,7 @@ const drag = (event: MouseEvent | TouchEvent) => {
     prevPosition.value,
     currentPos,
     zoomedImgOffset.value,
-    containerRef.value?.clientWidth ?? 0,
-    containerRef.value?.clientHeight ?? 0,
+    containerRef.value,
     currentScale.value,
   );
   prevPosition.value = currentPos;
@@ -130,21 +129,24 @@ const handlePressUp = (event: TouchEvent | MouseEvent) => {
   const absPos = getAbsPos(event);
   const relPos = getRelPos(event);
 
-  if (props.trigger === "click") {
-    if (!isZoomed.value) {
+  if (!isZoomed.value) {
+    startTransition();
+    multiStepZoomIn(currentScale.value, relPos, props.step ?? props.zoomScale);
+  } else if (
+    mouseDownPosition.value.left === absPos.left &&
+    mouseDownPosition.value.top === absPos.top &&
+    isZoomed.value
+  ) {
+    if (props.step) {
       startTransition();
-      multiStepZoomIn(currentScale.value, relPos, props.step ?? 1);
-    } else if (
-      mouseDownPosition.value.left === absPos.left &&
-      mouseDownPosition.value.top === absPos.top &&
-      isZoomed.value
-    ) {
-      if (props.step) {
-        startTransition();
-        multiStepZoomIn(currentScale.value, relPos, props.step);
-      } else {
-        resetPosition();
-      }
+      multiStepZoomIn(currentScale.value, relPos, props.step);
+    } else {
+      startTransition();
+      multiStepZoomIn(
+        currentScale.value,
+        relPos,
+        props.step ?? props.zoomScale,
+      );
     }
   }
 };
@@ -156,19 +158,19 @@ const resetPosition = () => {
 };
 
 const getAbsPos = (event: MouseEvent | TouchEvent) => {
-  if (event instanceof TouchEvent) {
-    return getAbsTouchPosition(event);
-  } else {
+  if (event instanceof MouseEvent) {
     return { left: event.clientX, top: event.clientY };
+  } else {
+    return getAbsTouchPosition(event);
   }
 };
 
 const getRelPos = (event: MouseEvent | TouchEvent) => {
-  if (event instanceof TouchEvent) {
-    return getRelTouchPosition(event, containerRef.value);
-  } else {
+  if (event instanceof MouseEvent) {
     const { pos: relPos } = getRelCursorPosition(event, containerRef.value);
     return relPos;
+  } else {
+    return getRelTouchPosition(event, containerRef.value);
   }
 };
 </script>

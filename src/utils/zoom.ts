@@ -39,21 +39,28 @@ export function calcDragOffset(
   pos1: PositionType,
   pos2: PositionType,
   oldOffset: PositionType,
-  w: number,
-  h: number,
+  element: HTMLDivElement | null,
   scale: number,
 ) {
-  const maxYOffset = h - h * scale;
+  if (element) {
+    const w = element.clientWidth;
+    const h = element.clientHeight;
 
-  const maxXOffset = w - w * scale;
+    const maxYOffset = h - h * scale;
 
-  const dx = pos2.left - pos1.left;
-  const dy = pos2.top - pos1.top;
+    const maxXOffset = w - w * scale;
 
-  const offset = {
-    left: Math.max(Math.min(oldOffset.left + dx, 0), maxXOffset),
-    top: Math.max(Math.min(oldOffset.top + dy, 0), maxYOffset),
-  };
+    const dx = pos2.left - pos1.left;
+    const dy = pos2.top - pos1.top;
 
-  return offset;
+    const offset = {
+      left: Math.max(Math.min(oldOffset.left + dx, 0), maxXOffset),
+      top: Math.max(Math.min(oldOffset.top + dy, 0), maxYOffset),
+    };
+
+    return offset;
+  } else {
+    console.error("element not found");
+    return { left: 0, top: 0 } as PositionType;
+  }
 }
