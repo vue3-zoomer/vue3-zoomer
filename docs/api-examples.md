@@ -13,6 +13,7 @@ The main `useData()` API can be used to access site, theme, and page data for th
 import { useData } from 'vitepress'
 import App from "./src/app.vue";
 const { theme, page, frontmatter } = useData()
+
 </script>
 
 ## Results
@@ -29,9 +30,10 @@ const { theme, page, frontmatter } = useData()
 
 <script setup>
 import { useData } from 'vitepress'
-import red from "../src/assets/images/red.jpg";
-import DragZoomImg from '../src/components/DragZoomImg.vue';
+import red from "~/assets/images/red.jpg";
+import MoveZoomImg from '~/components/MoveZoomImg.vue';
 const { site, theme, page, frontmatter } = useData()
+import "~/assets/css/main.css";
 </script>
 
 ## Results
@@ -51,6 +53,4 @@ Check out the documentation for the [full list of runtime APIs](https://vitepres
 
 # Component
 
-<div class="flex h-screen w-screen items-center justify-center">
-  <DragZoomImg class="h-[30rem] w-[30rem]" :src="red" :zoom-scale="5" />
-</div>
+<MoveZoomImg class="h-[30rem] w-[30rem]" :src="red" :zoom-scale="5" />
