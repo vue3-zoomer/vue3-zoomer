@@ -1,8 +1,9 @@
 <template>
   <div
-    class="relative select-none overflow-clip border-none"
+    class="relative select-none overflow-clip"
     ref="backdropRef"
     @click="moveToCursor"
+    @mouseleave="stopMoving"
   >
     <img
       class="h-full w-full object-fill"
@@ -14,7 +15,7 @@
     <div
       class="absolute bg-white/20 hover:cursor-pointer active:cursor-move"
       ref="movableWindowRef"
-      :class="{ '-z-10 opacity-0': !position }"
+      :class="{ 'invisible -z-10': !position }"
       :style="{
         left: `${position?.left}px`,
         top: `${position?.top}px`,
@@ -37,7 +38,7 @@ import {
   watchEffect,
 } from "vue";
 import { PositionType } from "~/types";
-import { getCursorPosition } from "~/utils/cursorPosition";
+import { getRelCursorPosition } from "~/utils/cursorPosition";
 
 defineProps({
   src: {
@@ -65,12 +66,9 @@ const elementY = ref(0);
 // Mousemove listener to track cursor position within the element
 const updateCursorPosition = (event: MouseEvent) => {
   if (backdropRef.value) {
-    const { relativeX, relativeY } = getCursorPosition(
-      event,
-      backdropRef.value,
-    );
-    elementX.value = relativeX;
-    elementY.value = relativeY;
+    const { pos } = getRelCursorPosition(event, backdropRef.value);
+    elementX.value = pos.left;
+    elementY.value = pos.top;
   }
 };
 

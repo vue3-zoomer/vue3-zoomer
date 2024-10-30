@@ -1,0 +1,116 @@
+<template>
+  <div
+    class="cursor-zoom-in overflow-clip border-none"
+    ref="containerRef"
+    :style="{ cursor: zoomDir === 'OUT' ? 'zoom-out' : 'zoom-in' }"
+    @mouseenter="handleMouseEnter"
+    @mouseleave="handleMouseLeave"
+    @mousemove="handleMouseMove"
+    @click="handleClick"
+  >
+    <img
+      class="h-full w-full object-fill"
+      alt="zoom-image"
+      :src="src"
+      :style="{
+        transform: `translate(${zoomedImgOffset.left}px, ${zoomedImgOffset.top}px) scale(${currentScale})`,
+        transformOrigin: '0 0',
+        transition: isTransition ? 'transform 100ms ease-in-out' : 'none',
+      }"
+    />
+  </div>
+</template>
+
+<script setup lang="ts">
+import { PropType, computed, useTemplateRef } from "vue";
+import { calZoomedImgOffset } from "~/utils/zoom";
+import { getRelCursorPosition } from "~/utils/cursorPosition";
+import { useTransition } from "~/composables/useTransition";
+import useMultiZoom from "~/composables/useMultiZoom";
+
+const props = defineProps({
+  src: {
+    type: String,
+    required: true,
+  },
+  zoomScale: {
+    type: Number,
+    default: 2,
+  },
+  trigger: {
+    type: String as PropType<"click" | "hover">,
+    default: "click",
+  },
+  step: {
+    type: Number,
+  },
+  presist: {
+    type: Boolean,
+  },
+});
+
+const currentScale = defineModel("currentScale", {
+  default: 1,
+});
+const zoomedImgOffset = defineModel("zoomedImgOffset", {
+  default: {
+    left: 0,
+    top: 0,
+  },
+});
+
+const containerRef = useTemplateRef("containerRef");
+
+const isZoomed = computed(() => currentScale.value > 1);
+
+const { isTransition, startTransition } = useTransition();
+const { zoomDir, multiStepZoomIn } = useMultiZoom(
+  currentScale,
+  zoomedImgOffset,
+  containerRef,
+  props.zoomScale,
+);
+
+const handleMouseEnter = (event: MouseEvent) => {
+  if (props.trigger === "hover") {
+    const { pos: relPos } = getRelCursorPosition(event, containerRef.value);
+    startTransition(150);
+    multiStepZoomIn(currentScale.value, relPos, props.step ?? props.zoomScale);
+  }
+};
+
+const handleMouseLeave = () => {
+  if (props.presist) return;
+  resetPosition();
+};
+
+const handleClick = (event: MouseEvent) => {
+  const { pos: relPos } = getRelCursorPosition(event, containerRef.value);
+  startTransition(150);
+  multiStepZoomIn(currentScale.value, relPos, props.step ?? props.zoomScale);
+};
+
+const handleMouseMove = (event: MouseEvent) => {
+  const { pos: cursorPosition, isOutside } = getRelCursorPosition(
+    event,
+    containerRef.value,
+  );
+
+  if (!isOutside && isZoomed.value && !isTransition.value) {
+    zoomedImgOffset.value = calZoomedImgOffset(
+      cursorPosition,
+      containerRef.value,
+      currentScale.value,
+    );
+  }
+};
+
+const resetPosition = () => {
+  isTransition.value = true;
+  currentScale.value = 1;
+  zoomedImgOffset.value = {
+    left: 0,
+    top: 0,
+  };
+};
+</script>
