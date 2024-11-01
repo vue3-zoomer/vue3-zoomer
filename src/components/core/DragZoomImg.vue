@@ -6,6 +6,7 @@
       'cursor-grab': isZoomed && !isDragging,
       'cursor-grabbing': isZoomed && isDragging,
       'cursor-zoom-in': !isZoomed,
+      'cursor-zoom-out': isZoomed && currentScale >= props.zoomScale,
     }"
     @mouseenter="handleMouseEnter"
     @mousedown="handlePressDown"
