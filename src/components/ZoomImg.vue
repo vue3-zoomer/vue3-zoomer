@@ -4,7 +4,7 @@
 </template>
 
 <script setup lang="ts">
-import { PropType } from "vue";
+import type { PropType } from "vue";
 import DragZoomImg from "~/components/core/DragZoomImg.vue";
 import MoveZoomImg from "~/components/core/MoveZoomImg.vue";
 
@@ -28,7 +28,7 @@ const props = defineProps({
   step: {
     type: Number,
   },
-  presist: {
+  persist: {
     type: Boolean,
   },
 });

@@ -1,4 +1,4 @@
-import { PositionType } from "~/types";
+import type { PositionType } from "~/types";
 
 export function getRelCursorPosition(
   event: MouseEvent,
@@ -24,10 +24,10 @@ export function getRelCursorPosition(
       pos,
       isOutside,
     };
-  } else {
-    return {
-      pos: { left: 0, top: 0 } as PositionType,
-      isOutside: true,
-    };
   }
+
+  return {
+    pos: { left: 0, top: 0 } as PositionType,
+    isOutside: true,
+  };
 }

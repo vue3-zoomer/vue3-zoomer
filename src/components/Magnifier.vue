@@ -36,7 +36,7 @@ import type { PositionType } from "~/types";
 import { ref, computed, useTemplateRef } from "vue";
 import { getRelCursorPosition } from "~/utils/cursorPosition";
 import { getAbsTouchPosition } from "~/utils/touchPosition";
-import { pos2offset } from "~/utilities/zoomCalculations";
+import { pos2offset } from "~/utils/zoom";
 
 const props = defineProps({
   src: {

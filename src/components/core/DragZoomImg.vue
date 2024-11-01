@@ -31,13 +31,13 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, useTemplateRef, PropType } from "vue";
+import { type PropType, ref, computed, useTemplateRef } from "vue";
 import {
   getAbsTouchPosition,
   getRelTouchPosition,
 } from "~/utils/touchPosition";
 import { useTransition } from "~/composables/useTransition";
-import { calcDragOffset, calZoomedImgOffset } from "~/utils/zoom";
+import { calcDragOffset } from "~/utils/zoom";
 import { getRelCursorPosition } from "~/utils/cursorPosition";
 import useMultiZoom from "~/composables/useMultiZoom";
 

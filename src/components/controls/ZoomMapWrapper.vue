@@ -8,7 +8,7 @@
       :src="src"
       :step="1"
       :zoom-scale="zoomScale"
-      :presist="true"
+      :persist="true"
     />
     <ZoomMap
       class="absolute bottom-[28%] left-0 box-content h-[25%] w-[25%] border-8 border-transparent outline outline-2 outline-offset-[-8px] outline-white"
@@ -23,8 +23,8 @@
 <script setup lang="ts">
 import ZoomMap from "~/components/core/ZoomMap.vue";
 import { computed, ref } from "vue";
-import { PositionType } from "~/types";
-import { offset2pos, pos2offset } from "~/utilities/zoomCalculations";
+import type { PositionType } from "~/types";
+import { offset2pos, pos2offset } from "~/utils/zoom";
 import DragZoomImg from "../core/DragZoomImg.vue";
 
 defineProps({
@@ -43,13 +43,13 @@ const scale = ref(1);
 
 const windowPosition = computed(() => {
   if (scale.value !== 1) {
-    //Multply scale by 4 because the map window is quarter the map container
+    //Multiply scale by 4 because the map window is quarter the map container
     return offset2pos(zoomedImgOffset.value, scale.value * 4);
   }
 });
 
 const updateOffset = (newPosition?: PositionType) => {
-  //Multply scale by 4 because the map window is quarter the map container
+  //Multiply scale by 4 because the map window is quarter the map container
   if (newPosition)
     zoomedImgOffset.value = pos2offset(newPosition, scale.value * 4);
 };

@@ -1,4 +1,4 @@
-import { PositionType } from "~/types";
+import type { PositionType } from "~/types";
 
 export function getAbsTouchPosition(event: TouchEvent) {
   const { clientX, clientY } = event.changedTouches[0];
@@ -28,7 +28,6 @@ export function getRelTouchPosition(
     console.error("element not found");
     return pos;
   }
-  console.log(element.clientLeft);
 
   return pos;
 }

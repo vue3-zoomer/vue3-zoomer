@@ -30,14 +30,14 @@
 
 <script setup lang="ts">
 import {
+  type PropType,
   onBeforeUnmount,
   onMounted,
-  PropType,
   ref,
   useTemplateRef,
   watchEffect,
 } from "vue";
-import { PositionType } from "~/types";
+import type { PositionType } from "~/types";
 import { getRelCursorPosition } from "~/utils/cursorPosition";
 
 defineProps({

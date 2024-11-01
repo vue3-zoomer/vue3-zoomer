@@ -1,4 +1,4 @@
-import { PositionType } from "~/types";
+import type { PositionType } from "~/types";
 
 export function calZoomedImgOffset(
   pos: PositionType,
@@ -64,3 +64,17 @@ export function calcDragOffset(
     return { left: 0, top: 0 } as PositionType;
   }
 }
+
+export const pos2offset = (position: PositionType, scale: number) => {
+  return {
+    left: -position.left * scale,
+    top: -position.top * scale,
+  };
+};
+
+export const offset2pos = (offset: PositionType, scale: number) => {
+  return {
+    left: -offset.left / scale,
+    top: -offset.top / scale,
+  };
+};

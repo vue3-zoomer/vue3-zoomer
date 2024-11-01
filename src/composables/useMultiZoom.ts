@@ -1,5 +1,5 @@
-import { Ref, ref } from "vue";
-import { PositionType } from "~/types";
+import { type Ref, ref } from "vue";
+import type { PositionType } from "~/types";
 import { calZoomedImgOffset } from "~/utils/zoom";
 
 export default function useMultiZoom(
