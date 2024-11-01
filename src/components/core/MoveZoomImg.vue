@@ -113,4 +113,17 @@ const resetPosition = () => {
     top: 0,
   };
 };
+
+defineExpose({
+  multiZoom: () => {
+    const rect = containerRef.value?.getBoundingClientRect();
+    if (rect) {
+      handleClick({
+        clientX: rect.x + rect.width / 2,
+        clientY: rect.y + rect.height / 2,
+      } as MouseEvent);
+    }
+  },
+  zoomDir,
+});
 </script>
