@@ -80,7 +80,7 @@ const containerRef = useTemplateRef("containerRef");
 const isZoomed = computed(() => currentScale.value > 1);
 
 const { isTransition, startTransition } = useTransition();
-const { multiStepZoomIn } = useMultiZoom(
+const { multiStepZoomIn, zoomDir } = useMultiZoom(
   currentScale,
   zoomedImgOffset,
   containerRef,
@@ -149,6 +149,8 @@ const handlePressUp = (event: TouchEvent | MouseEvent) => {
         props.step ?? props.zoomScale,
       );
     }
+    mouseDownPosition.value.left = absPos.left;
+    mouseDownPosition.value.top = absPos.top;
   }
 };
 
@@ -174,4 +176,22 @@ const getRelPos = (event: MouseEvent | TouchEvent) => {
     return getRelTouchPosition(event, containerRef.value);
   }
 };
+
+defineExpose({
+  multiZoom: () => {
+    handlePressDown(
+      new MouseEvent("mousedown", {
+        clientX: mouseDownPosition.value.left,
+        clientY: mouseDownPosition.value.top,
+      }),
+    );
+    handlePressUp(
+      new MouseEvent("mouseup", {
+        clientX: mouseDownPosition.value.left,
+        clientY: mouseDownPosition.value.top,
+      }),
+    );
+  },
+  zoomDir,
+});
 </script>
