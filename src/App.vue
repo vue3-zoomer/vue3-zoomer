@@ -6,6 +6,7 @@
       :zoom-scale="5"
       zoom-type="drag"
       :step="1"
+      :show-add-sub-btn="true"
     />
   </div>
 </template>
