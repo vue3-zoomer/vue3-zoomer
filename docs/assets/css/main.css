@@ -1,0 +1,13 @@
+:root {
+  --vp-c-brand-1: #6bc89b; /* Lighter shade for hover states */
+  --vp-c-brand-2: #41b883; /* Your main brand color */
+  --vp-c-brand-3: #2d8b60; /* Darker shade for active states */
+  --vp-c-brand-soft: rgba(65, 184, 131, 0.16);
+
+  --vp-home-hero-image-filter: blur(3.2rem);
+  --vp-home-hero-image-background-image: linear-gradient(
+    -45deg,
+    var(--vp-c-brand-2) 50%,
+    var(--vp-c-brand-2) 50%
+  );
+}
