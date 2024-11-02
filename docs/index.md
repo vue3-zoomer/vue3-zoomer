@@ -3,23 +3,37 @@
 layout: home
 
 hero:
-  name: "Vue Zoom Components"
+  name: "Vue3-Zoomer"
+  image:
+    src: /assets/icons/logo.svg
   text: "A VitePress Site"
   tagline: My great project tagline
   actions:
     - theme: brand
-      text: Markdown Examples
+      text: Get Started
       link: /markdown-examples
     - theme: alt
-      text: API Examples
+      text: Examples
       link: /api-examples
 
 features:
-  - title: Feature A
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
-  - title: Feature B
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
-  - title: Feature C
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
----
+  - title: Customizable
+    icon:
+      src: /assets/icons/customizable.svg
+    details: Customize your component zoom behavior
 
+  - title: Touch Devices
+    icon:
+      src: /assets/icons/touch-devices.svg
+    details: works on all touch devices
+
+  - title: Variety
+    icon:
+      src: /assets/icons/layouts.svg
+    details: different set of components to choose from.
+
+  - title: Modern
+    icon:
+      src: /assets/icons/ts.svg
+    details: Typescript, vue composition api
+---
