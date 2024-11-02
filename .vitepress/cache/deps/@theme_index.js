@@ -1,44 +1,44 @@
 import {
   useMediaQuery
-} from "./chunk-CUMSBAXO.js";
+} from "./chunk-7GNFTTVC.js";
 import {
   computed,
   ref,
   shallowRef,
   watch
-} from "./chunk-XBIMUQGT.js";
+} from "./chunk-3PL2RYDP.js";
 
 // node_modules/vitepress/dist/client/theme-default/index.js
-import "/home/sultan/Repos/vue-zoom-image-refactor/node_modules/vitepress/dist/client/theme-default/styles/fonts.css";
+import "/home/hossin/Desktop/playground/vue-inner-image-zoom-refactor/node_modules/vitepress/dist/client/theme-default/styles/fonts.css";
 
 // node_modules/vitepress/dist/client/theme-default/without-fonts.js
-import "/home/sultan/Repos/vue-zoom-image-refactor/node_modules/vitepress/dist/client/theme-default/styles/vars.css";
-import "/home/sultan/Repos/vue-zoom-image-refactor/node_modules/vitepress/dist/client/theme-default/styles/base.css";
-import "/home/sultan/Repos/vue-zoom-image-refactor/node_modules/vitepress/dist/client/theme-default/styles/icons.css";
-import "/home/sultan/Repos/vue-zoom-image-refactor/node_modules/vitepress/dist/client/theme-default/styles/utils.css";
-import "/home/sultan/Repos/vue-zoom-image-refactor/node_modules/vitepress/dist/client/theme-default/styles/components/custom-block.css";
-import "/home/sultan/Repos/vue-zoom-image-refactor/node_modules/vitepress/dist/client/theme-default/styles/components/vp-code.css";
-import "/home/sultan/Repos/vue-zoom-image-refactor/node_modules/vitepress/dist/client/theme-default/styles/components/vp-code-group.css";
-import "/home/sultan/Repos/vue-zoom-image-refactor/node_modules/vitepress/dist/client/theme-default/styles/components/vp-doc.css";
-import "/home/sultan/Repos/vue-zoom-image-refactor/node_modules/vitepress/dist/client/theme-default/styles/components/vp-sponsor.css";
-import VPBadge from "/home/sultan/Repos/vue-zoom-image-refactor/node_modules/vitepress/dist/client/theme-default/components/VPBadge.vue";
-import Layout from "/home/sultan/Repos/vue-zoom-image-refactor/node_modules/vitepress/dist/client/theme-default/Layout.vue";
-import { default as default2 } from "/home/sultan/Repos/vue-zoom-image-refactor/node_modules/vitepress/dist/client/theme-default/components/VPBadge.vue";
-import { default as default3 } from "/home/sultan/Repos/vue-zoom-image-refactor/node_modules/vitepress/dist/client/theme-default/components/VPImage.vue";
-import { default as default4 } from "/home/sultan/Repos/vue-zoom-image-refactor/node_modules/vitepress/dist/client/theme-default/components/VPButton.vue";
-import { default as default5 } from "/home/sultan/Repos/vue-zoom-image-refactor/node_modules/vitepress/dist/client/theme-default/components/VPHomeContent.vue";
-import { default as default6 } from "/home/sultan/Repos/vue-zoom-image-refactor/node_modules/vitepress/dist/client/theme-default/components/VPHomeHero.vue";
-import { default as default7 } from "/home/sultan/Repos/vue-zoom-image-refactor/node_modules/vitepress/dist/client/theme-default/components/VPHomeFeatures.vue";
-import { default as default8 } from "/home/sultan/Repos/vue-zoom-image-refactor/node_modules/vitepress/dist/client/theme-default/components/VPHomeSponsors.vue";
-import { default as default9 } from "/home/sultan/Repos/vue-zoom-image-refactor/node_modules/vitepress/dist/client/theme-default/components/VPLink.vue";
-import { default as default10 } from "/home/sultan/Repos/vue-zoom-image-refactor/node_modules/vitepress/dist/client/theme-default/components/VPDocAsideSponsors.vue";
-import { default as default11 } from "/home/sultan/Repos/vue-zoom-image-refactor/node_modules/vitepress/dist/client/theme-default/components/VPSocialLink.vue";
-import { default as default12 } from "/home/sultan/Repos/vue-zoom-image-refactor/node_modules/vitepress/dist/client/theme-default/components/VPSocialLinks.vue";
-import { default as default13 } from "/home/sultan/Repos/vue-zoom-image-refactor/node_modules/vitepress/dist/client/theme-default/components/VPSponsors.vue";
-import { default as default14 } from "/home/sultan/Repos/vue-zoom-image-refactor/node_modules/vitepress/dist/client/theme-default/components/VPTeamPage.vue";
-import { default as default15 } from "/home/sultan/Repos/vue-zoom-image-refactor/node_modules/vitepress/dist/client/theme-default/components/VPTeamPageTitle.vue";
-import { default as default16 } from "/home/sultan/Repos/vue-zoom-image-refactor/node_modules/vitepress/dist/client/theme-default/components/VPTeamPageSection.vue";
-import { default as default17 } from "/home/sultan/Repos/vue-zoom-image-refactor/node_modules/vitepress/dist/client/theme-default/components/VPTeamMembers.vue";
+import "/home/hossin/Desktop/playground/vue-inner-image-zoom-refactor/node_modules/vitepress/dist/client/theme-default/styles/vars.css";
+import "/home/hossin/Desktop/playground/vue-inner-image-zoom-refactor/node_modules/vitepress/dist/client/theme-default/styles/base.css";
+import "/home/hossin/Desktop/playground/vue-inner-image-zoom-refactor/node_modules/vitepress/dist/client/theme-default/styles/icons.css";
+import "/home/hossin/Desktop/playground/vue-inner-image-zoom-refactor/node_modules/vitepress/dist/client/theme-default/styles/utils.css";
+import "/home/hossin/Desktop/playground/vue-inner-image-zoom-refactor/node_modules/vitepress/dist/client/theme-default/styles/components/custom-block.css";
+import "/home/hossin/Desktop/playground/vue-inner-image-zoom-refactor/node_modules/vitepress/dist/client/theme-default/styles/components/vp-code.css";
+import "/home/hossin/Desktop/playground/vue-inner-image-zoom-refactor/node_modules/vitepress/dist/client/theme-default/styles/components/vp-code-group.css";
+import "/home/hossin/Desktop/playground/vue-inner-image-zoom-refactor/node_modules/vitepress/dist/client/theme-default/styles/components/vp-doc.css";
+import "/home/hossin/Desktop/playground/vue-inner-image-zoom-refactor/node_modules/vitepress/dist/client/theme-default/styles/components/vp-sponsor.css";
+import VPBadge from "/home/hossin/Desktop/playground/vue-inner-image-zoom-refactor/node_modules/vitepress/dist/client/theme-default/components/VPBadge.vue";
+import Layout from "/home/hossin/Desktop/playground/vue-inner-image-zoom-refactor/node_modules/vitepress/dist/client/theme-default/Layout.vue";
+import { default as default2 } from "/home/hossin/Desktop/playground/vue-inner-image-zoom-refactor/node_modules/vitepress/dist/client/theme-default/components/VPBadge.vue";
+import { default as default3 } from "/home/hossin/Desktop/playground/vue-inner-image-zoom-refactor/node_modules/vitepress/dist/client/theme-default/components/VPImage.vue";
+import { default as default4 } from "/home/hossin/Desktop/playground/vue-inner-image-zoom-refactor/node_modules/vitepress/dist/client/theme-default/components/VPButton.vue";
+import { default as default5 } from "/home/hossin/Desktop/playground/vue-inner-image-zoom-refactor/node_modules/vitepress/dist/client/theme-default/components/VPHomeContent.vue";
+import { default as default6 } from "/home/hossin/Desktop/playground/vue-inner-image-zoom-refactor/node_modules/vitepress/dist/client/theme-default/components/VPHomeHero.vue";
+import { default as default7 } from "/home/hossin/Desktop/playground/vue-inner-image-zoom-refactor/node_modules/vitepress/dist/client/theme-default/components/VPHomeFeatures.vue";
+import { default as default8 } from "/home/hossin/Desktop/playground/vue-inner-image-zoom-refactor/node_modules/vitepress/dist/client/theme-default/components/VPHomeSponsors.vue";
+import { default as default9 } from "/home/hossin/Desktop/playground/vue-inner-image-zoom-refactor/node_modules/vitepress/dist/client/theme-default/components/VPLink.vue";
+import { default as default10 } from "/home/hossin/Desktop/playground/vue-inner-image-zoom-refactor/node_modules/vitepress/dist/client/theme-default/components/VPDocAsideSponsors.vue";
+import { default as default11 } from "/home/hossin/Desktop/playground/vue-inner-image-zoom-refactor/node_modules/vitepress/dist/client/theme-default/components/VPSocialLink.vue";
+import { default as default12 } from "/home/hossin/Desktop/playground/vue-inner-image-zoom-refactor/node_modules/vitepress/dist/client/theme-default/components/VPSocialLinks.vue";
+import { default as default13 } from "/home/hossin/Desktop/playground/vue-inner-image-zoom-refactor/node_modules/vitepress/dist/client/theme-default/components/VPSponsors.vue";
+import { default as default14 } from "/home/hossin/Desktop/playground/vue-inner-image-zoom-refactor/node_modules/vitepress/dist/client/theme-default/components/VPTeamPage.vue";
+import { default as default15 } from "/home/hossin/Desktop/playground/vue-inner-image-zoom-refactor/node_modules/vitepress/dist/client/theme-default/components/VPTeamPageTitle.vue";
+import { default as default16 } from "/home/hossin/Desktop/playground/vue-inner-image-zoom-refactor/node_modules/vitepress/dist/client/theme-default/components/VPTeamPageSection.vue";
+import { default as default17 } from "/home/hossin/Desktop/playground/vue-inner-image-zoom-refactor/node_modules/vitepress/dist/client/theme-default/components/VPTeamMembers.vue";
 
 // node_modules/vitepress/dist/client/theme-default/support/utils.js
 import { withBase } from "vitepress";
