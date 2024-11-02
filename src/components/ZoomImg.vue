@@ -5,14 +5,14 @@
       v-model:zoomed-img-offset="zoomedImgOffset"
       v-model:current-scale="scale"
       v-bind="props"
-      :class="{ 'h-full w-full': showImgMap }"
+      class="h-full w-full"
     />
     <DragZoomImg
       v-else
       v-model:zoomed-img-offset="zoomedImgOffset"
       v-model:current-scale="scale"
       v-bind="props"
-      :class="{ 'h-full w-full': showImgMap }"
+      class="h-full w-full"
     />
 
     <ZoomMap
