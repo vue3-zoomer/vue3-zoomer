@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 261.76 226.69">
+  <g transform="matrix(0.783274, 0, 0, -0.81529, 8.038063, 233.384678)" style="">
+    <g transform="translate(178.06 235.01)">
+      <path d="m0 0-22.669-39.264-22.669 39.264h-75.491l98.16-170.02 98.16 170.02z" fill="#41b883"/>
+    </g>
+    <g transform="translate(178.06 235.01)">
+      <path d="m0 0-22.669-39.264-22.669 39.264h-36.227l58.896-102.01 58.896 102.01z" fill="#34495e"/>
+    </g>
+  </g>
+  <path style="fill: rgba(216, 216, 216, 0); stroke-linejoin: round; stroke: rgb(0, 0, 0); stroke-width: 5px;" d="M 129.693 180.404 L 52.815 41.724 L 111.982 41.623 L 129.693 73.529 L 147.404 42.028 L 206.571 41.825 L 129.693 180.404 Z"/>
+  <path style="stroke: rgb(0, 0, 0); fill: none; stroke-width: 5px; stroke-linejoin: round;" d="M 175.192 43.121 L 129.817 124.773 L 84.588 43.121"/>
+  <g transform="matrix(2.253648, 0, 0, 2.236135, 104.626993, 46.422898)" style="">
+    <path d="M 25.14 45.069 L 30.307 40.392 L 44.324 53.676 C 45.885 55.238 45.885 57.769 44.324 59.331 C 42.762 60.893 40.23 60.893 38.668 59.331 L 25.14 45.069 Z" fill="#cc8355" stroke="black" style="stroke-width: 2.22728px;"/>
+    <circle cx="19" cy="34" r="16" fill="none" stroke="black" style="stroke-width: 2.22728px;"/>
+    <circle cx="19" cy="34" r="14" fill="none" stroke-width="2" style="stroke: rgb(65, 184, 131);"/>
+    <circle cx="19" cy="34" r="12" stroke="black" style="stroke-width: 2.22728px; fill: rgb(206, 255, 233); fill-opacity: 0.31;"/>
+  </g>
+</svg>
