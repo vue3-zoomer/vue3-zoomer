@@ -5,6 +5,9 @@ import path, { resolve } from "path";
 export default defineConfig({
   title: "Vue Zoom",
   description: "A VitePress Site",
+
+  head: [["link", { rel: "icon", href: "../assets/icons/logo.svg" }]],
+
   vite: {
     resolve: {
       alias: {
@@ -13,6 +16,7 @@ export default defineConfig({
     },
   },
   themeConfig: {
+    logo: "/assets/icons/logo.svg",
     // https://vitepress.dev/reference/default-theme-config
     nav: [
       { text: "Home", link: "/" },
@@ -22,11 +26,22 @@ export default defineConfig({
 
     sidebar: [
       {
-        text: "Examples",
+        text: "Quick start",
         items: [
-          { text: "Markdown Examples", link: "/markdown-examples" },
-          { text: "Runtime API Examples", link: "/api-examples" },
+          { text: "Introduction", link: "/markdown-examples" },
+          { text: "Installation", link: "/api-examples" },
         ],
+      },
+      {
+        text: "Components",
+        items: [
+          { text: "ZoomImg", link: "/markdown-examples" },
+          { text: "Magnifier", link: "/api-examples" },
+        ],
+      },
+      {
+        text: "Examples",
+        items: [],
       },
     ],
 
