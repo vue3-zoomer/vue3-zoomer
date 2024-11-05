@@ -1,23 +1,19 @@
 <template>
-  <div class="w-1/2">
+  <div>
     <MoveZoomImg
       v-if="zoomType === 'move'"
       v-model:current-scale="currentScale"
       v-bind="props"
-      ref="exposeMove"
+      ref="zoomComponent"
       :persist="true"
-      @zoomIn="handleZoomIn"
-      @zoomOut="handleZoomOut"
     />
     <DragZoomImg
       v-else
       v-bind="props"
       v-model:current-scale="currentScale"
-      ref="exposeMove"
-      @zoomIn="handleZoomIn"
-      @zoomOut="handleZoomOut"
+      ref="zoomComponent"
     />
-    <AddSubBtn
+    <ZoomButtons
       v-if="showAddSubBtn"
       :max-zoom="currentScale === zoomScale"
       :min-zoom="currentScale === 1"
@@ -28,10 +24,10 @@
 </template>
 
 <script setup lang="ts">
-import { PropType, ref, useTemplateRef } from "vue";
+import { type PropType, ref, useTemplateRef } from "vue";
 import DragZoomImg from "~/components/core/DragZoomImg.vue";
 import MoveZoomImg from "~/components/core/MoveZoomImg.vue";
-import AddSubBtn from "./controls/AddSubBtn.vue";
+import ZoomButtons from "~/components/controls/ZoomButtons.vue";
 
 const props = defineProps({
   src: {
@@ -62,20 +58,20 @@ const props = defineProps({
   },
 });
 
-const exposeMove = useTemplateRef("exposeMove");
+const zoomComponent = useTemplateRef("zoomComponent");
 const currentScale = ref(1);
 
 const handleZoomIn = () => {
-  if (exposeMove.value) {
-    exposeMove.value.zoomDir = "IN";
-    exposeMove.value.multiZoom();
+  if (zoomComponent.value) {
+    zoomComponent.value.zoomDir = "IN";
+    zoomComponent.value.multiZoom();
   }
 };
 
 const handleZoomOut = () => {
-  if (exposeMove.value) {
-    exposeMove.value.zoomDir = "OUT";
-    exposeMove.value.multiZoom();
+  if (zoomComponent.value) {
+    zoomComponent.value.zoomDir = "OUT";
+    zoomComponent.value.multiZoom();
   }
 };
 </script>

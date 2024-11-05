@@ -149,8 +149,6 @@ const handlePressUp = (event: TouchEvent | MouseEvent) => {
         props.step ?? props.zoomScale,
       );
     }
-    mouseDownPosition.value.left = absPos.left;
-    mouseDownPosition.value.top = absPos.top;
   }
 };
 
@@ -179,18 +177,16 @@ const getRelPos = (event: MouseEvent | TouchEvent) => {
 
 defineExpose({
   multiZoom: () => {
-    handlePressDown(
-      new MouseEvent("mousedown", {
-        clientX: mouseDownPosition.value.left,
-        clientY: mouseDownPosition.value.top,
-      }),
-    );
-    handlePressUp(
-      new MouseEvent("mouseup", {
-        clientX: mouseDownPosition.value.left,
-        clientY: mouseDownPosition.value.top,
-      }),
-    );
+    // calculate from zoomed image offset the cursor position
+    const rect = containerRef.value?.getBoundingClientRect();
+    const ratio = currentScale.value - 1 === 0 ? 1 : currentScale.value - 1;
+    const cursorPos = {
+      clientX: -zoomedImgOffset.value.left / ratio + (rect?.left ?? 0),
+      clientY: -zoomedImgOffset.value.top / ratio + (rect?.top ?? 0),
+    };
+
+    handlePressDown(new MouseEvent("mousedown", cursorPos));
+    handlePressUp(new MouseEvent("mouseup", cursorPos));
   },
   zoomDir,
 });
