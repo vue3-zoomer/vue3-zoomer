@@ -1,16 +1,18 @@
 <template>
-  <div>
+  <div class="relative">
     <MoveZoomImg
       v-if="zoomType === 'move'"
       v-model:current-scale="currentScale"
       v-bind="props"
       ref="zoomComponent"
+      class="h-full w-full"
       :persist="true"
     />
     <DragZoomImg
       v-else
       v-bind="props"
       v-model:current-scale="currentScale"
+      class="h-full w-full"
       ref="zoomComponent"
     />
     <ZoomButtons
