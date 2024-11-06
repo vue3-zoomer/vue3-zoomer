@@ -1,33 +1,51 @@
 <template>
   <div class="relative flex">
     <div
-      class="absolute bottom-1 z-10 flex w-full items-center justify-end gap-2 px-3 py-2"
+      class="absolute bottom-1 z-10 flex w-full items-center justify-end gap-2 p-3"
     >
-      <slot>
-        <button
-          :disabled="minZoom"
-          class="flex h-8 w-8 items-center justify-center rounded-lg bg-white/50 shadow-md hover:bg-white/70 disabled:cursor-not-allowed disabled:bg-white/30"
-          @click="handleZoomOut"
-        >
-          <span class="h-full w-fit text-xl"> - </span>
-        </button>
-      </slot>
+      <button :disabled="minZoom" :class="buttonClass" @click="handleZoomOut">
+        <slot>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            class="h-6 w-6"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M18 12H6"
+            />
+          </svg>
+        </slot>
+      </button>
 
-      <slot>
-        <button
-          :disabled="maxZoom"
-          class="flex h-8 w-8 items-center justify-center rounded-lg bg-white/50 shadow-md transition hover:bg-white/70 disabled:cursor-not-allowed disabled:bg-white/30"
-          @click="handleZoomIn"
-        >
-          <span class="h-full w-fit text-xl"> + </span>
-        </button>
-      </slot>
+      <button :disabled="maxZoom" :class="buttonClass" @click="handleZoomIn">
+        <slot>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            class="h-6 w-6"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 6v12m6-6H6"
+            />
+          </svg>
+        </slot>
+      </button>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { defineEmits } from "vue";
+import { computed, defineEmits } from "vue";
 const emit = defineEmits(["zoomIn", "zoomOut"]);
 
 defineProps({
@@ -48,4 +66,9 @@ const handleZoomIn = () => {
 const handleZoomOut = () => {
   emit("zoomOut");
 };
+
+const buttonClass = computed(
+  () =>
+    "flex h-8 w-8 items-center justify-center rounded-sm bg-white/50 shadow-md hover:bg-white/70 disabled:cursor-not-allowed disabled:bg-white/30",
+);
 </script>
