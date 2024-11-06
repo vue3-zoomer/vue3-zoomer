@@ -80,7 +80,7 @@ const containerRef = useTemplateRef("containerRef");
 const isZoomed = computed(() => currentScale.value > 1);
 
 const { isTransition, startTransition } = useTransition();
-const { multiStepZoomIn } = useMultiZoom(
+const { multiStepZoomIn, zoomDir } = useMultiZoom(
   currentScale,
   zoomedImgOffset,
   containerRef,
@@ -174,4 +174,20 @@ const getRelPos = (event: MouseEvent | TouchEvent) => {
     return getRelTouchPosition(event, containerRef.value);
   }
 };
+
+defineExpose({
+  multiZoom: () => {
+    // calculate from zoomed image offset the cursor position
+    const rect = containerRef.value?.getBoundingClientRect();
+    const ratio = currentScale.value - 1 === 0 ? 1 : currentScale.value - 1;
+    const cursorPos = {
+      clientX: -zoomedImgOffset.value.left / ratio + (rect?.left ?? 0),
+      clientY: -zoomedImgOffset.value.top / ratio + (rect?.top ?? 0),
+    };
+
+    handlePressDown(new MouseEvent("mousedown", cursorPos));
+    handlePressUp(new MouseEvent("mouseup", cursorPos));
+  },
+  zoomDir,
+});
 </script>
