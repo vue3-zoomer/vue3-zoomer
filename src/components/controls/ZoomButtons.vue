@@ -10,7 +10,7 @@
       class="controls-btn zoom-in-btn"
       :disabled="maxZoom"
       @click="$emit('zoomIn')"
-    ></button>
+    />
   </div>
 </template>
 
