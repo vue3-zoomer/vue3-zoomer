@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" xmlns:bx="https://boxy-svg.com">
+  <defs>
+    <bx:grid x="0" y="0" width="363.276" height="285.262"/>
+    <bx:guide x="225.27737284148208" y="74.7984454595638" angle="180"/>
+    <bx:guide x="204.01782721633947" y="106.37304586614884" angle="0"/>
+    <bx:grid x="0" y="0" width="363.276" height="285.262"/>
+    <bx:guide x="225.27737284148208" y="74.7984454595638" angle="180"/>
+    <bx:grid x="0" y="0" width="363.276" height="285.262"/>
+    <bx:guide x="225.27737284148208" y="74.7984454595638" angle="180"/>
+    <bx:guide x="204.01782721633947" y="106.37304586614884" angle="0"/>
+    <bx:grid x="0" y="0" width="363.276" height="285.262"/>
+    <bx:guide x="225.27737284148208" y="74.7984454595638" angle="180"/>
+    <bx:guide x="204.01782721633947" y="106.37304586614884" angle="0"/>
+    <bx:grid x="0" y="0" width="363.276" height="285.262"/>
+    <bx:guide x="225.27737284148208" y="74.7984454595638" angle="180"/>
+    <bx:grid x="0" y="0" width="363.276" height="285.262"/>
+    <bx:grid x="0" y="0" width="363.276" height="285.262"/>
+    <bx:guide x="225.27737284148208" y="74.7984454595638" angle="180"/>
+    <bx:guide x="204.01782721633947" y="106.37304586614884" angle="0"/>
+    <bx:grid x="0" y="0" width="363.276" height="285.262"/>
+    <bx:guide x="225.27737284148208" y="74.7984454595638" angle="180"/>
+  </defs>
+  <path d="M 42.59 183.769 L 42.59 89.722 C 42.59 88.426 43.644 87.372 44.941 87.372 L 483.511 87.372 C 484.806 87.372 485.86 88.426 485.86 89.722 L 485.86 287.524 C 485.86 288.819 484.806 289.874 483.511 289.874 L 457.588 289.874 M 345.008 289.874 L 202.082 289.874" style="paint-order: fill; fill: none; stroke-width: 14px; stroke: rgb(65, 184, 131);"/>
+  <path style="fill: rgb(216, 216, 216); stroke-width: 13px; stroke: rgb(65, 184, 131);" d="M 264.144 292.29 L 264.144 348.267"/>
+  <path style="fill: rgb(216, 216, 216); stroke-linecap: round; stroke-width: 18px; stroke: rgb(65, 184, 131);" d="M 214.995 352.298 L 313.214 352.298"/>
+  <path d="M 97.053 402.52 L 14.14 402.52 L 14.14 197.768 L 187.433 197.768 L 187.433 402.52 L 104.848 402.52" style="stroke-linejoin: round; fill: none; stroke-width: 18px; stroke: rgb(65, 184, 131);"/>
+  <rect x="357.114" y="240.154" width="88.722" height="140.593" style="fill: none; stroke-linejoin: round; stroke-width: 14px; stroke: rgb(65, 184, 131);"/>
+  <path style="fill: rgb(216, 216, 216); stroke-width: 3px; stroke: rgb(65, 184, 131);" d="M 95.203 395.011 L 106.739 395.011"/>
+  <path style="fill: rgb(216, 216, 216); stroke-width: 3px; stroke: rgb(65, 184, 131);" d="M 94.948 410.002 L 106.484 410.002"/>
+  <path d="M 677 576 m -7.314 0 a 7.314 7.314 0 1 0 14.628 0 a 7.314 7.314 0 1 0 -14.628 0 Z M 677 576 m -4.389 0 a 4.389 4.389 0 0 1 8.778 0 a 4.389 4.389 0 0 1 -8.778 0 Z" bx:shape="ring 677 576 4.389 4.389 7.314 7.314 1@af9d5e80" style="stroke: rgb(65, 184, 131); fill: rgb(255, 255, 255);" transform="matrix(-0.537222980249, 0.843440258401, -0.843440258401, -0.537222980249, 950.510768100186, 140.961287541767)"/>
+</svg>
