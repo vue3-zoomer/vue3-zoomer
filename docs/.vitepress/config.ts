@@ -6,7 +6,7 @@ export default defineConfig({
   title: "Vue Zoom",
   description: "A VitePress Site",
 
-  head: [["link", { rel: "icon", href: "../assets/icons/logo.svg" }]],
+  head: [["link", { rel: "icon", href: "../assets/icons/Logo.png" }]],
 
   vite: {
     resolve: {
