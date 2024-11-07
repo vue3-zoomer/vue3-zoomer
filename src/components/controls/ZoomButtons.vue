@@ -15,9 +15,6 @@
 </template>
 
 <script setup lang="ts">
-import { defineEmits } from "vue";
-const emit = defineEmits(["zoomIn", "zoomOut"]);
-
 defineProps({
   maxZoom: {
     type: Boolean,
@@ -28,6 +25,8 @@ defineProps({
     required: true,
   },
 });
+
+defineEmits(["zoomIn", "zoomOut"]);
 </script>
 
 <style scoped>
