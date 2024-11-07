@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" xmlns:bx="https://boxy-svg.com">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" xmlns:bx="https://boxy-svg.com" width="500px" height="500px">
   <defs>
     <bx:grid x="0" y="0" width="363.276" height="285.262"/>
     <bx:guide x="225.27737284148208" y="74.7984454595638" angle="180"/>
@@ -69,20 +69,11 @@
     <bx:grid x="0" y="0" width="363.276" height="285.262"/>
     <bx:guide x="225.27737284148208" y="74.7984454595638" angle="180"/>
     <bx:guide x="204.01782721633947" y="106.37304586614884" angle="0"/>
+    <bx:export>
+      <bx:file format="svg"/>
+    </bx:export>
   </defs>
-  <g transform="matrix(0, -1.036351, 1.036351, 0, 165.162674, -4.256067)" style="transform-origin: 239.116px 254.545px;">
-    <rect y="243.018" width="311.727" height="21.039" style="stroke: rgb(0, 0, 0); stroke-linecap: round; stroke-linejoin: round; fill-rule: nonzero; stroke-width: 8.68432px; fill: rgb(65, 184, 131);" rx="10.594" ry="10.594" x="2.199"/>
-    <rect y="243.159" width="94.232" height="20.586" style="stroke: rgb(0, 0, 0); stroke-linecap: round; stroke-linejoin: round; fill-rule: nonzero; stroke-width: 8.68432px; fill: rgb(65, 184, 131);" x="381.25" rx="10.594" ry="10.594"/>
-    <path d="M 817 342 m -60.644 0 a 60.644 60.644 0 1 0 121.288 0 a 60.644 60.644 0 1 0 -121.288 0 Z M 817 342 m -24.673 0 a 24.673 24.673 0 0 1 49.346 0 a 24.673 24.673 0 0 1 -49.346 0 Z" bx:shape="ring 817 342 24.673 24.673 60.644 60.644 1@572eb402" style="stroke: rgb(0, 0, 0); fill: rgb(65, 184, 131); transform-box: fill-box; transform-origin: 50% 50%; stroke-width: 11.5791px;" transform="matrix(0.424907, -0.905237, 0.905237, 0.424907, -470.840148, -87.454575)" id="path-2"/>
-  </g>
-  <g transform="matrix(0, -1.036351, 1.036351, 0, -131.527267, -4.408224)" style="transform-origin: 239.116px 254.545px;">
-    <rect y="243.018" width="311.727" height="21.039" style="stroke: rgb(0, 0, 0); stroke-linecap: round; stroke-linejoin: round; fill-rule: nonzero; stroke-width: 8.68432px; fill: rgb(65, 184, 131);" rx="10.594" ry="10.594" x="2.199"/>
-    <rect y="243.159" width="94.232" height="20.586" style="stroke: rgb(0, 0, 0); stroke-linecap: round; stroke-linejoin: round; fill-rule: nonzero; stroke-width: 8.68432px; fill: rgb(65, 184, 131);" x="381.25" rx="10.594" ry="10.594"/>
-    <path d="M 817 342 m -60.644 0 a 60.644 60.644 0 1 0 121.288 0 a 60.644 60.644 0 1 0 -121.288 0 Z M 817 342 m -24.673 0 a 24.673 24.673 0 0 1 49.346 0 a 24.673 24.673 0 0 1 -49.346 0 Z" bx:shape="ring 817 342 24.673 24.673 60.644 60.644 1@572eb402" style="stroke: rgb(0, 0, 0); fill: rgb(65, 184, 131); transform-box: fill-box; transform-origin: 50% 50%; stroke-width: 11.5791px;" transform="matrix(0.424907, -0.905237, 0.905237, 0.424907, -470.840148, -87.454575)" id="path-1"/>
-  </g>
-  <g transform="matrix(0, 1.036351, -1.036351, 0, 16.401173, -4.529917)" style="transform-origin: 239.116px 254.545px;">
-    <rect y="243.018" width="311.727" height="21.039" style="stroke: rgb(0, 0, 0); stroke-linecap: round; stroke-linejoin: round; fill-rule: nonzero; stroke-width: 8.68432px; fill: rgb(65, 184, 131);" rx="10.594" ry="10.594" x="2.199"/>
-    <rect y="243.159" width="94.232" height="20.586" style="stroke: rgb(0, 0, 0); stroke-linecap: round; stroke-linejoin: round; fill-rule: nonzero; stroke-width: 8.68432px; fill: rgb(65, 184, 131);" x="381.25" rx="10.594" ry="10.594"/>
-    <path d="M 817 342 m -60.644 0 a 60.644 60.644 0 1 0 121.288 0 a 60.644 60.644 0 1 0 -121.288 0 Z M 817 342 m -24.673 0 a 24.673 24.673 0 0 1 49.346 0 a 24.673 24.673 0 0 1 -49.346 0 Z" bx:shape="ring 817 342 24.673 24.673 60.644 60.644 1@572eb402" style="stroke: rgb(0, 0, 0); fill: rgb(65, 184, 131); transform-box: fill-box; transform-origin: 50% 50%; stroke-width: 11.5791px;" transform="matrix(0.424907, -0.905237, 0.905237, 0.424907, -470.840148, -87.454575)" id="path-3"/>
+  <g transform="matrix(0, -18.181818, 18.181818, 0, 234.030658, 229.595646)" style="transform-origin: 12px 12px;">
+    <path fill-rule="evenodd" d="M2 7h12.17a3.001 3.001 0 0 0 5.66 0H22a1 1 0 1 0 0-2h-2.17a3.001 3.001 0 0 0-5.66 0H2a1 1 0 0 0 0 2zm15-2a1 1 0 1 0 0 2 1 1 0 0 0 0-2zM4.17 13H2a1 1 0 1 1 0-2h2.17a3.001 3.001 0 0 1 5.66 0H22a1 1 0 1 1 0 2H9.83a3.001 3.001 0 0 1-5.66 0zM6 12a1 1 0 1 1 2 0 1 1 0 0 1-2 0zm8.17 7H2a1 1 0 1 1 0-2h12.17a3.001 3.001 0 0 1 5.66 0H22a1 1 0 1 1 0 2h-2.17a3.001 3.001 0 0 1-5.66 0zM16 18a1 1 0 1 1 2 0 1 1 0 0 1-2 0z" clip-rule="evenodd" opacity="1" data-original="#000000" style="stroke: rgb(0, 0, 0); fill: rgb(65, 184, 131); stroke-width: 0.66px;"/>
   </g>
 </svg>
