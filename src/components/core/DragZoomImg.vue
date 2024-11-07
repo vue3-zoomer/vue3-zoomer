@@ -6,7 +6,7 @@
       'cursor-grab': isZoomed && !isDragging,
       'cursor-grabbing': isZoomed && isDragging,
       'cursor-zoom-in': !isZoomed,
-      'cursor-zoom-out': isZoomed && currentScale >= props.zoomScale,
+      'cursor-zoom-out': isZoomed && currentScale >= zoomScale,
     }"
     @mouseenter="handleMouseEnter"
     @mousedown="handlePressDown"
@@ -37,9 +37,9 @@ import {
   getAbsTouchPosition,
   getRelTouchPosition,
 } from "~/utils/touchPosition";
-import { useTransition } from "~/composables/useTransition";
-import { calcDragOffset } from "~/utils/zoom";
 import { getRelCursorPosition } from "~/utils/cursorPosition";
+import { calcDragOffset } from "~/utils/zoom";
+import { useTransition } from "~/composables/useTransition";
 import useMultiZoom from "~/composables/useMultiZoom";
 
 const props = defineProps({
@@ -75,9 +75,9 @@ const prevPosition = ref({ left: 0, top: 0 });
 const mouseDownPosition = ref({ left: 0, top: 0 });
 const isDragging = ref(false);
 
-const containerRef = useTemplateRef("containerRef");
-
 const isZoomed = computed(() => currentScale.value > 1);
+
+const containerRef = useTemplateRef("containerRef");
 
 const { isTransition, startTransition } = useTransition();
 const { multiStepZoomIn, zoomDir } = useMultiZoom(
@@ -87,10 +87,11 @@ const { multiStepZoomIn, zoomDir } = useMultiZoom(
   props.zoomScale,
 );
 
-const handleMouseEnter = () => {
+const handleMouseEnter = (event: MouseEvent) => {
   if (props.trigger === "hover") {
+    const { pos: relPos } = getRelCursorPosition(event, containerRef.value);
     startTransition();
-    currentScale.value = props.zoomScale;
+    multiStepZoomIn(currentScale.value, relPos, props.step ?? props.zoomScale);
   }
 };
 
@@ -105,7 +106,7 @@ const handlePressDown = (event: MouseEvent | TouchEvent) => {
   prevPosition.value = currentPos;
   mouseDownPosition.value = currentPos;
 
-  if (isZoomed.value && props.trigger === "click") {
+  if (isZoomed.value) {
     isDragging.value = true;
   }
 };
@@ -130,32 +131,24 @@ const handlePressUp = (event: TouchEvent | MouseEvent) => {
   const absPos = getAbsPos(event);
   const relPos = getRelPos(event);
 
-  if (!isZoomed.value) {
+  if (
+    !isZoomed.value ||
+    (mouseDownPosition.value.left === absPos.left &&
+      mouseDownPosition.value.top === absPos.top &&
+      isZoomed.value)
+  ) {
     startTransition();
     multiStepZoomIn(currentScale.value, relPos, props.step ?? props.zoomScale);
-  } else if (
-    mouseDownPosition.value.left === absPos.left &&
-    mouseDownPosition.value.top === absPos.top &&
-    isZoomed.value
-  ) {
-    if (props.step) {
-      startTransition();
-      multiStepZoomIn(currentScale.value, relPos, props.step);
-    } else {
-      startTransition();
-      multiStepZoomIn(
-        currentScale.value,
-        relPos,
-        props.step ?? props.zoomScale,
-      );
-    }
   }
 };
 
 const resetPosition = () => {
   isTransition.value = true;
   currentScale.value = 1;
-  zoomedImgOffset.value = { left: 0, top: 0 };
+  zoomedImgOffset.value = {
+    left: 0,
+    top: 0,
+  };
 };
 
 const getAbsPos = (event: MouseEvent | TouchEvent) => {
@@ -176,6 +169,7 @@ const getRelPos = (event: MouseEvent | TouchEvent) => {
 };
 
 defineExpose({
+  zoomDir,
   multiZoom: () => {
     // calculate from zoomed image offset the cursor position
     const rect = containerRef.value?.getBoundingClientRect();
@@ -188,6 +182,5 @@ defineExpose({
     handlePressDown(new MouseEvent("mousedown", cursorPos));
     handlePressUp(new MouseEvent("mouseup", cursorPos));
   },
-  zoomDir,
 });
 </script>

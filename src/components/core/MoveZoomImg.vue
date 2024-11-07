@@ -23,8 +23,8 @@
 
 <script setup lang="ts">
 import { type PropType, computed, useTemplateRef } from "vue";
-import { calZoomedImgOffset } from "~/utils/zoom";
 import { getRelCursorPosition } from "~/utils/cursorPosition";
+import { calZoomedImgOffset } from "~/utils/zoom";
 import { useTransition } from "~/composables/useTransition";
 import useMultiZoom from "~/composables/useMultiZoom";
 
@@ -59,9 +59,9 @@ const zoomedImgOffset = defineModel("zoomedImgOffset", {
   },
 });
 
-const containerRef = useTemplateRef("containerRef");
-
 const isZoomed = computed(() => currentScale.value > 1);
+
+const containerRef = useTemplateRef("containerRef");
 
 const { isTransition, startTransition } = useTransition();
 const { zoomDir, multiStepZoomIn } = useMultiZoom(
@@ -115,6 +115,7 @@ const resetPosition = () => {
 };
 
 defineExpose({
+  zoomDir,
   multiZoom: () => {
     const rect = containerRef.value?.getBoundingClientRect();
     if (rect) {
@@ -124,6 +125,5 @@ defineExpose({
       } as MouseEvent);
     }
   },
-  zoomDir,
 });
 </script>
