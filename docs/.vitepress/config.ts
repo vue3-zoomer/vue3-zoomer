@@ -20,23 +20,24 @@ export default defineConfig({
     // https://vitepress.dev/reference/default-theme-config
     nav: [
       { text: "Home", link: "/" },
-      { text: "Guide", link: "/guide" },
-      { text: "Examples", link: "/guide" },
+      { text: "Guide", link: "/guide/introduction" },
+      { text: "Examples", link: "/guide/introduction" },
     ],
 
     sidebar: [
       {
         text: "Quick start",
         items: [
-          { text: "Introduction", link: "/markdown-examples" },
-          { text: "Installation", link: "/api-examples" },
+          { text: "Introduction", link: "/guide/introduction" },
+          { text: "Installation", link: "/guide/installation" },
         ],
       },
       {
         text: "Components",
         items: [
-          { text: "ZoomImg", link: "/markdown-examples" },
-          { text: "Magnifier", link: "/api-examples" },
+          { text: "ZoomImg", link: "/guide/zoom-img" },
+          { text: "Magnifier", link: "/guide/magnifier" },
+          { text: "Controls", link: "/guide/controls" },
         ],
       },
       {
