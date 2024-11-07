@@ -6,7 +6,10 @@
   "scripts": {
     "dev": "vite --port 3000",
     "build": "vue-tsc -b && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "docs:dev": "vitepress dev docs",
+    "docs:build": "vitepress build docs",
+    "docs:preview": "vitepress preview docs"
   },
   "dependencies": {
     "vue": "^3.4.37"
@@ -18,9 +21,10 @@
     "postcss": "^8.4.47",
     "prettier": "^3.3.3",
     "prettier-plugin-tailwindcss": "^0.6.6",
-    "tailwindcss": "^3.4.11",
+    "tailwindcss": "^3.4.14",
     "typescript": "^5.5.3",
     "vite": "^5.4.1",
+    "vitepress": "^1.4.1",
     "vue-tsc": "^2.0.29"
   }
 }
