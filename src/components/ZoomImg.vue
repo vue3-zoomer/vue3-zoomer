@@ -1,21 +1,21 @@
 <template>
   <div class="relative">
-    <MoveZoomImg
-      v-if="zoomType === 'move'"
+    <DragZoomImg
+      v-if="isDrag"
       v-model:current-scale="currentScale"
       v-model:zoomed-img-offset="zoomedImgOffset"
       v-bind="props"
-      class="h-full w-full"
       ref="zoomComponent"
-      :persist="true"
+      class="h-full w-full"
     />
-    <DragZoomImg
+
+    <MoveZoomImg
       v-else
       v-model:current-scale="currentScale"
       v-model:zoomed-img-offset="zoomedImgOffset"
       v-bind="props"
-      class="h-full w-full"
       ref="zoomComponent"
+      class="h-full w-full"
     />
 
     <ZoomButtons
@@ -75,16 +75,18 @@ const props = defineProps({
   },
   showZoomBtns: {
     type: Boolean,
-    default: true,
   },
   showImgMap: {
     type: Boolean,
   },
 });
 
-const zoomComponent = useTemplateRef("zoomComponent");
 const currentScale = ref(1);
 const zoomedImgOffset = ref({ left: 0, top: 0 });
+
+const isDrag = computed(
+  () => props.zoomType === "drag" || window.innerWidth < 768,
+);
 
 const windowPosition = computed(() => {
   if (currentScale.value !== 1) {
@@ -92,6 +94,8 @@ const windowPosition = computed(() => {
     return offset2pos(zoomedImgOffset.value, currentScale.value * 4);
   }
 });
+
+const zoomComponent = useTemplateRef("zoomComponent");
 
 const handleZoomIn = () => {
   if (zoomComponent.value) {
