@@ -45,3 +45,7 @@ Then, use the `ZoomImg` component in your template:
 | `step`       | `Number`             | -          | The step value for the zoom scale.                                         |
 | `persist`    | `Boolean`            | -          | Whether the zoom state should persist across component mounts.             |
 | `showImgMap` | `Boolean`            | -          | Whether to display the image map overlay.                                  |
+
+## License
+
+Licensed under the [MIT license](https://github.com/vue3-zoomer/vue3-zoomer/blob/main/LICENSE.md).
