@@ -99,6 +99,7 @@ const handleMouseMove = (event: MouseEvent) => {
 };
 
 const handleWheel = (event: WheelEvent) => {
+  event.preventDefault();
   if (event.deltaY > 0) {
     magnifierSize.value = Math.max(
       (containerRef.value?.clientWidth ?? 1) / 12,
