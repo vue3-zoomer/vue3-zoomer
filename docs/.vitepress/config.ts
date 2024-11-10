@@ -1,5 +1,5 @@
 import { defineConfig } from "vitepress";
-import path, { resolve } from "path";
+import path from "path";
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
