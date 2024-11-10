@@ -1,8 +1,10 @@
 {
-  "name": "vue-inner-image-zoom-refactor",
-  "private": true,
+  "name": "vue3-zoomer",
   "version": "0.0.0",
+  "description": "A Vue 3 component for zooming images.",
   "type": "module",
+  "packageManager": "bun@1.1.33",
+  "license": "MIT",
   "scripts": {
     "dev": "vite --port 3000",
     "build": "vue-tsc -b && vite build",
@@ -26,5 +28,25 @@
     "vite": "^5.4.1",
     "vitepress": "^1.4.1",
     "vue-tsc": "^2.0.29"
-  }
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "keywords": [
+    "vue",
+    "zoom",
+    "zoomer",
+    "magnifier",
+    "images",
+    "composition",
+    "api"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vue3-zoomer/vue3-zoomer"
+  },
+  "bugs": {
+    "url": "https://github.com/vue3-zoomer/vue3-zoomer/issues"
+  },
+  "homepage": "https://github.com/vue3-zoomer/vue3-zoomer#readme"
 }
