@@ -14,6 +14,7 @@ The zoom img component allows users to zoom into an image and either move or dra
 
 ### Drag
 <br />
+<CLientOnly>
 <ZoomImg
       class="h-[30rem]"
       :src="red"
@@ -22,6 +23,10 @@ The zoom img component allows users to zoom into an image and either move or dra
       :step="1"
       :show-zoom-btns="false"
     />
+      <template #fallback>
+       <div class="h-[30rem] w-[50rem] bg-gray-500" /> 
+      </template>
+</CLientOnly>
 
 ```vue
 <ZoomImg
@@ -35,6 +40,7 @@ The zoom img component allows users to zoom into an image and either move or dra
 ```
 ### Move
 <br />
+<CLientOnly>
 <ZoomImg
       class="h-[30rem]"
       :src="red"
@@ -43,6 +49,11 @@ The zoom img component allows users to zoom into an image and either move or dra
       :step="1"
       :show-zoom-btns="false"
     />
+     <template #fallback>
+       <div class="h-[30rem] w-[50rem] bg-gray-500"/> 
+      </template>
+ </CLientOnly>
+
 
 ```vue
 <ZoomImg
