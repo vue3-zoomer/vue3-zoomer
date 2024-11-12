@@ -14,6 +14,7 @@
       v-model:current-scale="currentScale"
       v-model:zoomed-img-offset="zoomedImgOffset"
       v-bind="props"
+      trigger="hover"
       ref="zoomComponent"
       class="h-full w-full"
     />
