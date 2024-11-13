@@ -149,6 +149,7 @@ const resetPosition = () => {
     left: 0,
     top: 0,
   };
+  zoomDir.value = "IN";
 };
 
 const getAbsPos = (event: MouseEvent | TouchEvent) => {
