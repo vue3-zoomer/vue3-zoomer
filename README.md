@@ -34,7 +34,11 @@ Then, use the `ZoomImg` component in your template:
 <ZoomImg src="/image.png" zoom-type="move" :zoom-scale="3" />
 ```
 
-## Props
+### Demo
+
+<img src='move.gif' width='100%'/>
+
+### Props
 
 | Name         | Type                 | Default    | Description                                                                |
 | ------------ | -------------------- | ---------- | -------------------------------------------------------------------------- |
@@ -45,6 +49,24 @@ Then, use the `ZoomImg` component in your template:
 | `step`       | `Number`             | -          | The step value for the zoom scale.                                         |
 | `persist`    | `Boolean`            | -          | Whether the zoom state should persist across component mounts.             |
 | `showImgMap` | `Boolean`            | -          | Whether to display the image map overlay.                                  |
+
+## Magnifier
+
+```html
+<Magnifier src="/image.png" zoom-type="move" :zoom-scale="3" />
+```
+
+### Demo
+
+<img src='magnifier.gif' width='100%'/>
+
+### Props
+
+| Name         | Type                 | Default    | Description                                                                |
+| ------------ | -------------------- | ---------- | -------------------------------------------------------------------------- |
+| `src`        | `String`             | `required` | The source URL of the image to be zoomed.                                  |
+| `zoomScale`  | `Number`             | `2`        | The initial zoom scale of the image.                                       |   |
+| `magnifierInitialSize`       | `Number`             | `200`          | The initial magnifier size.      
 
 ## License
 
