@@ -96,6 +96,7 @@ const handleMouseEnter = (event: MouseEvent) => {
 };
 
 const handleMouseLeave = () => {
+  isDragging.value = false;
   if (props.trigger === "hover") {
     resetPosition();
   }
