@@ -127,15 +127,16 @@ const drag = (event: MouseEvent | TouchEvent) => {
 const handlePressUp = (event: TouchEvent | MouseEvent) => {
   isDragging.value = false;
 
+  // check if mouseup is in the same position as to detect a click
   const absPos = getAbsPos(event);
-  const relPos = getRelPos(event);
-
   if (
-    !isZoomed.value ||
-    (mouseDownPosition.value.left === absPos.left &&
-      mouseDownPosition.value.top === absPos.top &&
-      isZoomed.value)
+    mouseDownPosition.value.left === absPos.left &&
+    mouseDownPosition.value.top === absPos.top
   ) {
+    const relPos = getRelPos(
+      isZoomed.value ? new MouseEvent("mouseup", imgOffset2CursorPos()) : event,
+    );
+
     startTransition();
     multiStepZoomIn(currentScale.value, relPos, props.step ?? props.zoomScale);
   }
