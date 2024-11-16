@@ -168,16 +168,20 @@ const getRelPos = (event: MouseEvent | TouchEvent) => {
   }
 };
 
+const imgOffset2CursorPos = () => {
+  // calculate from zoomed image offset the cursor position
+  const rect = containerRef.value?.getBoundingClientRect();
+  const ratio = currentScale.value - 1 === 0 ? 1 : currentScale.value - 1;
+  return {
+    clientX: -zoomedImgOffset.value.left / ratio + (rect?.left ?? 0),
+    clientY: -zoomedImgOffset.value.top / ratio + (rect?.top ?? 0),
+  };
+};
+
 defineExpose({
   zoomDir,
   multiZoom: () => {
-    // calculate from zoomed image offset the cursor position
-    const rect = containerRef.value?.getBoundingClientRect();
-    const ratio = currentScale.value - 1 === 0 ? 1 : currentScale.value - 1;
-    const cursorPos = {
-      clientX: -zoomedImgOffset.value.left / ratio + (rect?.left ?? 0),
-      clientY: -zoomedImgOffset.value.top / ratio + (rect?.top ?? 0),
-    };
+    const cursorPos = imgOffset2CursorPos();
 
     handlePressDown(new MouseEvent("mousedown", cursorPos));
     handlePressUp(new MouseEvent("mouseup", cursorPos));
