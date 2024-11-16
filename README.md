@@ -14,7 +14,7 @@ Vue3 Zoomer is a beautiful image viewer component for Vue.js projects, making it
 
 ## Installation
 
-Install the package using npm or yarn:
+Install the package using npm, yarn, or bun:
 
 ```bash
 npm install vue3-zoomer
@@ -62,11 +62,11 @@ Then, use the `ZoomImg` component in your template:
 
 ### Props
 
-| Name         | Type                 | Default    | Description                                                                |
-| ------------ | -------------------- | ---------- | -------------------------------------------------------------------------- |
-| `src`        | `String`             | `required` | The source URL of the image to be zoomed.                                  |
-| `zoomScale`  | `Number`             | `2`        | The initial zoom scale of the image.                                       |   |
-| `magnifierInitialSize`       | `Number`             | `200`          | The initial magnifier size.      
+| Name                   | Type     | Default    | Description                               |
+| ---------------------- | -------- | ---------- | ----------------------------------------- | --- |
+| `src`                  | `String` | `required` | The source URL of the image to be zoomed. |
+| `zoomScale`            | `Number` | `2`        | The initial zoom scale of the image.      |     |
+| `magnifierInitialSize` | `Number` | `200`      | The initial magnifier size.               |
 
 ## License
 
