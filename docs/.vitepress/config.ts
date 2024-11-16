@@ -4,7 +4,9 @@ import path from "path";
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
   title: "Vue Zoom",
-  description: "A VitePress Site",
+  description: "The Ultimate Zoomable image component",
+
+  base: "/vue3-zoomer/",
 
   head: [["link", { rel: "icon", href: "../assets/icons/Logo.png" }]],
 
