@@ -74,7 +74,7 @@ const { zoomDir, multiStepZoomIn } = useMultiZoom(
 const handleMouseEnter = (event: MouseEvent) => {
   if (props.trigger === "hover") {
     const { pos: relPos } = getRelCursorPosition(event, containerRef.value);
-    startTransition(150);
+    startTransition();
     multiStepZoomIn(currentScale.value, relPos, props.step ?? props.zoomScale);
   }
 };
@@ -112,6 +112,7 @@ const resetPosition = () => {
     left: 0,
     top: 0,
   };
+  zoomDir.value = "IN";
 };
 
 defineExpose({
