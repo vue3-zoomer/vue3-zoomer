@@ -14,7 +14,6 @@ The ZoomImg component allows users to zoom into an image within its original con
 
 ### Move
 
-<br />
 <ClientOnly>
   <ZoomImg
     class="h-[30rem]"
@@ -40,7 +39,6 @@ The ZoomImg component allows users to zoom into an image within its original con
 
 ### Drag
 
-<br />
 <ClientOnly>
   <ZoomImg
     class="h-[30rem]"
