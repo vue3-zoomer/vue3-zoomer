@@ -6,7 +6,6 @@
       'cursor-grab': isZoomed && !isDragging,
       'cursor-grabbing': isZoomed && isDragging,
       'cursor-zoom-in': !isZoomed,
-      'cursor-zoom-out': isZoomed && currentScale >= zoomScale,
     }"
     @mouseenter="handleMouseEnter"
     @mousedown="handlePressDown"
