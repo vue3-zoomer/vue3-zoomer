@@ -6,9 +6,16 @@ export default defineConfig({
   title: "Vue Zoom",
   description: "The Ultimate Zoomable image component",
 
-  base: "/vue3-zoomer/",
-
-  head: [["link", { rel: "icon", href: "../assets/icons/Logo.png" }]],
+  head: [
+    [
+      "link",
+      {
+        rel: "icon",
+        type: "image/png",
+        href: "/assets/icons/logo.svg",
+      },
+    ],
+  ],
 
   vite: {
     resolve: {
