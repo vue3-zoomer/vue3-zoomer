@@ -3,7 +3,7 @@
     class="relative"
     ref="containerRef"
     @mousemove="handleMouseMove"
-    @wheel="handleWheel"
+    @wheel.prevent="handleWheel"
     @touchmove.prevent="handleTouchMove"
   >
     <img class="h-full w-full object-fill" alt="image" :src="src" />
@@ -47,7 +47,7 @@ const props = defineProps({
     type: Number,
     default: 2,
   },
-  magnifierInitialSize: {
+  size: {
     type: Number,
     default: 200,
   },
@@ -57,7 +57,7 @@ const containerRef = useTemplateRef("containerRef");
 
 const position = ref<PositionType>({ left: 0, top: 0 });
 const isOutside = ref(false);
-const magnifierSize = ref(props.magnifierInitialSize);
+const magnifierSize = ref(props.size);
 
 const zoomedImgOffset = computed(() => {
   // Add half magnifier size to the position before converting to offset

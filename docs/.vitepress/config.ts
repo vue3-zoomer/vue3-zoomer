@@ -1,5 +1,5 @@
 import { defineConfig } from "vitepress";
-import path, { resolve } from "path";
+import path from "path";
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
@@ -49,5 +49,9 @@ export default defineConfig({
     socialLinks: [
       { icon: "github", link: "https://github.com/vuejs/vitepress" },
     ],
+    footer: {
+      message: "Released under the MIT License.",
+      copyright: "Copyright © 2024 vue3-zoomer",
+    },
   },
 });
