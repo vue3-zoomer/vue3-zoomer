@@ -1,10 +1,12 @@
 import { defineConfig } from "vitepress";
-import path, { resolve } from "path";
+import path from "path";
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
   title: "Vue Zoom",
-  description: "A VitePress Site",
+  description: "The Ultimate Zoomable image component",
+
+  base: "/vue3-zoomer/",
 
   head: [["link", { rel: "icon", href: "../assets/icons/Logo.png" }]],
 
@@ -16,13 +18,14 @@ export default defineConfig({
     },
   },
   themeConfig: {
+    search: { provider: "local" },
     outline: [2, 3],
     logo: "/assets/icons/logo.svg",
     // https://vitepress.dev/reference/default-theme-config
     nav: [
       { text: "Home", link: "/" },
       { text: "Guide", link: "/guide/introduction" },
-      { text: "Examples", link: "/guide/introduction" },
+      { text: "Examples", link: "/examples" },
     ],
 
     sidebar: [
@@ -50,5 +53,9 @@ export default defineConfig({
     socialLinks: [
       { icon: "github", link: "https://github.com/vuejs/vitepress" },
     ],
+    footer: {
+      message: "Released under the MIT License.",
+      copyright: "Copyright © 2024 vue3-zoomer",
+    },
   },
 });

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1500px" height="1474px" viewBox="0 0 500 500">
+  <rect width="450" height="450" x="25" y="25" style="fill: transparent; stroke: rgb(0, 0, 0); stroke-linejoin: round; stroke-linecap: round; stroke-width: 30px;"/>
+  <rect width="426.316" height="426.316" x="36.842" y="36.842" style="stroke: rgb(65, 184, 131); stroke-linejoin: round; stroke-linecap: round; fill: none; stroke-width: 25px;"/>
+  <polygon points="287.894 218.062 130.833 218.062 130.833 256.715 187.166 256.715 187.166 431.219 231.798 431.219 231.798 256.715 287.894 256.715" style="stroke: rgb(0, 0, 0); fill: rgb(65, 184, 131); stroke-width: 15px;"/>
+  <path d="M 426.494 266.425 C 426.494 266.425 405.333 252.309 381.412 252.309 C 357.491 252.309 348.881 263.677 348.881 275.827 C 348.881 307.185 436.288 304.048 436.288 367.154 C 436.288 464.366 303.017 421.248 303.017 421.248 L 303.017 374.615 C 303.017 374.615 328.502 393.823 359.066 393.823 C 389.63 393.823 388.469 373.833 388.469 371.085 C 388.469 342.084 301.844 342.084 301.844 277.794 C 301.844 190.387 428.058 224.871 428.058 224.871 L 426.494 266.425 Z" style="fill: rgb(65, 184, 131); stroke: rgb(0, 0, 0); stroke-width: 15px;"/>
+</svg>
