@@ -28,12 +28,14 @@ jobs:
         with:
           bun-version: latest
 
+      # Remove Node.js cache configuration since we're using Bun
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: "bun"
+          # Removed cache: npm as we're using Bun
 
+      # Add proper Bun caching
       - name: Cache Bun dependencies
         uses: actions/cache@v3
         with:
@@ -48,12 +50,16 @@ jobs:
         uses: actions/configure-pages@v4
 
       - name: Install dependencies
-        run: bun install --frozen-lockfile # Added --frozen-lockfile for reproducible builds
+        run: bun install --frozen-lockfile
 
       - name: Build with VitePress
         run: |
           bun run docs:build
-          touch docs/.vitepress/dist/.nojekyll # Prevents GitHub Pages from ignoring files that begin with an underscore
+          touch docs/.vitepress/dist/.nojekyll
+          # Ensure public directory is copied
+          if [ -d "docs/public" ]; then
+            cp -r docs/public/* docs/.vitepress/dist/
+          fi
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
