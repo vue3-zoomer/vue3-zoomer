@@ -17,12 +17,13 @@ The Zoom Map component enables users to zoom into an image within a defined view
 <br />
 <ClientOnly>
     <ZoomImg
-    class="h-[30rem]"
-    zoom-type="drag"
-    :src="imageSrc"
-    :zoom-scale="5"
-    :show-img-map=true
-  />
+      class="h-[30rem]"
+      :src="imageSrc"
+      :zoom-scale="5"
+      zoom-type="drag"
+      :step="1"
+      :show-img-map=true
+    />
   <template #fallback>
     <div class="h-[30rem] w-full animate-pulse bg-gray-500"/> 
   </template>
@@ -30,37 +31,41 @@ The Zoom Map component enables users to zoom into an image within a defined view
 
 ```vue
 <ZoomImg
-    class="h-[30rem]"
-    zoom-type="drag"
-    :src="imageSrc"
-    :zoom-scale="3"
-    :show-img-map=true
-  />
+      class="h-[30rem]"
+      :src="imageSrc"
+      :zoom-scale="5"
+      zoom-type="drag"
+      :step="1"
+      :show-img-map=true
+    />
 ```
 
 ### Zoom buttons
 
 <br />
 <ClientOnly>
-  <ZoomImg
-    class="h-[30rem]"
-    zoom-type="drag"
-    :src="imageSrc"
-   :show-zoom-btns=true
-  />
+    <ZoomImg
+      class="h-[30rem]"
+      :src="imageSrc"
+      :zoom-scale="5"
+      zoom-type="drag"
+      :step="1"
+       :show-zoom-btns=true
+    />
   <template #fallback>
     <div class="h-[30rem] w-full animate-pulse bg-gray-500" /> 
   </template>
 </ClientOnly>
 
 ```vue
-<ZoomImg
-    class="h-[30rem]"
-    zoom-type="drag"
-    :src="imageSrc"
-    :zoom-scale="3"
-    :show-zoom-btns=true
-  />
+ <ZoomImg
+      class="h-[30rem]"
+      :src="imageSrc"
+      :zoom-scale="5"
+      zoom-type="drag"
+      :step="1"
+      :show-zoom-btns=true
+    />
 ```
 
 
