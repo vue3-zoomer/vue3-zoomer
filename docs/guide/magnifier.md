@@ -8,7 +8,7 @@ import imageSrc from "~/assets/images/red.jpg";
 
 ## Overview
 
-The Magnifier allows users to view an enlarged portion of an image when they hover over the image. This is useful for users who might want to see details of a product or for any application where inspecting image details is helpful.
+The Magnifier component allows users to view an enlarged portion of an image in a container like a glass magnifier when they hover over the image.
 
 ## Basic Usage
 
