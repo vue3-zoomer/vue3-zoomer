@@ -66,6 +66,25 @@ You can explore zoom controls such as buttons for managing zoom levels and a zoo
 [Zoom Controllers](/guide/controls.html)
 :::
 
+## Multi Step Zoom
+
+The Multi-Step Zoom feature allows users to zoom in and out with multiple clicks. You can set the `step` prop to control how much the zoom level changes each time. Starting at a scale of 1x, each click increases the zoom until the maximum level `zoomScale`. Clicking again at maximum zoom decreases the level in the same increments, smoothly cycling between the default and maximum zoom.
+
+<ClientOnly>
+  <ZoomImg class="h-[30rem]" :src="imageSrc" :zoom-scale="5" :step="1" />
+  <template #fallback>
+    <div class="h-[30rem] w-full animate-pulse bg-gray-500" /> 
+  </template>
+</ClientOnly>
+
+```vue
+<ZoomImg class="h-[30rem]" :src="imageSrc" :zoom-scale="5" :step="1" />
+```
+
+::: tip Note
+Multi zoom is disabled by default. To enable it, provide a value to the `step` prop which accepts any number, including fractions.
+:::
+
 ## Props and Events
 
 ### Props
