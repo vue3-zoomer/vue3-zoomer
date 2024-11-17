@@ -1,0 +1,23 @@
+{
+  "types": [
+    { "type": "feat", "section": "✨ Features" },
+    { "type": "fix", "section": "🐛 Bug Fixes" },
+    { "type": "docs", "section": "📚 Documentation" },
+    { "type": "test", "section": "🧪 Tests" },
+    { "type": "build", "section": "🛠️ Build System" },
+    { "type": "ci", "section": "⚙️ CI" },
+    { "type": "chore", "section": "🔧 Chores" },
+    { "type": "", "section": "🔧 Chores" }
+  ],
+  "releaseCommitMessageFormat": "chore(release): 🔖 {{currentTag}}",
+  "sign": false,
+  "skip": {
+    "tag": false
+  },
+  "bumpFiles": [
+    {
+      "filename": "package.json",
+      "type": "json"
+    }
+  ]
+}
