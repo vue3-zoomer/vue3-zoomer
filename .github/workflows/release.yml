@@ -1,0 +1,92 @@
+name: GitHub Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      release-type:
+        description: "Release type (major, minor, patch)"
+        required: true
+        default: "patch"
+        type: choice
+        options:
+          - patch
+          - minor
+          - major
+      branch:
+        description: "Branch to release from"
+        required: true
+        default: "main"
+        type: string
+
+permissions:
+  contents: write
+  pull-requests: read
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.inputs.branch }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "lts/*"
+
+      - name: Configure Git
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+
+      - name: Initialize package.json if needed
+        run: |
+          if [ ! -f package.json ]; then
+            # Initialize with current Git tag as version
+            current_version=$(git describe --tags --abbrev=0 2>/dev/null || echo "1.0.0")
+            current_version=${current_version#v}  # Remove 'v' prefix if present
+            npm init -y
+            npm pkg set version="${current_version}"
+          fi
+          npm install -g standard-version
+
+      - name: Create Release with standard-version
+        id: release
+        run: |
+          # Run standard-version and capture its output
+          standard-version --release-as ${{ github.event.inputs.release-type }} --infile CHANGELOG.md
+
+          # Extract the new version number
+          version=$(node -p "require('./package.json').version")
+          echo "version=v${version}" >> $GITHUB_ENV
+
+          # Get the latest changes from CHANGELOG.md
+          # This will capture everything from the latest version header to the next version header
+          latest_changes=$(awk '/^###? \[/{if(p){exit}p=1;next}p' CHANGELOG.md)
+
+          # Create a delimiter for multiline output
+          delimiter="CHANGELOG_DELIMITER"
+          echo "CHANGES<<$delimiter" >> $GITHUB_ENV
+          echo "$latest_changes" >> $GITHUB_ENV
+          echo "$delimiter" >> $GITHUB_ENV
+
+          # Push changes and tags
+          git push --follow-tags origin ${{ github.event.inputs.branch }}
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ env.version }}
+          name: ${{ env.version }}
+          body: ${{ env.CHANGES }}
+          draft: false
+          prerelease: false
+          files: |
+            dist/*
+            *.jar
+            *.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

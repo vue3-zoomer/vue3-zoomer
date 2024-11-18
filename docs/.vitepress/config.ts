@@ -6,6 +6,8 @@ export default defineConfig({
   title: "Vue Zoom",
   description: "The Ultimate Zoomable image component",
 
+  base: "/vue3-zoomer/",
+
   head: [
     [
       "link",
