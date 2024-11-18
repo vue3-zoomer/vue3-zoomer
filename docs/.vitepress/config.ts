@@ -8,7 +8,16 @@ export default defineConfig({
 
   base: "/vue3-zoomer/",
 
-  head: [["link", { rel: "icon", href: "../assets/icons/Logo.png" }]],
+  head: [
+    [
+      "link",
+      {
+        rel: "icon",
+        type: "image/png",
+        href: "/assets/icons/logo.svg",
+      },
+    ],
+  ],
 
   vite: {
     resolve: {
@@ -51,7 +60,7 @@ export default defineConfig({
     ],
 
     socialLinks: [
-      { icon: "github", link: "https://github.com/vuejs/vitepress" },
+      { icon: "github", link: "https://github.com/vue3-zoomer/vue3-zoomer" },
     ],
     footer: {
       message: "Released under the MIT License.",
