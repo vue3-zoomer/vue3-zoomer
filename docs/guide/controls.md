@@ -8,86 +8,65 @@ import imageSrc from "~/assets/images/red.jpg";
 
 ## Overview
 
-The Zoom Map component enables users to zoom into an image within a defined viewport, combining interactive movement and zoom controls. Users can select between cursor-following movement for quick focus or a drag-based approach for precise navigation within the zoomed area. This component supports both click and hover triggers, allowing for versatile interaction, and offers customizable zoom levels. Paired with the Zoom Buttons component, which provides plus and minus zoom controls, the setup offers an intuitive interface with the flexibility to limit zoom ranges.
+Our components provide two control types: external, which are wrapper components, and internal, which are built-in components accessed via props. Internal controls include interactive zoom buttons and an image map for improved navigation.
 
-## Basic Usage
+::: tip Note
+Currently, we only provide internal controls for the `ZoomImg` component like zoom map and zoom buttons . Additional controls will be added in future releases.
+:::
 
-### Zoom Map
+## Zoom Map
 
-<br />
+The image map provides an interactive miniature navigation overview of the zoomed content on user interaction. Users can click or drag on the map to navigate to different portions of the zoomed image, making it easier to explore and navigate large images.
+
 <ClientOnly>
-    <ZoomImg
-      class="h-[30rem]"
-      :src="imageSrc"
-      :zoom-scale="5"
-      zoom-type="drag"
-      :step="1"
-      :show-img-map=true
-    />
-  <template #fallback>
-    <div class="h-[30rem] w-full animate-pulse bg-gray-500"/> 
+<ZoomImg
+  class="h-[30rem]"
+  zoom-type="drag"
+  :src="imageSrc"
+  :zoom-scale="5"
+  :show-img-map="true"
+/>
+<template #fallback>
+
+  <div class="h-[30rem] w-full animate-pulse bg-gray-500"/>
   </template>
 </ClientOnly>
 
 ```vue
 <ZoomImg
-      class="h-[30rem]"
-      :src="imageSrc"
-      :zoom-scale="5"
-      zoom-type="drag"
-      :step="1"
-      :show-img-map=true
-    />
+  class="h-[30rem]"
+  zoom-type="drag"
+  :src="imageSrc"
+  :zoom-scale="5"
+  :show-img-map="true"
+/>
 ```
 
-### Zoom buttons
+## Zoom buttons
 
-<br />
+The zoom buttons provide a familiar interface for zooming in and out of the component. When enabled, plus (+) and minus (-) buttons appear on the component.
+
 <ClientOnly>
-    <ZoomImg
-      class="h-[30rem]"
-      :src="imageSrc"
-      :zoom-scale="5"
-      zoom-type="drag"
-      :step="1"
-       :show-zoom-btns=true
-    />
+  <ZoomImg
+    class="h-[30rem]"
+    zoom-type="drag"
+    :src="imageSrc"
+    :zoom-scale="5"
+    :step="1"
+    :show-zoom-btns="true"
+  />
   <template #fallback>
     <div class="h-[30rem] w-full animate-pulse bg-gray-500" /> 
   </template>
 </ClientOnly>
 
 ```vue
- <ZoomImg
-      class="h-[30rem]"
-      :src="imageSrc"
-      :zoom-scale="5"
-      zoom-type="drag"
-      :step="1"
-      :show-zoom-btns=true
-    />
+<ZoomImg
+  class="h-[30rem]"
+  zoom-type="drag"
+  :src="imageSrc"
+  :zoom-scale="5"
+  :step="1"
+  :show-zoom-btns="true"
+/>
 ```
-
-
-
-## Props and Events
-
-### Props
-
-| Name           | Type                 | Default    | Description                                                                |
-| -------------- | -------------------- | ---------- | -------------------------------------------------------------------------- |
-| `src`          | `String`             | `required` | The source URL of the image to be zoomed.                                  |
-| `zoomScale`    | `Number`             | `2`        | The desired zoom scale of the image.                                       |
-| `trigger`      | `"click" \| "hover"` | `"click"`  | The event that triggers the zoom functionality, either "click" or "hover". |
-| `zoomType`     | `"move" \| "drag"`   | `"move"`   | The type of zoom interaction, either "move" or "drag".                     |
-| `step`         | `Number`             | -          | The step value for the zoom scale.                                         |
-| `showZoomBtns` | `Boolean`            | false      | Show controls to increase or decrease the zoom scale from buttons.         |
-| `persist`      | `Boolean`            | false      | Whether the zoom state should persist on mouse leave.                      |
-| `showImgMap`   | `Boolean`            | false      | Whether to display the image map overlay.                                  |
-
-### Events
-
-| Name      | Description                                         |
-| --------- | --------------------------------------------------- |
-| `onLoad`  | Triggered when the image has successfully loaded.   |
-| `onError` | Triggered when there is an error loading the image. |
