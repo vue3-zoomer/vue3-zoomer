@@ -58,7 +58,7 @@ export default defineConfig({
     ],
 
     socialLinks: [
-      { icon: "github", link: "https://github.com/vuejs/vitepress" },
+      { icon: "github", link: "https://github.com/vue3-zoomer/vue3-zoomer" },
     ],
     footer: {
       message: "Released under the MIT License.",
