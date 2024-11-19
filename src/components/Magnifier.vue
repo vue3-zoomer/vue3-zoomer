@@ -6,7 +6,13 @@
     @wheel.prevent="handleWheel"
     @touchmove.prevent="handleTouchMove"
   >
-    <img class="h-full w-full object-fill" alt="image" :src="src" />
+    <img
+      class="h-full w-full object-fill"
+      alt="image"
+      :src="src"
+      @error="$emit('error')"
+      @load="$emit('load')"
+    />
     <div
       class="absolute z-10 overflow-clip rounded-full hover:cursor-none"
       :class="{ hidden: isOutside }"
@@ -37,6 +43,8 @@ import { ref, computed, useTemplateRef } from "vue";
 import { getRelCursorPosition } from "~/utils/cursorPosition";
 import { getAbsTouchPosition } from "~/utils/touchPosition";
 import { pos2offset } from "~/utils/zoom";
+
+defineEmits(["error", "load"]);
 
 const props = defineProps({
   src: {

@@ -69,6 +69,13 @@ Then, use the `ZoomImg` component in your template:
 | `zoomScale` | `Number` | `2`        | The initial zoom scale of the image.      |
 | `size`      | `Number` | `200`      | The initial magnifier size.               |
 
+### Events
+
+| Name    | Description                                         |
+| ------- | --------------------------------------------------- |
+| `load`  | Triggered when the image has successfully loaded.   |
+| `error` | Triggered when there is an error loading the image. |
+
 ## License
 
 Licensed under the [MIT license](https://github.com/vue3-zoomer/vue3-zoomer/blob/main/LICENSE.md).
