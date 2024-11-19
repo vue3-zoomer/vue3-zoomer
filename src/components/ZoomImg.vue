@@ -7,6 +7,8 @@
       v-bind="props"
       ref="zoomComponent"
       class="h-full w-full"
+      @error="$emit('error')"
+      @load="$emit('load')"
     />
 
     <MoveZoomImg
@@ -16,6 +18,8 @@
       v-bind="props"
       ref="zoomComponent"
       class="h-full w-full"
+      @error="$emit('error')"
+      @load="$emit('load')"
     />
 
     <ZoomButtons
@@ -49,6 +53,8 @@ import DragZoomImg from "~/components/core/DragZoomImg.vue";
 import MoveZoomImg from "~/components/core/MoveZoomImg.vue";
 import ZoomButtons from "~/components/controls/ZoomButtons.vue";
 import ZoomMap from "~/components/core/ZoomMap.vue";
+
+defineEmits(["error", "load"]);
 
 const props = defineProps({
   src: {

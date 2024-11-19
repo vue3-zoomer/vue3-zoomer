@@ -34,7 +34,7 @@ You can also increase or decrease the magnifier size using the mouse wheel.
 
 ### Events
 
-| Name      | Description                                         |
-| --------- | --------------------------------------------------- |
-| `onLoad`  | Triggered when the image has successfully loaded.   |
-| `onError` | Triggered when there is an error loading the image. |
+| Name    | Description                                         |
+| ------- | --------------------------------------------------- |
+| `load`  | Triggered when the image has successfully loaded.   |
+| `error` | Triggered when there is an error loading the image. |

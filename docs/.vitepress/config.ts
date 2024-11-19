@@ -13,7 +13,7 @@ export default defineConfig({
       "link",
       {
         rel: "icon",
-        href: "/logo.svg",
+        href: "/vue3-zoomer/logo.svg",
       },
     ],
   ],

@@ -102,7 +102,7 @@ Multi zoom is disabled by default. To enable it, provide a value to the `step` p
 
 ### Events
 
-| Name      | Description                                         |
-| --------- | --------------------------------------------------- |
-| `onLoad`  | Triggered when the image has successfully loaded.   |
-| `onError` | Triggered when there is an error loading the image. |
+| Name    | Description                                         |
+| ------- | --------------------------------------------------- |
+| `load`  | Triggered when the image has successfully loaded.   |
+| `error` | Triggered when there is an error loading the image. |
