@@ -13,8 +13,7 @@ export default defineConfig({
       "link",
       {
         rel: "icon",
-        type: "image/png",
-        href: "/assets/icons/logo.svg",
+        href: "/logo.svg",
       },
     ],
   ],
@@ -29,7 +28,7 @@ export default defineConfig({
   themeConfig: {
     search: { provider: "local" },
     outline: [2, 3],
-    logo: "/assets/icons/logo.svg",
+    logo: "/logo.svg",
     // https://vitepress.dev/reference/default-theme-config
     nav: [
       { text: "Home", link: "/" },
