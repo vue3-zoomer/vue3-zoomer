@@ -17,6 +17,8 @@
         transformOrigin: '0 0',
         transition: isTransition ? 'transform 100ms ease-in-out' : 'none',
       }"
+      @error="$emit('error')"
+      @load="$emit('load')"
     />
   </div>
 </template>
@@ -27,6 +29,8 @@ import { getRelCursorPosition } from "~/utils/cursorPosition";
 import { calZoomedImgOffset } from "~/utils/zoom";
 import { useTransition } from "~/composables/useTransition";
 import useMultiZoom from "~/composables/useMultiZoom";
+
+defineEmits(["error", "load"]);
 
 const props = defineProps({
   src: {
