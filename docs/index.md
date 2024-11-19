@@ -4,7 +4,7 @@ layout: home
 hero:
   name: "Vue3-Zoomer"
   image:
-    src: /assets/icons/logo.svg
+    src: /logo.svg
   text: The Ultimate Zoomable image component
   tagline: Seamless image zoom for your Vue.js projects
   actions:
@@ -35,3 +35,4 @@ features:
     icon:
       src: /assets/icons/ts.svg
     details: The component is written in Typescript, ensuring type safety and a better developer experience.
+---
