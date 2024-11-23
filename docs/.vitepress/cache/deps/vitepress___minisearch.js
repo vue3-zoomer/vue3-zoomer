@@ -357,7 +357,7 @@ var SearchableMap = class _SearchableMap {
    * ```
    *
    * @param key  The key to update
-   * @param defaultValue  A function that creates a new value if the key does not exist
+   * @param initial  A function that creates a new value if the key does not exist
    * @return The existing or new value at the given key
    */
   fetch(key, initial) {
@@ -1152,9 +1152,11 @@ var MiniSearch = class _MiniSearch {
    * external libraries that implement a parser for custom query languages.
    *
    * @param query  Search query
-   * @param options  Search options. Each option, if not given, defaults to the corresponding value of `searchOptions` given to the constructor, or to the library default.
+   * @param searchOptions  Search options. Each option, if not given, defaults to the corresponding value of `searchOptions` given to the constructor, or to the library default.
    */
   search(query, searchOptions = {}) {
+    const { searchOptions: globalSearchOptions } = this._options;
+    const searchOptionsWithDefaults = Object.assign(Object.assign({}, globalSearchOptions), searchOptions);
     const rawResults = this.executeQuery(query, searchOptions);
     const results = [];
     for (const [docId, { score, terms, match }] of rawResults) {
@@ -1167,11 +1169,11 @@ var MiniSearch = class _MiniSearch {
         match
       };
       Object.assign(result, this._storedFields.get(docId));
-      if (searchOptions.filter == null || searchOptions.filter(result)) {
+      if (searchOptionsWithDefaults.filter == null || searchOptionsWithDefaults.filter(result)) {
         results.push(result);
       }
     }
-    if (query === _MiniSearch.wildcard && searchOptions.boostDocument == null && this._options.searchOptions.boostDocument == null) {
+    if (query === _MiniSearch.wildcard && searchOptionsWithDefaults.boostDocument == null) {
       return results;
     }
     results.sort(byScore);
