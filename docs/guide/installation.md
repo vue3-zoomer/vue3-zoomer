@@ -23,7 +23,7 @@ bun install vue3-zoomer
 First, import the `ZoomImg` component:
 
 ```ts
-import ZoomImg from "vue3-zoomer";
+import { ZoomImg } from "vue3-zoomer";
 ```
 
 Then, use the `ZoomImg` component in your template:

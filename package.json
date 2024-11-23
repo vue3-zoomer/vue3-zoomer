@@ -7,14 +7,14 @@
   "license": "MIT",
   "scripts": {
     "dev": "vite --port 3000",
-    "build": "vue-tsc -b && vite build",
+    "build": "vite build && vue-tsc",
     "preview": "vite preview",
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",
     "docs:preview": "vitepress preview docs"
   },
   "dependencies": {
-    "vue": "^3.4.37"
+    "vue": "^3.5.13"
   },
   "devDependencies": {
     "@types/node": "^22.5.5",
@@ -26,8 +26,12 @@
     "tailwindcss": "^3.4.14",
     "typescript": "^5.5.3",
     "vite": "^5.4.1",
+    "vite-plugin-dts": "^4.3.0",
     "vitepress": "^1.4.1",
     "vue-tsc": "^2.0.29"
+  },
+  "peerDependencies": {
+    "vue": "^3.4.0"
   },
   "engines": {
     "node": ">=18"
@@ -48,5 +52,11 @@
   "bugs": {
     "url": "https://github.com/vue3-zoomer/vue3-zoomer/issues"
   },
-  "homepage": "https://github.com/vue3-zoomer/vue3-zoomer#readme"
+  "homepage": "https://vue3-zoomer.github.io/vue3-zoomer/",
+  "module": "./dist/vue3-zoomer.es.js",
+  "style": "./dist/style.css",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ]
 }
