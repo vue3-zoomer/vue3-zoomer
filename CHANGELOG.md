@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.0.3](https://github.com/vue3-zoomer/vue3-zoomer/compare/v1.0.2...v1.0.3) (2024-12-05)
+
+
+### 🐛 Bug Fixes
+
+* hide magnifier initially ([b55c12a](https://github.com/vue3-zoomer/vue3-zoomer/commit/b55c12a353f223e0ba9d1b1cd2b9f26542fee713))
+
+
+### 📚 Documentation
+
+* hide examples page ([8d07176](https://github.com/vue3-zoomer/vue3-zoomer/commit/8d07176a654cfe2705e266a3e0576d1d80d393c3))
+
+
+### 🔧 Chores
+
+* Merge pull request #38 from vue3-zoomer/dev ([bfae359](https://github.com/vue3-zoomer/vue3-zoomer/commit/bfae35940d097adb188ffdfa554e9952a9e31496)), closes [#38](https://github.com/vue3-zoomer/vue3-zoomer/issues/38)
+* Merge pull request #37 from vue3-zoomer/Bugfix/magnifier-initial-view ([2ceaf4e](https://github.com/vue3-zoomer/vue3-zoomer/commit/2ceaf4e3b9634e9afad4f452f196d74599289eb8)), closes [#37](https://github.com/vue3-zoomer/vue3-zoomer/issues/37)
+
 ### [1.0.2](https://github.com/vue3-zoomer/vue3-zoomer/compare/v1.0.1...v1.0.2) (2024-11-24)
 
 ### [1.0.1](https://github.com/vue3-zoomer/vue3-zoomer/compare/v1.0.0...v1.0.1) (2024-11-24)
