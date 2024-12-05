@@ -16,6 +16,13 @@ export default defineConfig({
         href: "/vue3-zoomer/logo.svg",
       },
     ],
+    [
+      "meta",
+      {
+        name: "google-site-verification",
+        content: "d_vRC79cad-TecLCExPf7LTQxKFucm-J5ispBu47IAU",
+      },
+    ],
   ],
 
   vite: {
