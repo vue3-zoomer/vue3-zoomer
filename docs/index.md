@@ -12,8 +12,8 @@ hero:
       text: Get Started
       link: /guide/introduction
     - theme: alt
-      text: Examples
-      link: /examples
+      text: Github
+      link: https://github.com/vue3-zoomer/vue3-zoomer
 
 features:
   - title: Customizable
