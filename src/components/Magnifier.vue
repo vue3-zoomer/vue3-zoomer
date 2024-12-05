@@ -14,10 +14,9 @@
       @load="$emit('load')"
     />
     <div
-      class="absolute z-10 overflow-clip rounded-full hover:cursor-none"
-      :class="{ hidden: isOutside }"
+      v-show="!isOutside"
+      class="shadow-inner-lg absolute z-10 overflow-clip rounded-full hover:cursor-none"
       :style="{
-        boxShadow: 'inset 0 0 20px 1px #0000004d',
         left: `${position.left}px`,
         top: `${position.top}px`,
         width: `${magnifierSize}px`,
@@ -64,7 +63,7 @@ const props = defineProps({
 const containerRef = useTemplateRef("containerRef");
 
 const position = ref<PositionType>({ left: 0, top: 0 });
-const isOutside = ref(false);
+const isOutside = ref(true);
 const magnifierSize = ref(props.size);
 
 const zoomedImgOffset = computed(() => {
