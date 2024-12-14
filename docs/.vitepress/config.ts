@@ -23,6 +23,28 @@ export default defineConfig({
         content: "d_vRC79cad-TecLCExPf7LTQxKFucm-J5ispBu47IAU",
       },
     ],
+    [
+      "meta",
+      {
+        property: "og:description",
+        content:
+          "Vue3 Zoomer is a beautiful image viewer component for Vue.js projects, making it easy to create stunning zoomable images for ecommerce, art galleries, infographics, and any other image you need to zoom into.",
+      },
+    ],
+    [
+      "meta",
+      {
+        property: "og:image",
+        content: "/vue3-zoomer/card.png",
+      },
+    ],
+    [
+      "meta",
+      {
+        name: "twitter:card",
+        content: "summary_large_image",
+      },
+    ],
   ],
 
   vite: {
