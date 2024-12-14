@@ -3,10 +3,13 @@ import path from "path";
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
-  title: "Vue Zoom",
+  title: "Vue3 Zoomer",
   description: "The Ultimate Zoomable image component",
 
   base: "/vue3-zoomer/",
+  sitemap: {
+    hostname: "https://vue3-zoomer.github.io/vue3-zoomer/",
+  },
 
   head: [
     [
@@ -21,6 +24,28 @@ export default defineConfig({
       {
         name: "google-site-verification",
         content: "d_vRC79cad-TecLCExPf7LTQxKFucm-J5ispBu47IAU",
+      },
+    ],
+    [
+      "meta",
+      {
+        property: "og:description",
+        content:
+          "Vue3 Zoomer is a beautiful image viewer component for Vue.js projects, making it easy to create stunning zoomable images for ecommerce, art galleries, infographics, and any other image you need to zoom into.",
+      },
+    ],
+    [
+      "meta",
+      {
+        property: "og:image",
+        content: "/vue3-zoomer/card.png",
+      },
+    ],
+    [
+      "meta",
+      {
+        name: "twitter:card",
+        content: "summary_large_image",
       },
     ],
   ],
