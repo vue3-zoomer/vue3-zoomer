@@ -3,7 +3,7 @@ import path from "path";
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
-  title: "Vue Zoom",
+  title: "Vue3 Zoomer",
   description: "The Ultimate Zoomable image component",
 
   base: "/vue3-zoomer/",
