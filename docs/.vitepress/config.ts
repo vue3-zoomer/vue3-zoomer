@@ -7,6 +7,9 @@ export default defineConfig({
   description: "The Ultimate Zoomable image component",
 
   base: "/vue3-zoomer/",
+  sitemap: {
+    hostname: "https://vue3-zoomer.github.io/vue3-zoomer/",
+  },
 
   head: [
     [
