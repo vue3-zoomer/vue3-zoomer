@@ -7,6 +7,7 @@
       v-bind="props"
       ref="zoomComponent"
       class="h-full w-full"
+      :alt
       @error="$emit('error')"
       @load="$emit('load')"
     />
@@ -18,6 +19,7 @@
       v-bind="props"
       ref="zoomComponent"
       class="h-full w-full"
+      :alt
       @error="$emit('error')"
       @load="$emit('load')"
     />
@@ -61,6 +63,10 @@ const props = defineProps({
     type: String,
     required: true,
   },
+  alt: {
+    type: String,
+    default: "zoomed-img",
+  },
   zoomScale: {
     type: Number,
     default: 2,
@@ -96,7 +102,7 @@ const isDrag = computed(
 
 const windowPosition = computed(() => {
   if (currentScale.value !== 1) {
-    //Multiply scale by 4 because the map window is quarter the map container
+    // Multiply scale by 4 because the map window is quarter the map container
     return offset2pos(zoomedImgOffset.value, currentScale.value * 4);
   }
 });

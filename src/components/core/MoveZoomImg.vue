@@ -10,7 +10,7 @@
   >
     <img
       class="h-full w-full object-fill"
-      alt="zoom-image"
+      :alt
       :src="src"
       :style="{
         transform: `translate(${zoomedImgOffset.left}px, ${zoomedImgOffset.top}px) scale(${currentScale})`,
@@ -36,6 +36,9 @@ const props = defineProps({
   src: {
     type: String,
     required: true,
+  },
+  alt: {
+    type: String,
   },
   zoomScale: {
     type: Number,
