@@ -5,12 +5,7 @@
     @click="moveToCursor"
     @mouseleave="stopMoving"
   >
-    <img
-      class="h-full w-full object-fill"
-      ref="imgRef"
-      alt="zoom-image"
-      :src="src"
-    />
+    <img class="h-full w-full object-fill" ref="imgRef" :alt :src="src" />
 
     <div
       class="absolute bg-white/20 hover:cursor-pointer active:cursor-move"
@@ -44,6 +39,10 @@ defineProps({
   src: {
     type: String,
     required: true,
+  },
+  alt: {
+    type: String,
+    default: "zoomed-img",
   },
   zoomScale: {
     type: Number,

@@ -17,9 +17,9 @@
     @touchend.prevent="handlePressUp"
   >
     <img
-      alt="zoom-image"
-      draggable="false"
       class="zoom-effect h-full w-full object-fill"
+      draggable="false"
+      :alt
       :src="src"
       :style="{
         transform: `translate(${zoomedImgOffset.left}px, ${zoomedImgOffset.top}px) scale(${currentScale})`,
@@ -49,6 +49,9 @@ const props = defineProps({
   src: {
     type: String,
     required: true,
+  },
+  alt: {
+    type: String,
   },
   zoomScale: {
     type: Number,

@@ -8,14 +8,14 @@
   >
     <img
       class="h-full w-full object-fill"
-      alt="image"
+      :alt
       :src="src"
       @error="$emit('error')"
       @load="$emit('load')"
     />
     <div
       v-show="!isOutside"
-      class="shadow-inner-lg absolute z-10 overflow-clip rounded-full hover:cursor-none"
+      class="absolute z-10 overflow-clip rounded-full shadow-inner-lg hover:cursor-none"
       :style="{
         left: `${position.left}px`,
         top: `${position.top}px`,
@@ -25,7 +25,7 @@
     >
       <img
         class="h-full w-full object-fill"
-        alt="zoom-image"
+        alt="lens-zoomed-image"
         :src="src"
         :style="{
           transform: `translate(${zoomedImgOffset.left}px, ${zoomedImgOffset.top}px) scaleX(${(zoomScale * (containerRef?.clientWidth ?? 1)) / magnifierSize}) scaleY(${(zoomScale * (containerRef?.clientHeight ?? 1)) / magnifierSize})`,
@@ -49,6 +49,10 @@ const props = defineProps({
   src: {
     type: String,
     required: true,
+  },
+  alt: {
+    type: String,
+    default: "zoomed-img",
   },
   zoomScale: {
     type: Number,
