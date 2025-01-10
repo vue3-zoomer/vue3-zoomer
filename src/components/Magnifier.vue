@@ -1,21 +1,22 @@
 <template>
   <div
-    class="relative"
+    class="vz-magnifier-img-container relative"
     ref="containerRef"
     @mousemove="handleMouseMove"
     @wheel.prevent="handleWheel"
     @touchmove.prevent="handleTouchMove"
   >
     <img
-      class="h-full w-full object-fill"
+      class="vz-magnifier-img h-full w-full object-fill"
       :alt
       :src="src"
       @error="$emit('error')"
       @load="$emit('load')"
     />
+
     <div
       v-show="!isOutside"
-      class="absolute z-10 overflow-clip rounded-full shadow-inner-lg hover:cursor-none"
+      class="vz-magnifier-lens absolute z-10 overflow-clip rounded-full shadow-inner-lg hover:cursor-none"
       :style="{
         left: `${position.left}px`,
         top: `${position.top}px`,
@@ -24,7 +25,7 @@
       }"
     >
       <img
-        class="h-full w-full object-fill"
+        class="vz-magnifier-lens-img h-full w-full object-fill"
         alt="lens-zoomed-image"
         :src="src"
         :style="{

@@ -1,5 +1,5 @@
 <template>
-  <div class="relative">
+  <div class="vz-zoomimg-container relative">
     <DragZoomImg
       v-if="isDrag"
       v-model:current-scale="currentScale"
