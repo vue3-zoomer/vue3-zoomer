@@ -1,14 +1,19 @@
 <template>
   <div
-    class="relative select-none overflow-clip"
+    class="vz-map-container relative select-none overflow-clip"
     ref="backdropRef"
     @click="moveToCursor"
     @mouseleave="stopMoving"
   >
-    <img class="h-full w-full object-fill" ref="imgRef" :alt :src="src" />
+    <img
+      class="vz-map-img h-full w-full object-fill"
+      ref="imgRef"
+      :alt
+      :src="src"
+    />
 
     <div
-      class="absolute bg-white/20 hover:cursor-pointer active:cursor-move"
+      class="vz-map-window absolute bg-white/20 hover:cursor-pointer active:cursor-move"
       ref="movableWindowRef"
       :class="{ 'invisible -z-10': !position }"
       :style="{

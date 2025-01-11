@@ -1,7 +1,7 @@
 <template>
   <div
     ref="containerRef"
-    class="overflow-hidden"
+    class="vz-zoomimg-img-container overflow-hidden"
     :class="{
       'cursor-grab': isZoomed && !isDragging,
       'cursor-grabbing': isZoomed && isDragging,
@@ -17,7 +17,7 @@
     @touchend.prevent="handlePressUp"
   >
     <img
-      class="zoom-effect h-full w-full object-fill"
+      class="vz-zoomimg-img zoom-effect h-full w-full object-fill"
       draggable="false"
       :alt
       :src="src"

@@ -1,6 +1,6 @@
 <template>
   <div
-    class="cursor-zoom-in overflow-clip border-none"
+    class="vz-zoomimg-img-container cursor-zoom-in overflow-clip border-none"
     ref="containerRef"
     :style="{ cursor: zoomDir === 'OUT' ? 'zoom-out' : 'zoom-in' }"
     @mouseenter="handleMouseEnter"
@@ -9,7 +9,7 @@
     @click="handleClick"
   >
     <img
-      class="h-full w-full object-fill"
+      class="vz-zoomimg-img h-full w-full object-fill"
       :alt
       :src="src"
       :style="{
