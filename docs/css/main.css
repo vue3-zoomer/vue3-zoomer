@@ -14,4 +14,18 @@
   .logo {
     scale: 1.5;
   }
+
+  .vp-doc {
+    tbody {
+      width: 100%;
+
+      tr {
+        width: 100%;
+
+        td {
+          width: 10%;
+        }
+      }
+    }
+  }
 }
