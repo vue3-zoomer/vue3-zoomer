@@ -22,6 +22,7 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
       
       - run: npm i
+      - run: npm run build
       - run: npm pack --dry-run
       - run: npm publish --provenance --access public
         env:
