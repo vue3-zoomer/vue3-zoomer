@@ -1,7 +1,7 @@
 <template>
   <div
     class="vz-magnifier-img-container relative"
-    ref="containerRef"
+    ref="container"
     @mousemove="handleMouseMove"
     @wheel.prevent="handleWheel"
     @touchmove.prevent="handleTouchMove"
@@ -65,7 +65,7 @@ const props = defineProps({
   },
 });
 
-const containerRef = useTemplateRef("containerRef");
+const containerRef = useTemplateRef("container");
 
 const position = ref<PositionType>({ left: 0, top: 0 });
 const isOutside = ref(true);
