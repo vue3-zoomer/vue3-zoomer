@@ -1,7 +1,7 @@
 <template>
   <div
-    ref="containerRef"
     class="vz-zoomimg-img-container overflow-hidden"
+    ref="container"
     :class="{
       'cursor-grab': isZoomed && !isDragging,
       'cursor-grabbing': isZoomed && isDragging,
@@ -83,7 +83,7 @@ const isDragging = ref(false);
 
 const isZoomed = computed(() => currentScale.value > 1);
 
-const containerRef = useTemplateRef("containerRef");
+const containerRef = useTemplateRef("container");
 
 const { isTransition, startTransition } = useTransition();
 const { multiStepZoomIn, zoomDir } = useMultiZoom(

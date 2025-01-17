@@ -107,19 +107,19 @@ const windowPosition = computed(() => {
   }
 });
 
-const zoomComponent = useTemplateRef("zoomComponent");
+const zoomComponentRef = useTemplateRef("zoomComponent");
 
 const handleZoomIn = () => {
-  if (zoomComponent.value) {
-    zoomComponent.value.zoomDir = "IN";
-    zoomComponent.value.multiZoom();
+  if (zoomComponentRef.value) {
+    zoomComponentRef.value.zoomDir = "IN";
+    zoomComponentRef.value.multiZoom();
   }
 };
 
 const handleZoomOut = () => {
-  if (zoomComponent.value) {
-    zoomComponent.value.zoomDir = "OUT";
-    zoomComponent.value.multiZoom();
+  if (zoomComponentRef.value) {
+    zoomComponentRef.value.zoomDir = "OUT";
+    zoomComponentRef.value.multiZoom();
   }
 };
 

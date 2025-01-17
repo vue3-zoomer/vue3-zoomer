@@ -1,7 +1,7 @@
 <template>
   <div
     class="vz-map-container relative select-none overflow-clip"
-    ref="backdropRef"
+    ref="backdrop"
     @click="moveToCursor"
     @mouseleave="stopMoving"
   >
@@ -14,7 +14,7 @@
 
     <div
       class="vz-map-window absolute bg-white/20 hover:cursor-pointer active:cursor-move"
-      ref="movableWindowRef"
+      ref="movableWindow"
       :class="{ 'invisible -z-10': !position }"
       :style="{
         left: `${position?.left}px`,
@@ -60,8 +60,8 @@ const position = defineModel("position", {
 });
 
 const mouseHold = ref(false);
-const backdropRef = useTemplateRef("backdropRef");
-const movableWindow = useTemplateRef("movableWindowRef");
+const backdropRef = useTemplateRef("backdrop");
+const movableWindowRef = useTemplateRef("movableWindow");
 
 // Store the elementX and elementY as reactive values
 const elementX = ref(0);
@@ -107,15 +107,15 @@ const stopMoving = () => {
 };
 
 const getMovableWindowNewPosition = () => {
-  if (backdropRef.value && movableWindow.value) {
+  if (backdropRef.value && movableWindowRef.value) {
     const maxTop =
-      backdropRef.value?.clientHeight - movableWindow.value?.clientHeight;
+      backdropRef.value?.clientHeight - movableWindowRef.value?.clientHeight;
     const maxLeft =
-      backdropRef.value?.clientWidth - movableWindow.value?.clientWidth;
+      backdropRef.value?.clientWidth - movableWindowRef.value?.clientWidth;
 
     const top = Math.min(
       Math.max(
-        elementY.value - Number(movableWindow.value?.clientHeight) / 2,
+        elementY.value - Number(movableWindowRef.value?.clientHeight) / 2,
         0,
       ),
       maxTop,
@@ -123,7 +123,7 @@ const getMovableWindowNewPosition = () => {
 
     const left = Math.min(
       Math.max(
-        elementX.value - Number(movableWindow.value?.clientWidth) / 2,
+        elementX.value - Number(movableWindowRef.value?.clientWidth) / 2,
         0,
       ),
       maxLeft,

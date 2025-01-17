@@ -1,7 +1,7 @@
 <template>
   <div
     class="vz-zoomimg-img-container cursor-zoom-in overflow-clip border-none"
-    ref="containerRef"
+    ref="container"
     :style="{ cursor: zoomDir === 'OUT' ? 'zoom-out' : 'zoom-in' }"
     @mouseenter="handleMouseEnter"
     @mouseleave="handleMouseLeave"
@@ -68,7 +68,7 @@ const zoomedImgOffset = defineModel("zoomedImgOffset", {
 
 const isZoomed = computed(() => currentScale.value > 1);
 
-const containerRef = useTemplateRef("containerRef");
+const containerRef = useTemplateRef("container");
 
 const { isTransition, startTransition } = useTransition();
 const { zoomDir, multiStepZoomIn } = useMultiZoom(
