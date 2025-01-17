@@ -2,6 +2,47 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.0.4](https://github.com/vue3-zoomer/vue3-zoomer/compare/v1.0.3...v1.0.4) (2025-01-17)
+
+
+### ✨ Features
+
+* add class selector ([370f406](https://github.com/vue3-zoomer/vue3-zoomer/commit/370f4064a79257695f46110f62597f6b5e25b262))
+* added alt tag to all components ([1a4da51](https://github.com/vue3-zoomer/vue3-zoomer/commit/1a4da517e02e0ea2f138595bd67b062eefd22ed6))
+* create a named slots from error and loading ([15ffe11](https://github.com/vue3-zoomer/vue3-zoomer/commit/15ffe113a9b2d7039eaa83a1efb02ae463810c6c))
+
+
+### 📚 Documentation
+
+* add alt props ([da8dcfc](https://github.com/vue3-zoomer/vue3-zoomer/commit/da8dcfc204c24c1d09e7db57b30e432a74e9379b))
+* add the zoom image slots docs ([a20dce3](https://github.com/vue3-zoomer/vue3-zoomer/commit/a20dce363fc985cab7f7a95971f2d01c487d5185))
+* make table column width fit content ([8602fc4](https://github.com/vue3-zoomer/vue3-zoomer/commit/8602fc4bec6b8b37ae9aa0eb5318d4fcdf2573ee))
+* styles customization guide ([839660a](https://github.com/vue3-zoomer/vue3-zoomer/commit/839660a1431834ac0f55e78de86af57c3ba7ac8a))
+
+
+### 🔧 Chores
+
+* Merge pull request #51 from vue3-zoomer/HossinAmin-patch-2 ([f9e78bf](https://github.com/vue3-zoomer/vue3-zoomer/commit/f9e78bfd12e0d98406a4b949c7f12157fbae5083)), closes [#51](https://github.com/vue3-zoomer/vue3-zoomer/issues/51)
+* Update npm_publish.yml ([9fb62a0](https://github.com/vue3-zoomer/vue3-zoomer/commit/9fb62a0f406ac6f6b190e0347dda45eb02d7c9d7))
+* Merge pull request #50 from vue3-zoomer/dev ([90704ae](https://github.com/vue3-zoomer/vue3-zoomer/commit/90704aed96a8b52485b5f33dd4de6fd2a8ff465e)), closes [#50](https://github.com/vue3-zoomer/vue3-zoomer/issues/50)
+* Merge pull request #43 from vue3-zoomer/feat/loading-and-error-template ([576123e](https://github.com/vue3-zoomer/vue3-zoomer/commit/576123e027a23b0c5dde521b90604032091524bb)), closes [#43](https://github.com/vue3-zoomer/vue3-zoomer/issues/43)
+* Merge pull request #49 from vue3-zoomer/HossinAmin-patch-2 ([baf925a](https://github.com/vue3-zoomer/vue3-zoomer/commit/baf925a6d677d91a17ad0c3007d7ff4eae2d73f9)), closes [#49](https://github.com/vue3-zoomer/vue3-zoomer/issues/49)
+* Update npm_publish.yml ([5d9de04](https://github.com/vue3-zoomer/vue3-zoomer/commit/5d9de0473f40827b13fb7b97ab4a27bec0382667))
+* Merge pull request #48 from vue3-zoomer/HossinAmin-patch-2 ([75083f9](https://github.com/vue3-zoomer/vue3-zoomer/commit/75083f966f51cf5fce588d86d5553e64bf18a1de)), closes [#48](https://github.com/vue3-zoomer/vue3-zoomer/issues/48)
+* Update npm_publish.yml ([e303b09](https://github.com/vue3-zoomer/vue3-zoomer/commit/e303b0955679b48b0b803d112b538dacc4643e1e))
+* Merge pull request #47 from vue3-zoomer/HossinAmin-patch-1 ([b10d19f](https://github.com/vue3-zoomer/vue3-zoomer/commit/b10d19f7450f889f53e6793caf936b428047f847)), closes [#47](https://github.com/vue3-zoomer/vue3-zoomer/issues/47)
+* Create npm_publish.yml ([c0a2073](https://github.com/vue3-zoomer/vue3-zoomer/commit/c0a20738c986dd55ca1d4018fafad2b3a536277d))
+* Merge pull request #46 from vue3-zoomer/hotfix/-automate-bundled-css-importing ([25b8935](https://github.com/vue3-zoomer/vue3-zoomer/commit/25b89356fd7f4b11d36532f5f704a09c7966723a)), closes [#46](https://github.com/vue3-zoomer/vue3-zoomer/issues/46)
+* Merge pull request #45 from vue3-zoomer/hotfix/fix-state-value-is-readonly-warning ([82a7c4e](https://github.com/vue3-zoomer/vue3-zoomer/commit/82a7c4ec075cc1444ea78e0874c6eaf242555d25)), closes [#45](https://github.com/vue3-zoomer/vue3-zoomer/issues/45)
+* Merge pull request #42 from vue3-zoomer/feature/class-selectors-for-styles-customization ([b46c3bd](https://github.com/vue3-zoomer/vue3-zoomer/commit/b46c3bdf148a24204a43cb678bc7638499f4ae2d)), closes [#42](https://github.com/vue3-zoomer/vue3-zoomer/issues/42)
+* Merge pull request #41 from vue3-zoomer/feature/add-alt-tag ([1d60764](https://github.com/vue3-zoomer/vue3-zoomer/commit/1d60764069731b9b8b608058e63a913a981e9be3)), closes [#41](https://github.com/vue3-zoomer/vue3-zoomer/issues/41)
+* Merge pull request #40 from vue3-zoomer/feature/social-media-card ([3fedd1f](https://github.com/vue3-zoomer/vue3-zoomer/commit/3fedd1f4c7bb10a99c3307b00dd0cd76f6a4f5c2)), closes [#40](https://github.com/vue3-zoomer/vue3-zoomer/issues/40)
+* generate site map ([18a9b87](https://github.com/vue3-zoomer/vue3-zoomer/commit/18a9b87a5ba23d448e1d6001b70a228e85cc4cff))
+* edit website name ([a90dd66](https://github.com/vue3-zoomer/vue3-zoomer/commit/a90dd667143104887c6cc06db4043d84cef525b5))
+* create social media card ([55ad0dd](https://github.com/vue3-zoomer/vue3-zoomer/commit/55ad0dd50fd5ae709ded74889f88452f214a96c6))
+* Merge pull request #39 from vue3-zoomer/feature/add-google-index ([821d26b](https://github.com/vue3-zoomer/vue3-zoomer/commit/821d26b49c7eb39f1997ea875730cd53890e2770)), closes [#39](https://github.com/vue3-zoomer/vue3-zoomer/issues/39)
+* add google indexing ([ccda653](https://github.com/vue3-zoomer/vue3-zoomer/commit/ccda6530d88523f440dc865f2bdf20dd070c265a))
+
 ### [1.0.3](https://github.com/vue3-zoomer/vue3-zoomer/compare/v1.0.2...v1.0.3) (2024-12-05)
 
 
