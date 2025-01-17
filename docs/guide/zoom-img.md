@@ -85,6 +85,44 @@ The Multi-Step Zoom feature allows users to zoom in and out with multiple clicks
 Multi zoom is disabled by default. To enable it, provide a value to the `step` prop which accepts any number, including fractions.
 :::
 
+## Slots
+
+### `loading`
+
+Use the `loading` slot to set the content of the zoom image when the image is loading
+
+```vue
+<ZoomImg
+  class="h-[30rem]"
+  zoom-type="drag"
+  trigger="click"
+  :src="imageSrc"
+  :zoom-scale="3"
+>
+  <template #loading>
+    <!-- Write your content here -->    
+  </template>
+</ZoomImg>
+```
+
+### `error`
+
+Use the `error` slot to set the content of the zoom image when there is an error loading the image
+
+```vue
+<ZoomImg
+  class="h-[30rem]"
+  zoom-type="drag"
+  trigger="click"
+  :src="imageSrc"
+  :zoom-scale="3"
+>
+  <template #error>
+    <!-- Write your content here -->    
+  </template>
+</ZoomImg>
+```
+
 ## Props and Events
 
 ### Props
