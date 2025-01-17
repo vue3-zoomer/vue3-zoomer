@@ -1,7 +1,7 @@
 <template>
   <div
-    class="cursor-zoom-in overflow-clip border-none"
-    ref="containerRef"
+    class="vz-zoomimg-img-container cursor-zoom-in overflow-clip border-none"
+    ref="container"
     :style="{ cursor: zoomDir === 'OUT' ? 'zoom-out' : 'zoom-in' }"
     @mouseenter="handleMouseEnter"
     @mouseleave="handleMouseLeave"
@@ -9,8 +9,8 @@
     @click="handleClick"
   >
     <img
-      class="h-full w-full object-fill"
-      alt="zoom-image"
+      class="vz-zoomimg-img h-full w-full object-fill"
+      :alt
       :src="src"
       :style="{
         transform: `translate(${zoomedImgOffset.left}px, ${zoomedImgOffset.top}px) scale(${currentScale})`,
@@ -36,6 +36,9 @@ const props = defineProps({
   src: {
     type: String,
     required: true,
+  },
+  alt: {
+    type: String,
   },
   zoomScale: {
     type: Number,
@@ -65,7 +68,7 @@ const zoomedImgOffset = defineModel("zoomedImgOffset", {
 
 const isZoomed = computed(() => currentScale.value > 1);
 
-const containerRef = useTemplateRef("containerRef");
+const containerRef = useTemplateRef("container");
 
 const { isTransition, startTransition } = useTransition();
 const { zoomDir, multiStepZoomIn } = useMultiZoom(

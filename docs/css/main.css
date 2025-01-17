@@ -14,4 +14,10 @@
   .logo {
     scale: 1.5;
   }
+
+  .vp-doc {
+    tbody {
+      width: 100%;
+    }
+  }
 }

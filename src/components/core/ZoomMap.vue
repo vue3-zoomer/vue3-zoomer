@@ -1,20 +1,20 @@
 <template>
   <div
-    class="relative select-none overflow-clip"
-    ref="backdropRef"
+    class="vz-map-container relative select-none overflow-clip"
+    ref="backdrop"
     @click="moveToCursor"
     @mouseleave="stopMoving"
   >
     <img
-      class="h-full w-full object-fill"
+      class="vz-map-img h-full w-full object-fill"
       ref="imgRef"
-      alt="zoom-image"
+      :alt
       :src="src"
     />
 
     <div
-      class="absolute bg-white/20 hover:cursor-pointer active:cursor-move"
-      ref="movableWindowRef"
+      class="vz-map-window absolute bg-white/20 hover:cursor-pointer active:cursor-move"
+      ref="movableWindow"
       :class="{ 'invisible -z-10': !position }"
       :style="{
         left: `${position?.left}px`,
@@ -45,6 +45,10 @@ defineProps({
     type: String,
     required: true,
   },
+  alt: {
+    type: String,
+    default: "zoomed-img",
+  },
   zoomScale: {
     type: Number,
     default: 2,
@@ -56,8 +60,8 @@ const position = defineModel("position", {
 });
 
 const mouseHold = ref(false);
-const backdropRef = useTemplateRef("backdropRef");
-const movableWindow = useTemplateRef("movableWindowRef");
+const backdropRef = useTemplateRef("backdrop");
+const movableWindowRef = useTemplateRef("movableWindow");
 
 // Store the elementX and elementY as reactive values
 const elementX = ref(0);
@@ -103,15 +107,15 @@ const stopMoving = () => {
 };
 
 const getMovableWindowNewPosition = () => {
-  if (backdropRef.value && movableWindow.value) {
+  if (backdropRef.value && movableWindowRef.value) {
     const maxTop =
-      backdropRef.value?.clientHeight - movableWindow.value?.clientHeight;
+      backdropRef.value?.clientHeight - movableWindowRef.value?.clientHeight;
     const maxLeft =
-      backdropRef.value?.clientWidth - movableWindow.value?.clientWidth;
+      backdropRef.value?.clientWidth - movableWindowRef.value?.clientWidth;
 
     const top = Math.min(
       Math.max(
-        elementY.value - Number(movableWindow.value?.clientHeight) / 2,
+        elementY.value - Number(movableWindowRef.value?.clientHeight) / 2,
         0,
       ),
       maxTop,
@@ -119,7 +123,7 @@ const getMovableWindowNewPosition = () => {
 
     const left = Math.min(
       Math.max(
-        elementX.value - Number(movableWindow.value?.clientWidth) / 2,
+        elementX.value - Number(movableWindowRef.value?.clientWidth) / 2,
         0,
       ),
       maxLeft,

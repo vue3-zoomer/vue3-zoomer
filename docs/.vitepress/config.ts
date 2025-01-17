@@ -84,6 +84,10 @@ export default defineConfig({
           { text: "Controls", link: "/guide/controls" },
         ],
       },
+      {
+        text: "Styling Guide",
+        items: [{ text: "Classes", link: "/guide/styles-guide" }],
+      },
       // {
       //   text: "Examples",
       //   items: [],

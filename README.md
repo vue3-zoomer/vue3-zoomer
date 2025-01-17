@@ -40,16 +40,17 @@ Then, use the `ZoomImg` component in your template:
 
 ### Props
 
-| Name           | Type                 | Default    | Description                                                                |
-| -------------- | -------------------- | ---------- | -------------------------------------------------------------------------- |
-| `src`          | `String`             | `required` | The source URL of the image to be zoomed.                                  |
-| `zoomScale`    | `Number`             | `2`        | The desired zoom scale of the image.                                       |
-| `trigger`      | `"click" \| "hover"` | `"click"`  | The event that triggers the zoom functionality, either "click" or "hover". |
-| `zoomType`     | `"move" \| "drag"`   | `"move"`   | The type of zoom interaction, either "move" or "drag".                     |
-| `step`         | `Number`             | -          | The step value for the zoom scale.                                         |
-| `persist`      | `Boolean`            | false      | Whether the zoom state should persist on mouse leave.                      |
-| `showZoomBtns` | `Boolean`            | false      | Show controls to increase or decrease the zoom scale from buttons.         |
-| `showImgMap`   | `Boolean`            | false      | Whether to display the image map overlay.                                  |
+| Name           | Type                 | Default        | Description                                                                |
+| -------------- | -------------------- | -------------- | -------------------------------------------------------------------------- |
+| `src`          | `String`             | `required`     | The source URL of the image to be zoomed.                                  |
+| `alt`          | `String`             | `"zoomed-img"` | Alternative text description of the image for accessibility.               |
+| `zoomScale`    | `Number`             | `2`            | The desired zoom scale of the image.                                       |
+| `trigger`      | `"click" \| "hover"` | `"click"`      | The event that triggers the zoom functionality, either "click" or "hover". |
+| `zoomType`     | `"move" \| "drag"`   | `"move"`       | The type of zoom interaction, either "move" or "drag".                     |
+| `step`         | `Number`             | -              | The step value for the zoom scale.                                         |
+| `persist`      | `Boolean`            | false          | Whether the zoom state should persist on mouse leave.                      |
+| `showZoomBtns` | `Boolean`            | false          | Show controls to increase or decrease the zoom scale from buttons.         |
+| `showImgMap`   | `Boolean`            | false          | Whether to display the image map overlay.                                  |
 
 ## Magnifier
 

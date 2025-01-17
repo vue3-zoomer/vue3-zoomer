@@ -1,7 +1,7 @@
 <template>
   <div
-    ref="containerRef"
-    class="overflow-hidden"
+    class="vz-zoomimg-img-container overflow-hidden"
+    ref="container"
     :class="{
       'cursor-grab': isZoomed && !isDragging,
       'cursor-grabbing': isZoomed && isDragging,
@@ -17,9 +17,9 @@
     @touchend.prevent="handlePressUp"
   >
     <img
-      alt="zoom-image"
+      class="vz-zoomimg-img zoom-effect h-full w-full object-fill"
       draggable="false"
-      class="zoom-effect h-full w-full object-fill"
+      :alt
       :src="src"
       :style="{
         transform: `translate(${zoomedImgOffset.left}px, ${zoomedImgOffset.top}px) scale(${currentScale})`,
@@ -49,6 +49,9 @@ const props = defineProps({
   src: {
     type: String,
     required: true,
+  },
+  alt: {
+    type: String,
   },
   zoomScale: {
     type: Number,
@@ -80,7 +83,7 @@ const isDragging = ref(false);
 
 const isZoomed = computed(() => currentScale.value > 1);
 
-const containerRef = useTemplateRef("containerRef");
+const containerRef = useTemplateRef("container");
 
 const { isTransition, startTransition } = useTransition();
 const { multiStepZoomIn, zoomDir } = useMultiZoom(

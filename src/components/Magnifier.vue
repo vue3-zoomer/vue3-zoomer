@@ -1,21 +1,22 @@
 <template>
   <div
-    class="relative"
-    ref="containerRef"
+    class="vz-magnifier-img-container relative"
+    ref="container"
     @mousemove="handleMouseMove"
     @wheel.prevent="handleWheel"
     @touchmove.prevent="handleTouchMove"
   >
     <img
-      class="h-full w-full object-fill"
-      alt="image"
+      class="vz-magnifier-img h-full w-full object-fill"
+      :alt
       :src="src"
       @error="$emit('error')"
       @load="$emit('load')"
     />
+
     <div
       v-show="!isOutside"
-      class="shadow-inner-lg absolute z-10 overflow-clip rounded-full hover:cursor-none"
+      class="vz-magnifier-lens absolute z-10 overflow-clip rounded-full shadow-inner-lg hover:cursor-none"
       :style="{
         left: `${position.left}px`,
         top: `${position.top}px`,
@@ -24,8 +25,8 @@
       }"
     >
       <img
-        class="h-full w-full object-fill"
-        alt="zoom-image"
+        class="vz-magnifier-lens-img h-full w-full object-fill"
+        alt="lens-zoomed-image"
         :src="src"
         :style="{
           transform: `translate(${zoomedImgOffset.left}px, ${zoomedImgOffset.top}px) scaleX(${(zoomScale * (containerRef?.clientWidth ?? 1)) / magnifierSize}) scaleY(${(zoomScale * (containerRef?.clientHeight ?? 1)) / magnifierSize})`,
@@ -50,6 +51,10 @@ const props = defineProps({
     type: String,
     required: true,
   },
+  alt: {
+    type: String,
+    default: "zoomed-img",
+  },
   zoomScale: {
     type: Number,
     default: 2,
@@ -60,7 +65,7 @@ const props = defineProps({
   },
 });
 
-const containerRef = useTemplateRef("containerRef");
+const containerRef = useTemplateRef("container");
 
 const position = ref<PositionType>({ left: 0, top: 0 });
 const isOutside = ref(true);

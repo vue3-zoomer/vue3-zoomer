@@ -1,5 +1,5 @@
 <template>
-  <div class="relative">
+  <div class="vz-zoomimg-container relative">
     <DragZoomImg
       v-if="isDrag"
       v-model:current-scale="currentScale"
@@ -7,8 +7,12 @@
       v-bind="props"
       ref="zoomComponent"
       class="h-full w-full"
-      @error="$emit('error')"
-      @load="$emit('load')"
+      :class="{
+        hidden: (loading && $slots.loading) || (error && $slots.error),
+      }"
+      :alt
+      @error="handleError"
+      @load="handleLoad"
     />
 
     <MoveZoomImg
@@ -18,9 +22,16 @@
       v-bind="props"
       ref="zoomComponent"
       class="h-full w-full"
-      @error="$emit('error')"
-      @load="$emit('load')"
+      :class="{
+        hidden: (loading && $slots.loading) || (error && $slots.error),
+      }"
+      :alt
+      @error="handleError"
+      @load="handleLoad"
     />
+
+    <slot v-if="loading" name="loading" />
+    <slot v-if="error" name="error" />
 
     <ZoomButtons
       v-if="showZoomBtns"
@@ -54,12 +65,16 @@ import MoveZoomImg from "~/components/core/MoveZoomImg.vue";
 import ZoomButtons from "~/components/controls/ZoomButtons.vue";
 import ZoomMap from "~/components/core/ZoomMap.vue";
 
-defineEmits(["error", "load"]);
+const emit = defineEmits(["error", "load"]);
 
 const props = defineProps({
   src: {
     type: String,
     required: true,
+  },
+  alt: {
+    type: String,
+    default: "zoomed-img",
   },
   zoomScale: {
     type: Number,
@@ -90,36 +105,50 @@ const props = defineProps({
 const currentScale = ref(1);
 const zoomedImgOffset = ref({ left: 0, top: 0 });
 
+const loading = ref(true);
+const error = ref(false);
+
 const isDrag = computed(
   () => props.zoomType === "drag" || window.innerWidth < 768,
 );
 
 const windowPosition = computed(() => {
   if (currentScale.value !== 1) {
-    //Multiply scale by 4 because the map window is quarter the map container
+    // Multiply scale by 4 because the map window is quarter the map container
     return offset2pos(zoomedImgOffset.value, currentScale.value * 4);
   }
 });
 
-const zoomComponent = useTemplateRef("zoomComponent");
+const zoomComponentRef = useTemplateRef("zoomComponent");
 
 const handleZoomIn = () => {
-  if (zoomComponent.value) {
-    zoomComponent.value.zoomDir = "IN";
-    zoomComponent.value.multiZoom();
+  if (zoomComponentRef.value) {
+    zoomComponentRef.value.zoomDir = "IN";
+    zoomComponentRef.value.multiZoom();
   }
 };
 
 const handleZoomOut = () => {
-  if (zoomComponent.value) {
-    zoomComponent.value.zoomDir = "OUT";
-    zoomComponent.value.multiZoom();
+  if (zoomComponentRef.value) {
+    zoomComponentRef.value.zoomDir = "OUT";
+    zoomComponentRef.value.multiZoom();
   }
 };
 
 const updateOffset = (newPosition?: PositionType) => {
-  //Multiply scale by 4 because the map window is quarter the map container
+  // Multiply scale by 4 because the map window is quarter the map container
   if (newPosition)
     zoomedImgOffset.value = pos2offset(newPosition, currentScale.value * 4);
+};
+
+const handleLoad = () => {
+  loading.value = false;
+  emit("load");
+};
+
+const handleError = () => {
+  error.value = true;
+  loading.value = false;
+  emit("error");
 };
 </script>

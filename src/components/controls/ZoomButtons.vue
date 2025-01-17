@@ -1,5 +1,7 @@
 <template>
-  <div class="absolute bottom-1 end-1 z-10 flex gap-2 p-3">
+  <div
+    class="vz-zoom-btns-container absolute bottom-1 end-1 z-10 flex gap-2 p-3"
+  >
     <button
       class="controls-btn zoom-out-btn"
       :disabled="minZoom"
