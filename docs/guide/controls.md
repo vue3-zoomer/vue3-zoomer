@@ -18,7 +18,6 @@ Currently, we only provide internal controls for the `ZoomImg` component like zo
 
 The image map provides an interactive miniature navigation overview of the zoomed content on user interaction. Users can click or drag on the map to navigate to different portions of the zoomed image, making it easier to explore and navigate large images.
 
-<ClientOnly>
 <ZoomImg
   class="h-[30rem]"
   zoom-type="drag"
@@ -26,11 +25,6 @@ The image map provides an interactive miniature navigation overview of the zoome
   :zoom-scale="5"
   :show-img-map="true"
 />
-<template #fallback>
-
-  <div class="h-[30rem] w-full animate-pulse bg-gray-500"/>
-  </template>
-</ClientOnly>
 
 ```vue
 <ZoomImg
@@ -46,8 +40,7 @@ The image map provides an interactive miniature navigation overview of the zoome
 
 The zoom buttons provide a familiar interface for zooming in and out of the component. When enabled, plus (+) and minus (-) buttons appear on the component.
 
-<ClientOnly>
-  <ZoomImg
+<ZoomImg
     class="h-[30rem]"
     zoom-type="drag"
     :src="imageSrc"
@@ -55,10 +48,6 @@ The zoom buttons provide a familiar interface for zooming in and out of the comp
     :step="1"
     :show-zoom-btns="true"
   />
-  <template #fallback>
-    <div class="h-[30rem] w-full animate-pulse bg-gray-500" /> 
-  </template>
-</ClientOnly>
 
 ```vue
 <ZoomImg

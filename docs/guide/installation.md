@@ -40,9 +40,4 @@ import ZoomImg from "~/components/ZoomImg.vue";
 import imageSrc from "~/assets/images/red.jpg";
 </script>
 
-<ClientOnly>
-  <ZoomImg :src="imageSrc" />
-  <template #fallback>
-    <div class="h-[30rem] w-full animate-pulse bg-gray-500"/>
-  </template>
-</ClientOnly>
+<ZoomImg :src="imageSrc" />
