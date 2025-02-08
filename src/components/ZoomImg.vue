@@ -58,7 +58,7 @@
 
 <script setup lang="ts">
 import type { PositionType } from "~/types";
-import { type PropType, ref, computed, useTemplateRef } from "vue";
+import { type PropType, ref, computed, useTemplateRef, onMounted } from "vue";
 import { offset2pos, pos2offset } from "~/utils/zoom";
 import DragZoomImg from "~/components/core/DragZoomImg.vue";
 import MoveZoomImg from "~/components/core/MoveZoomImg.vue";
@@ -104,12 +104,13 @@ const props = defineProps({
 
 const currentScale = ref(1);
 const zoomedImgOffset = ref({ left: 0, top: 0 });
+const screenSize = ref(1080);
 
 const loading = ref(true);
 const error = ref(false);
 
 const isDrag = computed(
-  () => props.zoomType === "drag" || window.innerWidth < 768,
+  () => props.zoomType === "drag" || screenSize.value < 768,
 );
 
 const windowPosition = computed(() => {
@@ -151,4 +152,8 @@ const handleError = () => {
   loading.value = false;
   emit("error");
 };
+
+onMounted(() => {
+  screenSize.value = window?.innerWidth ?? 1080;
+});
 </script>

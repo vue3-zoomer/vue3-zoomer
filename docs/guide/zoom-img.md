@@ -14,18 +14,13 @@ The ZoomImg component allows users to zoom into an image within its original con
 
 ### Move
 
-<ClientOnly>
-  <ZoomImg
+<ZoomImg
     class="h-[30rem]"
     zoom-type="move"
     trigger="click"
     :src="imageSrc"
     :zoom-scale="3"
   />
-  <template #fallback>
-    <div class="h-[30rem] w-full animate-pulse bg-gray-500"/> 
-  </template>
-</ClientOnly>
 
 ```vue
 <ZoomImg
@@ -39,17 +34,12 @@ The ZoomImg component allows users to zoom into an image within its original con
 
 ### Drag
 
-<ClientOnly>
-  <ZoomImg
+<ZoomImg
     class="h-[30rem]"
     zoom-type="drag"
     :src="imageSrc"
     :zoom-scale="3"
-  />
-  <template #fallback>
-    <div class="h-[30rem] w-full animate-pulse bg-gray-500" /> 
-  </template>
-</ClientOnly>
+/>
 
 ```vue
 <ZoomImg
@@ -70,12 +60,7 @@ You can explore zoom controls such as buttons for managing zoom levels and a zoo
 
 The Multi-Step Zoom feature allows users to zoom in and out with multiple clicks. You can set the `step` prop to control how much the zoom level changes each time. Starting at a scale of 1x, each click increases the zoom until the maximum level `zoomScale`. Clicking again at maximum zoom decreases the level in the same increments, smoothly cycling between the default and maximum zoom.
 
-<ClientOnly>
   <ZoomImg class="h-[30rem]" :src="imageSrc" :zoom-scale="5" :step="1" />
-  <template #fallback>
-    <div class="h-[30rem] w-full animate-pulse bg-gray-500" /> 
-  </template>
-</ClientOnly>
 
 ```vue
 <ZoomImg class="h-[30rem]" :src="imageSrc" :zoom-scale="5" :step="1" />
