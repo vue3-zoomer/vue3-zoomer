@@ -57,8 +57,8 @@
 </template>
 
 <script setup lang="ts">
-import type { PositionType } from "~/types";
-import { type PropType, ref, computed, useTemplateRef, onMounted } from "vue";
+import type { PositionType, ZoomImgProps } from "~/types";
+import { ref, computed, useTemplateRef, onMounted } from "vue";
 import { offset2pos, pos2offset } from "~/utils/zoom";
 import DragZoomImg from "~/components/core/DragZoomImg.vue";
 import MoveZoomImg from "~/components/core/MoveZoomImg.vue";
@@ -67,39 +67,8 @@ import ZoomMap from "~/components/core/ZoomMap.vue";
 
 const emit = defineEmits(["error", "load"]);
 
-const props = defineProps({
-  src: {
-    type: String,
-    required: true,
-  },
-  alt: {
-    type: String,
-    default: "zoomed-img",
-  },
-  zoomScale: {
-    type: Number,
-    default: 2,
-  },
-  trigger: {
-    type: String as PropType<"click" | "hover">,
-    default: "click",
-  },
-  zoomType: {
-    type: String as PropType<"move" | "drag">,
-    default: "move",
-  },
-  step: {
-    type: Number,
-  },
-  persist: {
-    type: Boolean,
-  },
-  showZoomBtns: {
-    type: Boolean,
-  },
-  showImgMap: {
-    type: Boolean,
-  },
+const props = withDefaults(defineProps<ZoomImgProps>(), {
+  zoomType: "move",
 });
 
 const currentScale = ref(1);

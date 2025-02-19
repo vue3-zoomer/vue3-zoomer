@@ -33,11 +33,12 @@
 </template>
 
 <script setup lang="ts">
-import { type PropType, ref, computed, useTemplateRef } from "vue";
+import { ref, computed, useTemplateRef } from "vue";
 import {
   getAbsTouchPosition,
   getRelTouchPosition,
 } from "~/utils/touchPosition";
+import type { ZoomImgCoreProps } from "~/types";
 import { getRelCursorPosition } from "~/utils/cursorPosition";
 import { calcDragOffset } from "~/utils/zoom";
 import { useTransition } from "~/composables/useTransition";
@@ -45,25 +46,9 @@ import useMultiZoom from "~/composables/useMultiZoom";
 
 defineEmits(["error", "load"]);
 
-const props = defineProps({
-  src: {
-    type: String,
-    required: true,
-  },
-  alt: {
-    type: String,
-  },
-  zoomScale: {
-    type: Number,
-    default: 2,
-  },
-  trigger: {
-    type: String as PropType<"click" | "hover">,
-    default: "click",
-  },
-  step: {
-    type: Number,
-  },
+const props = withDefaults(defineProps<ZoomImgCoreProps>(), {
+  zoomScale: 2,
+  trigger: "click",
 });
 
 const currentScale = defineModel("currentScale", {
