@@ -1,5 +1,5 @@
 <template>
-  <div class="flex h-screen w-screen items-center justify-center p-5">
+  <div class="centered-container">
     <ZoomImg
       class="h-[30rem]"
       :src="red"
@@ -16,3 +16,14 @@ import red from "./assets/images/red.jpg";
 import "./assets/css/main.css";
 import ZoomImg from "./components/ZoomImg.vue";
 </script>
+
+<style scoped>
+.centered-container {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  align-items: center;
+  justify-content: center;
+  padding: 1.25rem;
+}
+</style>
