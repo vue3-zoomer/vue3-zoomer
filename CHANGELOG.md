@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.0.6](https://github.com/vue3-zoomer/vue3-zoomer/compare/v1.0.5...v1.0.6) (2025-03-24)
+
+
+### 🔧 Chores
+
+* Merge pull request #58 from vue3-zoomer/dev ([c7fa491](https://github.com/vue3-zoomer/vue3-zoomer/commit/c7fa491592abe7e671142e380a513c6b3a169992)), closes [#58](https://github.com/vue3-zoomer/vue3-zoomer/issues/58)
+* Merge pull request #57 from ritogk/bugfix/tailwind-css-scope ([7b5dff5](https://github.com/vue3-zoomer/vue3-zoomer/commit/7b5dff5e741dea24d98f1452511c9ba5237667ad)), closes [#57](https://github.com/vue3-zoomer/vue3-zoomer/issues/57)
+* fix call ([68b9e87](https://github.com/vue3-zoomer/vue3-zoomer/commit/68b9e87d4550fb8e9d0d4aee6d783b92b6949cb8))
+* add tailwind scope ([832b4ec](https://github.com/vue3-zoomer/vue3-zoomer/commit/832b4ecf700463e23934d81163f675fb3543a596))
+* install tailwindcss-scoped-preflight ([9cdf77d](https://github.com/vue3-zoomer/vue3-zoomer/commit/9cdf77db28b826bf917548e3c86aa5f020f131c6))
+
 ### [1.0.5](https://github.com/vue3-zoomer/vue3-zoomer/compare/v1.0.4...v1.0.5) (2025-02-08)
 
 
