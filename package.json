@@ -1,6 +1,6 @@
 {
   "name": "vue3-zoomer",
-  "version": "1.0.4",
+  "version": "1.0.6",
   "description": "A Vue 3 component for zooming images.",
   "type": "module",
   "packageManager": "bun@1.1.33",
