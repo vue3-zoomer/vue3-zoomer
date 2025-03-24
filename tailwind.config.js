@@ -1,3 +1,8 @@
+import {
+  scopedPreflightStyles,
+  isolateInsideOfContainer,
+} from "tailwindcss-scoped-preflight";
+
 /** @type {import('tailwindcss').Config} */
 export default {
   content: [
@@ -12,5 +17,9 @@ export default {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    scopedPreflightStyles({
+      isolationStrategy: isolateInsideOfContainer(".twp"),
+    }),
+  ],
 };
