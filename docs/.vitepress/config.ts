@@ -5,25 +5,33 @@ import path from "path";
 export default defineConfig({
   title: "Vue3 Zoomer",
   description: "The Ultimate Zoomable image component",
-
   base: "/vue3-zoomer/",
   sitemap: {
     hostname: "https://vue3-zoomer.github.io/vue3-zoomer/",
   },
-
   head: [
+    ["link", { rel: "icon", href: "/favicon.ico" }],
+    ["meta", { property: "og:type", content: "website" }],
     [
-      "link",
+      "meta",
       {
-        rel: "icon",
-        href: "/vue3-zoomer/logo.svg",
+        property: "og:title",
+        content: "Vue3 Zoomer - The Ultimate Zoomable Image Component",
+      },
+    ],
+    ["meta", { property: "og:site_name", content: "Vue3 Zoomer" }],
+    [
+      "meta",
+      {
+        property: "og:image",
+        content: "https://vue3-zoomer.github.io/vue3-zoomer/card.png",
       },
     ],
     [
       "meta",
       {
-        name: "google-site-verification",
-        content: "d_vRC79cad-TecLCExPf7LTQxKFucm-J5ispBu47IAU",
+        property: "og:url",
+        content: "https://vue3-zoomer.github.io/vue3-zoomer/",
       },
     ],
     [
@@ -34,22 +42,30 @@ export default defineConfig({
           "Vue3 Zoomer is a beautiful image viewer component for Vue.js projects, making it easy to create stunning zoomable images for ecommerce, art galleries, infographics, and any other image you need to zoom into.",
       },
     ],
+    ["meta", { name: "twitter:card", content: "summary_large_image" }],
+    ["meta", { name: "twitter:title", content: "Vue3 Zoomer" }],
     [
       "meta",
       {
-        property: "og:image",
-        content: "/vue3-zoomer/card.png",
+        name: "twitter:description",
+        content: "The Ultimate Zoomable image component for Vue.js",
       },
     ],
     [
       "meta",
       {
-        name: "twitter:card",
-        content: "summary_large_image",
+        name: "twitter:image",
+        content: "https://vue3-zoomer.github.io/vue3-zoomer/card.png",
+      },
+    ],
+    [
+      "meta",
+      {
+        name: "google-site-verification",
+        content: "d_vRC79cad-TecLCExPf7LTQxKFucm-J5ispBu47IAU",
       },
     ],
   ],
-
   vite: {
     resolve: {
       alias: {
@@ -67,7 +83,6 @@ export default defineConfig({
       { text: "Guide", link: "/guide/introduction" },
       // { text: "Examples", link: "/examples" },
     ],
-
     sidebar: [
       {
         text: "Quick start",
@@ -93,7 +108,6 @@ export default defineConfig({
       //   items: [],
       // },
     ],
-
     socialLinks: [
       { icon: "github", link: "https://github.com/vue3-zoomer/vue3-zoomer" },
       {
