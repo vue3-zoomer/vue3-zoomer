@@ -1,5 +1,8 @@
 ![Docs Hero Section](hero.png)
 
+![NPM Downloads](https://img.shields.io/npm/d18m/vue3-zoomer?label=NPM%20downloads&color=%2340b883)
+[![MadeWithVueJs.com shield](https://madewithvuejs.com/storage/repo-shields/5453-shield.svg)](https://madewithvuejs.com/p/vue3-zoomer/shield-link)
+
 # Vue3 Zoomer
 
 Vue3 Zoomer is a beautiful image viewer component for Vue.js projects, making it easy to create stunning zoomable images for ecommerce, art galleries, infographics, and any other image you need to zoom into.
