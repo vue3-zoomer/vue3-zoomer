@@ -1,6 +1,6 @@
 ![Docs Hero Section](hero.png)
 
-![NPM Downloads](https://img.shields.io/npm/d18m/vue3-zoomer?label=NPM%20downloads&color=%2340b883)
+[![NPM Downloads](https://img.shields.io/npm/d18m/vue3-zoomer?label=NPM%20downloads&color=%2340b883)](https://www.npmjs.com/package/vue3-zoomer)
 [![MadeWithVueJs.com shield](https://madewithvuejs.com/storage/repo-shields/5453-shield.svg)](https://madewithvuejs.com/p/vue3-zoomer/shield-link)
 
 # Vue3 Zoomer
