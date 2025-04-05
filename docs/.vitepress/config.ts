@@ -10,7 +10,7 @@ export default defineConfig({
     hostname: "https://vue3-zoomer.github.io/vue3-zoomer/",
   },
   head: [
-    ["link", { rel: "icon", href: "/favicon.ico" }],
+    ["link", { rel: "icon", href: "favicon.ico" }],
     ["meta", { property: "og:type", content: "website" }],
     [
       "meta",
