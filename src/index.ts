@@ -1,5 +1,4 @@
 import type { App } from "vue";
-import "./assets/css/main.css";
 import ZoomImg from "./components/ZoomImg.vue";
 import Magnifier from "./components/Magnifier.vue";
 

@@ -1,6 +1,6 @@
 <template>
   <div
-    class="twp vz-magnifier-img-container relative"
+    class="vz-magnifier-img-container relative"
     ref="container"
     @mousemove="handleMouseMove"
     @wheel.prevent="handleWheel"
@@ -133,3 +133,5 @@ const handleTouchMove = (event: TouchEvent) => {
   };
 };
 </script>
+
+<style scoped src="../assets/css/main.css"></style>

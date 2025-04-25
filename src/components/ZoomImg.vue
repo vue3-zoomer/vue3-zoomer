@@ -1,5 +1,5 @@
 <template>
-  <div class="vz-zoomimg-container twp relative">
+  <div class="vz-zoomimg-container relative">
     <DragZoomImg
       v-if="isDrag"
       v-model:current-scale="currentScale"
@@ -157,3 +157,5 @@ onMounted(() => {
   screenSize.value = window?.innerWidth ?? 1080;
 });
 </script>
+
+<style scoped src="../assets/css/main.css"></style>
