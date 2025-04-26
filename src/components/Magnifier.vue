@@ -1,6 +1,6 @@
 <template>
   <div
-    class="vz-magnifier-img-container relative"
+    class="twp vz-magnifier-img-container relative"
     ref="container"
     @mousemove="handleMouseMove"
     @wheel.prevent="handleWheel"

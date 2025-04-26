@@ -1,6 +1,6 @@
 {
   "name": "vue3-zoomer",
-  "version": "1.0.4",
+  "version": "1.0.6",
   "description": "A Vue 3 component for zooming images.",
   "type": "module",
   "packageManager": "bun@1.1.33",
@@ -23,7 +23,8 @@
     "postcss": "^8.4.47",
     "prettier": "^3.3.3",
     "prettier-plugin-tailwindcss": "^0.6.6",
-    "tailwindcss": "^3.4.14",
+    "tailwindcss": "^3.4.17",
+    "tailwindcss-scoped-preflight": "^3.4.10",
     "typescript": "^5.5.3",
     "vite": "^5.4.1",
     "vite-plugin-dts": "^4.3.0",

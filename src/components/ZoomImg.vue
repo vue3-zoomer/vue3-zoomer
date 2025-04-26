@@ -1,5 +1,5 @@
 <template>
-  <div class="vz-zoomimg-container relative">
+  <div class="twp vz-zoomimg-container relative">
     <component
       v-model:current-scale="currentScale"
       v-model:zoomed-img-offset="zoomedImgOffset"

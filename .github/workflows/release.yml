@@ -1,4 +1,4 @@
-name: GitHub Release
+name: Release & Publish
 
 on:
   workflow_dispatch:
@@ -90,3 +90,23 @@ jobs:
             *.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  publish:
+    runs-on: ubuntu-latest
+    needs: release
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "lts/*"
+          registry-url: "https://registry.npmjs.org"
+
+      - run: npm i
+      - run: npm run build
+      - run: npm pack --dry-run
+      - run: npm publish --provenance --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
