@@ -19,6 +19,7 @@
     <img
       class="vz-zoomimg-img zoom-effect h-full w-full object-fill"
       draggable="false"
+      ref="vzImg"
       :alt
       :src="src"
       :style="{
@@ -69,6 +70,7 @@ const isDragging = ref(false);
 const isZoomed = computed(() => currentScale.value > 1);
 
 const containerRef = useTemplateRef("container");
+const vzImgRef = useTemplateRef("vzImg");
 
 const { isTransition, startTransition } = useTransition();
 const { multiStepZoomIn, zoomDir } = useMultiZoom(
@@ -174,9 +176,9 @@ const imgOffset2CursorPos = () => {
 
 defineExpose({
   zoomDir,
+  vzImgRef,
   multiZoom: () => {
     const cursorPos = imgOffset2CursorPos();
-
     handlePressDown(new MouseEvent("mousedown", cursorPos));
     handlePressUp(new MouseEvent("mouseup", cursorPos));
   },

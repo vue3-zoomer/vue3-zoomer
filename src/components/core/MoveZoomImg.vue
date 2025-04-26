@@ -10,6 +10,7 @@
   >
     <img
       class="vz-zoomimg-img h-full w-full object-fill"
+      ref="vzImg"
       :alt
       :src="src"
       :style="{
@@ -51,6 +52,7 @@ const zoomedImgOffset = defineModel("zoomedImgOffset", {
 const isZoomed = computed(() => currentScale.value > 1);
 
 const containerRef = useTemplateRef("container");
+const vzImgRef = useTemplateRef<HTMLImageElement>("vzImg");
 
 const { isTransition, startTransition } = useTransition();
 const { zoomDir, multiStepZoomIn } = useMultiZoom(
@@ -106,6 +108,7 @@ const resetPosition = () => {
 
 defineExpose({
   zoomDir,
+  vzImgRef,
   multiZoom: () => {
     const rect = containerRef.value?.getBoundingClientRect();
     if (rect) {

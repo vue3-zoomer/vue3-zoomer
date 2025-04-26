@@ -16,4 +16,5 @@ export interface ZoomImgProps extends ZoomImgCoreProps {
   zoomType?: "move" | "drag";
   showZoomBtns?: boolean;
   showImgMap?: boolean;
+  loading?: boolean;
 }
