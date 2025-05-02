@@ -1,5 +1,5 @@
 <template>
-  <div class="twp vz-zoomimg-container relative">
+  <div class="vz-zoomimg-container relative">
     <component
       v-model:current-scale="currentScale"
       v-model:zoomed-img-offset="zoomedImgOffset"
@@ -119,3 +119,5 @@ onMounted(() => {
   isClient.value = true;
 });
 </script>
+
+<style scoped src="../assets/css/main.css"></style>

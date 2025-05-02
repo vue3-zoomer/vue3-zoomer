@@ -1,8 +1,3 @@
-import {
-  scopedPreflightStyles,
-  isolateInsideOfContainer,
-} from "tailwindcss-scoped-preflight";
-
 /** @type {import('tailwindcss').Config} */
 export default {
   content: [
@@ -10,6 +5,7 @@ export default {
     "./src/**/*.{vue,js,ts,jsx,tsx}",
     "./.vitepress/**/*.{js,ts,vue,md}",
   ],
+
   theme: {
     extend: {
       boxShadow: {
@@ -17,9 +13,6 @@ export default {
       },
     },
   },
-  plugins: [
-    scopedPreflightStyles({
-      isolationStrategy: isolateInsideOfContainer(".twp"),
-    }),
-  ],
+
+  plugins: [],
 };
