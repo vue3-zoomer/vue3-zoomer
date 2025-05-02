@@ -115,14 +115,15 @@ jobs:
           git add CHANGELOG.md
           # Only commit if there are changes
           if [ -n "$(git status --porcelain)" ]; then
-            git commit -m "chore(release): v${{ steps.tag_version.outputs.new_tag }}"
+            git commit -m "chore(release): ${{ steps.tag_version.outputs.new_tag }}"
+            git push --follow-tags origin ${{ github.event.inputs.branch }}
           fi
       - name: Release App
         uses: ncipollo/release-action@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           tag: ${{ steps.tag_version.outputs.new_tag }}
-          name: Release ${{ steps.tag_version.outputs.new_tag }}
+          name: ${{ steps.tag_version.outputs.new_tag }}
           body: |
             ${{ steps.changelog.outputs.compareurl }}
             ${{ steps.changelog.outputs.changelog }}
