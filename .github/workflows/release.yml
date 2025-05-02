@@ -68,8 +68,12 @@ jobs:
             {{fix}}
             ## ♻️ Refactors
             {{refactor,perf,clean}}
+            ## 📚 Documentation
+            {{docs,doc,style,types,typescript,flow}}
+            ## CI&CD
+            {{ci,build,workflow,actions}}
             ## 🔧 Chores 
-            {{chore,style,ci,__unknown__||🔶 Nothing change}}
+            {{chore,style,__unknown__||🔶 Nothing change}}
       - name: Update version in package.json
         run: |
           NEW_VERSION="${{ steps.tag_version.outputs.new_tag }}"
@@ -130,6 +134,7 @@ jobs:
             ${{ steps.changelog.outputs.changelog }}
 
   publish:
+    name: Publish to NPM
     runs-on: ubuntu-latest
     needs: release
     permissions:
@@ -137,6 +142,13 @@ jobs:
       id-token: write
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.inputs.branch }}
+
+      - name: Pull Latest Changes
+        run: git pull origin ${{ github.event.inputs.branch }}
+
       - uses: actions/setup-node@v4
         with:
           node-version: "lts/*"
