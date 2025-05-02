@@ -19,6 +19,7 @@
     <img
       class="vz-zoomimg-img zoom-effect h-full w-full object-fill"
       draggable="false"
+      ref="vzImg"
       :alt
       :src="src"
       :style="{
@@ -33,11 +34,12 @@
 </template>
 
 <script setup lang="ts">
-import { type PropType, ref, computed, useTemplateRef } from "vue";
+import { ref, computed, useTemplateRef } from "vue";
 import {
   getAbsTouchPosition,
   getRelTouchPosition,
 } from "~/utils/touchPosition";
+import type { ZoomImgCoreProps } from "~/types";
 import { getRelCursorPosition } from "~/utils/cursorPosition";
 import { calcDragOffset } from "~/utils/zoom";
 import { useTransition } from "~/composables/useTransition";
@@ -45,25 +47,9 @@ import useMultiZoom from "~/composables/useMultiZoom";
 
 defineEmits(["error", "load"]);
 
-const props = defineProps({
-  src: {
-    type: String,
-    required: true,
-  },
-  alt: {
-    type: String,
-  },
-  zoomScale: {
-    type: Number,
-    default: 2,
-  },
-  trigger: {
-    type: String as PropType<"click" | "hover">,
-    default: "click",
-  },
-  step: {
-    type: Number,
-  },
+const props = withDefaults(defineProps<ZoomImgCoreProps>(), {
+  zoomScale: 2,
+  trigger: "click",
 });
 
 const currentScale = defineModel("currentScale", {
@@ -84,6 +70,7 @@ const isDragging = ref(false);
 const isZoomed = computed(() => currentScale.value > 1);
 
 const containerRef = useTemplateRef("container");
+const vzImgRef = useTemplateRef("vzImg");
 
 const { isTransition, startTransition } = useTransition();
 const { multiStepZoomIn, zoomDir } = useMultiZoom(
@@ -189,9 +176,9 @@ const imgOffset2CursorPos = () => {
 
 defineExpose({
   zoomDir,
+  vzImgRef,
   multiZoom: () => {
     const cursorPos = imgOffset2CursorPos();
-
     handlePressDown(new MouseEvent("mousedown", cursorPos));
     handlePressUp(new MouseEvent("mouseup", cursorPos));
   },
