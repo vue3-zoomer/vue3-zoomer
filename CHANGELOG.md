@@ -1,5 +1,41 @@
 # Changelog
 
+## 🚀 Feature
+- 🌟 feat: add favicon and robots.txt for improved SEO and site identity 32ad093 @ahmedd-mahmoud
+- 🌟 feat: add npm publish job to release workflow 77e38a8 @ahmedd-mahmoud
+- 🌟 feat:ssr friendly loading 026a7e9 @HossinAmin
+## 🐛 Bugs
+- 🐞 fix: update tailwindcss to version 3.4.17 c7d51c2 @ahmedd-mahmoud
+- 🐞 fix: add favicon to docs public folder ea9bd68 @ahmedd-mahmoud
+- 🐞 fix: move robots.txt to docs public folder 72d3e48 @ahmedd-mahmoud
+- 🐞 fix: npm badge ebf357b @ahmedd-mahmoud
+- 🐞 hotfix:remove tailwind scoping 4153ad8 @HossinAmin
+- 🐞 fix:import main.css in scoped styled tag 02d0d3d @HossinAmin
+## CI&CD
+- 💢 ci: update versioning workflow ab6b22e @ahmedd-mahmoud
+- 💢 ci: update release workflow 06b8ec0 @ahmedd-mahmoud
+- 💢 ci: fix the release commit changes in package.json 203a6a9 @ahmedd-mahmoud
+- 💢 ci: pull changes in publish job 5b583dd @ahmedd-mahmoud
+## 🔧 Chores 
+- 💄 chore: extract common prop types bd2cdf1 @HossinAmin
+- 💄 chore: add badges to readme file 9196bb2 @ahmedd-mahmoud
+- 📄 Merge pull request #59 from vue3-zoomer/main db88ec7 @ahmedd-mahmoud
+- 📄 Merge pull request #60 from vue3-zoomer/feature/improve-SEO 9e6b133 @ahmedd-mahmoud
+- 📄 Merge pull request #61 from vue3-zoomer/dev c9f9772 @ahmedd-mahmoud
+- 📄 Merge pull request #62 from vue3-zoomer/hotfix/update-tailwind a638241 @ahmedd-mahmoud
+- 📄 Merge pull request #63 from vue3-zoomer/dev badbbdc @ahmedd-mahmoud
+- 📄 Merge pull request #64 from vue3-zoomer/enhance/merge-release-and-publish-workflows 3963a3a @ahmedd-mahmoud
+- 📄 Merge pull request #65 from vue3-zoomer/hotfix/fix-favicon 39f2fcd @ahmedd-mahmoud
+- 📄 Merge pull request #66 from vue3-zoomer/dev 621b445 @ahmedd-mahmoud
+- 📄 Merge pull request #67 from vue3-zoomer/enhance/readme-file-badges d824a59 @ahmedd-mahmoud
+- 📄 Merge pull request #68 from vue3-zoomer/enhance/readme-file-badges b06391b @ahmedd-mahmoud
+- 📄 Merge branch 'dev' into feat/SSR-friendly-loader 8f1bc70 @HossinAmin
+- 📄 Merge pull request #71 from vue3-zoomer/feat/SSR-friendly-loader f0bbcd8 @HossinAmin
+- 📄 Merge branch 'dev' into fix/tailwind-utility-classes-leaks 18aefba @ahmedd-mahmoud
+- 📄 Merge pull request #70 from vue3-zoomer/fix/tailwind-utility-classes-leaks 151d2c1 @ahmedd-mahmoud
+- 📄 Merge pull request #72 from vue3-zoomer/enhance/update-release-workflow b557287 @ahmedd-mahmoud
+- 📄 Merge pull request #73 from vue3-zoomer/dev 257a9f0 @ahmedd-mahmoud
+
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
 ### [1.0.6](https://github.com/vue3-zoomer/vue3-zoomer/compare/v1.0.5...v1.0.6) (2025-03-24)
