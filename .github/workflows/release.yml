@@ -73,6 +73,7 @@ jobs:
       - name: Update version in package.json
         run: |
           NEW_VERSION="${{ steps.tag_version.outputs.new_tag }}"
+          NEW_VERSION="${NEW_VERSION#v}"
           # Update package.json
           jq ".version = \"$NEW_VERSION\"" package.json > package.json.new
           mv package.json.new package.json
