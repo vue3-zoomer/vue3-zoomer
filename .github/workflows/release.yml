@@ -1,30 +1,23 @@
 name: Release & Publish
 
 on:
+  pull_request:
+    types:
+      - closed
+    branches:
+      - main
+
   workflow_dispatch:
-    inputs:
-      release-type:
-        description: "Release type (major, minor, patch)"
-        required: true
-        default: "patch"
-        type: choice
-        options:
-          - patch
-          - minor
-          - major
-      branch:
-        description: "Branch to release from"
-        required: true
-        default: "main"
-        type: string
 
 permissions:
   contents: write
-  pull-requests: read
+  packages: write
 
 jobs:
   release:
+    name: Create a New Release
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -37,59 +30,102 @@ jobs:
         with:
           node-version: "lts/*"
 
-      - name: Configure Git
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.1.30
+
+      - name: Install dependencies
+        run: bun install
+
+      - name: Build app to validate changes
+        run: bun run build
+
+      - name: Bump version and push tag
+        id: tag_version
+        uses: anothrNick/github-tag-action@1.64.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          WITH_V: true
+          DRY_RUN: true
+          PRERELEASE: false
+          DEFAULT_BUMP: patch
+          BRANCH_HISTORY: last
+
+      - run: echo "previous_tag=$(git describe --tags --abbrev=0 2>/dev/null || echo '')" >> $GITHUB_ENV
+      - name: Generate Changelog
+        id: changelog
+        uses: jaywcjlove/changelog-generator@main
+        if: env.previous_tag
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          filter-author: (jaywcjlove|小弟调调™|dependabot\[bot\]|Renovate Bot)
+          filter: (^[\s]+?[R|r]elease)|(^[R|r]elease)
+          template: |
+            ## 🚀 Feature
+            {{feat}}
+            ## 🐛 Bugs
+            {{fix}}
+            ## ♻️ Refactors
+            {{refactor,perf,clean}}
+            ## 🔧 Chores 
+            {{chore,style,ci,__unknown__||🔶 Nothing change}}
+      - name: Update version in package.json
+        run: |
+          NEW_VERSION="${{ steps.tag_version.outputs.new_tag }}"
+          # Update package.json
+          jq ".version = \"$NEW_VERSION\"" package.json > package.json.new
+          mv package.json.new package.json
+      - name: Update CHANGELOG.md
+        run: |
+          # Check if changelog was generated
+          if [ -z "${{ steps.changelog.outputs.changelog }}" ]; then
+            echo "No changelog generated, skipping update"
+            exit 0
+          fi
+          # Save changelog to a file to avoid heredoc issues
+          echo "${{ steps.changelog.outputs.changelog }}" > /tmp/changelog_content.md
+          if [ -f "CHANGELOG.md" ]; then
+            # Create backup of old changelog
+            cp CHANGELOG.md CHANGELOG.md.bak
+            
+            # Create new changelog with latest release notes at the top
+            echo "# Changelog" > CHANGELOG.md
+            echo "" >> CHANGELOG.md
+            cat /tmp/changelog_content.md >> CHANGELOG.md
+            echo "" >> CHANGELOG.md
+            
+            # Append old changelog content (skipping the header)
+            sed '1,2d' CHANGELOG.md.bak >> CHANGELOG.md
+            
+            # Remove backup
+            rm CHANGELOG.md.bak
+          else
+            # Create new changelog
+            echo "# Changelog" > CHANGELOG.md
+            echo "" >> CHANGELOG.md
+            cat /tmp/changelog_content.md >> CHANGELOG.md
+          fi
+      - name: Commit changes
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-
-      - name: Initialize package.json if needed
-        run: |
-          if [ ! -f package.json ]; then
-            # Initialize with current Git tag as version
-            current_version=$(git describe --tags --abbrev=0 2>/dev/null || echo "1.0.0")
-            current_version=${current_version#v}  # Remove 'v' prefix if present
-            npm init -y
-            npm pkg set version="${current_version}"
+          # Add files that were changed
+          git add package.json
+          git add CHANGELOG.md
+          # Only commit if there are changes
+          if [ -n "$(git status --porcelain)" ]; then
+            git commit -m "chore(release): v${{ steps.tag_version.outputs.new_tag }}"
           fi
-          npm install -g standard-version
-
-      - name: Create Release with standard-version
-        id: release
-        run: |
-          # Run standard-version and capture its output
-          standard-version --release-as ${{ github.event.inputs.release-type }} --infile CHANGELOG.md
-
-          # Extract the new version number
-          version=$(node -p "require('./package.json').version")
-          echo "version=v${version}" >> $GITHUB_ENV
-
-          # Get the latest changes from CHANGELOG.md
-          # This will capture everything from the latest version header to the next version header
-          latest_changes=$(awk '/^###? \[/{if(p){exit}p=1;next}p' CHANGELOG.md)
-
-          # Create a delimiter for multiline output
-          delimiter="CHANGELOG_DELIMITER"
-          echo "CHANGES<<$delimiter" >> $GITHUB_ENV
-          echo "$latest_changes" >> $GITHUB_ENV
-          echo "$delimiter" >> $GITHUB_ENV
-
-          # Push changes and tags
-          git push --follow-tags origin ${{ github.event.inputs.branch }}
-
-      - name: Create GitHub Release
-        uses: softprops/action-gh-release@v1
+      - name: Release App
+        uses: ncipollo/release-action@v1
         with:
-          tag_name: ${{ env.version }}
-          name: ${{ env.version }}
-          body: ${{ env.CHANGES }}
-          draft: false
-          prerelease: false
-          files: |
-            dist/*
-            *.jar
-            *.zip
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          tag: ${{ steps.tag_version.outputs.new_tag }}
+          name: Release ${{ steps.tag_version.outputs.new_tag }}
+          body: |
+            ${{ steps.changelog.outputs.compareurl }}
+            ${{ steps.changelog.outputs.changelog }}
 
   publish:
     runs-on: ubuntu-latest
