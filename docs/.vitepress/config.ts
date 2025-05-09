@@ -5,9 +5,9 @@ import path from "path";
 export default defineConfig({
   title: "Vue3 Zoomer",
   description: "The Ultimate Zoomable image component",
-  base: "/vue3-zoomer/",
+  base: "/",
   sitemap: {
-    hostname: "https://vue3-zoomer.github.io/vue3-zoomer/",
+    hostname: "https://vue3-zoomer.vuedoo.org",
   },
   head: [
     ["link", { rel: "icon", href: "favicon.ico" }],
