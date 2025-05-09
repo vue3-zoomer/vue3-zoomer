@@ -52,7 +52,7 @@
   "bugs": {
     "url": "https://github.com/vue3-zoomer/vue3-zoomer/issues"
   },
-  "homepage": "https://vue3-zoomer.github.io/vue3-zoomer/",
+  "homepage": "https://vue3-zoomer.vuedoo.org",
   "module": "./dist/vue3-zoomer.es.js",
   "style": "./dist/style.css",
   "types": "./dist/index.d.ts",
