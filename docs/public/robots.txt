@@ -1,3 +1,3 @@
 User-agent: *
 Allow: /
-Sitemap: https://vue3-zoomer.github.io/vue3-zoomer/sitemap.xml
+Sitemap: https://vue3-zoomer.vuedoo.org/sitemap.xml

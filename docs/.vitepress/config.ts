@@ -24,14 +24,14 @@ export default defineConfig({
       "meta",
       {
         property: "og:image",
-        content: "https://vue3-zoomer.github.io/vue3-zoomer/card.png",
+        content: "https://vue3-zoomer.vuedoo.org/card.png",
       },
     ],
     [
       "meta",
       {
         property: "og:url",
-        content: "https://vue3-zoomer.github.io/vue3-zoomer/",
+        content: "https://vue3-zoomer.vuedoo.org/",
       },
     ],
     [
@@ -55,14 +55,14 @@ export default defineConfig({
       "meta",
       {
         name: "twitter:image",
-        content: "https://vue3-zoomer.github.io/vue3-zoomer/card.png",
+        content: "https://vue3-zoomer.vuedoo.org/card.png",
       },
     ],
     [
       "meta",
       {
         name: "google-site-verification",
-        content: "d_vRC79cad-TecLCExPf7LTQxKFucm-J5ispBu47IAU",
+        content: "UwPimFC7pZ67l3VejqZhlU959GVThm_sFfwSvR-j1mg",
       },
     ],
   ],
