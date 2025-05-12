@@ -68,11 +68,16 @@ jobs:
             {{fix}}
             ## ♻️ Refactors
             {{refactor,perf,clean}}
+            ## 📚 Documentation
+            {{docs,doc,style,types,typescript,flow}}
+            ## CI&CD
+            {{ci,build,workflow,actions}}
             ## 🔧 Chores 
-            {{chore,style,ci,__unknown__||🔶 Nothing change}}
+            {{chore,style,__unknown__||🔶 Nothing change}}
       - name: Update version in package.json
         run: |
           NEW_VERSION="${{ steps.tag_version.outputs.new_tag }}"
+          NEW_VERSION="${NEW_VERSION#v}"
           # Update package.json
           jq ".version = \"$NEW_VERSION\"" package.json > package.json.new
           mv package.json.new package.json
@@ -115,19 +120,21 @@ jobs:
           git add CHANGELOG.md
           # Only commit if there are changes
           if [ -n "$(git status --porcelain)" ]; then
-            git commit -m "chore(release): v${{ steps.tag_version.outputs.new_tag }}"
+            git commit -m "chore(release): ${{ steps.tag_version.outputs.new_tag }}"
+            git push --follow-tags origin ${{ github.event.inputs.branch }}
           fi
       - name: Release App
         uses: ncipollo/release-action@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           tag: ${{ steps.tag_version.outputs.new_tag }}
-          name: Release ${{ steps.tag_version.outputs.new_tag }}
+          name: ${{ steps.tag_version.outputs.new_tag }}
           body: |
             ${{ steps.changelog.outputs.compareurl }}
             ${{ steps.changelog.outputs.changelog }}
 
   publish:
+    name: Publish to NPM
     runs-on: ubuntu-latest
     needs: release
     permissions:
@@ -135,6 +142,13 @@ jobs:
       id-token: write
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.inputs.branch }}
+
+      - name: Pull Latest Changes
+        run: git pull origin ${{ github.event.inputs.branch }}
+
       - uses: actions/setup-node@v4
         with:
           node-version: "lts/*"

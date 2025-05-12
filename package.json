@@ -1,6 +1,6 @@
 {
   "name": "vue3-zoomer",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "A Vue 3 component for zooming images.",
   "type": "module",
   "packageManager": "bun@1.1.33",
@@ -47,7 +47,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/vue3-zoomer/vue3-zoomer"
+    "url": "git+https://github.com/vue3-zoomer/vue3-zoomer.git"
   },
   "bugs": {
     "url": "https://github.com/vue3-zoomer/vue3-zoomer/issues"
