@@ -43,14 +43,14 @@
 
 <script setup lang="ts">
 import type { PositionType, ZoomImgProps } from "~/types";
-import { ref, computed, onMounted, useSlots, useTemplateRef } from "vue";
+import { ref, computed, onMounted, useSlots, useTemplateRef, watch } from "vue";
 import { offset2pos, pos2offset } from "~/utils/zoom";
 import DragZoomImg from "~/components/core/DragZoomImg.vue";
 import MoveZoomImg from "~/components/core/MoveZoomImg.vue";
 import ZoomButtons from "~/components/controls/ZoomButtons.vue";
 import ZoomMap from "~/components/core/ZoomMap.vue";
 
-const emit = defineEmits(["error", "load"]);
+const emit = defineEmits(["error", "load", "reload"]);
 const props = withDefaults(defineProps<ZoomImgProps>(), {
   zoomType: "move",
 });
@@ -113,6 +113,11 @@ const handleError = () => {
   error.value = true;
   emit("error");
 };
+
+watch( 
+  () => props.src, 
+  () => { loaded.value = false; emit("reload"); }
+);
 
 onMounted(() => {
   screenSize.value = window?.innerWidth ?? 1080;
