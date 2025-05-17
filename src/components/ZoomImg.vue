@@ -42,7 +42,7 @@
 
 <script setup lang="ts">
 import type { PositionType, ZoomImgProps } from "~/types";
-import { ref, computed, onMounted, useTemplateRef } from "vue";
+import { ref, computed, onMounted, useTemplateRef, onUpdated } from "vue";
 import { offset2pos, pos2offset } from "~/utils/zoom";
 import DragZoomImg from "~/components/core/DragZoomImg.vue";
 import MoveZoomImg from "~/components/core/MoveZoomImg.vue";
@@ -110,7 +110,9 @@ onMounted(() => {
   }
 });
 
-
+onUpdated(() => {
+  loaded.value = Boolean(zoomComponentRef.value?.vzImgRef?.complete);
+});
 </script>
 
 <style scoped src="../assets/css/main.css"></style>
