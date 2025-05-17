@@ -11,8 +11,8 @@
     <img
       class="vz-zoomimg-img h-full w-full object-fill"
       ref="vzImg"
+      :src
       :alt
-      :src="src"
       :style="{
         transform: `translate(${zoomedImgOffset.left}px, ${zoomedImgOffset.top}px) scale(${currentScale})`,
         transformOrigin: '0 0',

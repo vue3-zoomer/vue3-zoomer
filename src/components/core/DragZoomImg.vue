@@ -20,8 +20,8 @@
       class="vz-zoomimg-img zoom-effect h-full w-full object-fill"
       draggable="false"
       ref="vzImg"
+      :src
       :alt
-      :src="src"
       :style="{
         transform: `translate(${zoomedImgOffset.left}px, ${zoomedImgOffset.top}px) scale(${currentScale})`,
         transformOrigin: '0 0',
