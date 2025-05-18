@@ -1,6 +1,34 @@
 # Changelog
 
 ## 🚀 Feature
+- 🌟 feat: add exports entry to package.json to make the component compatible with Vitest ffd3824 @-
+- 🌟 feat: reload image on src change 8036a05 @HossinAmin
+## 🐛 Bugs
+- 🐞 fix: stuck at loading in ssr a45ea90 @HossinAmin
+## CI&CD
+- 💢 ci: update release workflow 06b8ec0 @ahmedd-mahmoud
+- 💢 ci: fix the release commit changes in package.json 203a6a9 @ahmedd-mahmoud
+- 💢 ci: pull changes in publish job 5b583dd @ahmedd-mahmoud
+- 💢 ci: update docs hosturl 64851a5 @ahmedd-mahmoud
+- 💢 ci: update url sitemap in robots.txt 8cc08fc @ahmedd-mahmoud
+## 🔧 Chores 
+- 💄 chore(release): v1.0.7 cda289d @github-actions-bot
+- 📄 Merge pull request #61 from vue3-zoomer/dev c9f9772 @ahmedd-mahmoud
+- 📄 Merge pull request #63 from vue3-zoomer/dev badbbdc @ahmedd-mahmoud
+- 📄 Merge pull request #66 from vue3-zoomer/dev 621b445 @ahmedd-mahmoud
+- 📄 Merge pull request #73 from vue3-zoomer/dev 257a9f0 @ahmedd-mahmoud
+- 📄 Update package.json c63daf2 @ahmedd-mahmoud
+- 📄 Merge pull request #74 from vue3-zoomer/hotfix/update-docs-url 5e71616 @ahmedd-mahmoud
+- 📄 Merge pull request #75 from vue3-zoomer/dev 42c6b77 @ahmedd-mahmoud
+- 📄 Merge pull request #76 from vue3-zoomer/update-docs-hosturl 81a1c6a @ahmedd-mahmoud
+- 📄 Merge pull request #77 from vue3-zoomer/dev 41106f5 @ahmedd-mahmoud
+- 📄 Merge pull request #79 from vue3-zoomer/hotfix/update-docs-url b197c00 @ahmedd-mahmoud
+- 📄 Merge pull request #80 from vue3-zoomer/dev 8d77c41 @ahmedd-mahmoud
+- 📄 Merge pull request #78 from AnthonySchuijlenburg/dev 2287201 @ahmedd-mahmoud
+- 📄 Merge pull request #83 from vue3-zoomer/feature/image-reload-on-src-change 8d934db @ahmedd-mahmoud
+- 📄 Merge pull request #84 from vue3-zoomer/dev c426cd7 @ahmedd-mahmoud
+
+## 🚀 Feature
 - 🌟 feat: add favicon and robots.txt for improved SEO and site identity 32ad093 @ahmedd-mahmoud
 - 🌟 feat: add npm publish job to release workflow 77e38a8 @ahmedd-mahmoud
 - 🌟 feat:ssr friendly loading 026a7e9 @HossinAmin
