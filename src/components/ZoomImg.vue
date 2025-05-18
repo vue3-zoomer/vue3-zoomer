@@ -9,13 +9,12 @@
       :alt
       :is="isDrag ? DragZoomImg : MoveZoomImg"
       :class="{
-        hidden: isLoading || (error && $slots.error),
+        hidden: (!loaded && $slots.loading) || (error && $slots.error),
       }"
       @error="handleError"
       @load="handleLoad"
     />
-
-    <slot v-if="isLoading" name="loading" />
+    <slot v-if="!loaded" name="loading" />
     <slot v-if="error" name="error" />
 
     <ZoomButtons
@@ -43,7 +42,7 @@
 
 <script setup lang="ts">
 import type { PositionType, ZoomImgProps } from "~/types";
-import { ref, computed, onMounted, useSlots, useTemplateRef } from "vue";
+import { ref, computed, onMounted, useTemplateRef, onUpdated } from "vue";
 import { offset2pos, pos2offset } from "~/utils/zoom";
 import DragZoomImg from "~/components/core/DragZoomImg.vue";
 import MoveZoomImg from "~/components/core/MoveZoomImg.vue";
@@ -60,22 +59,12 @@ const zoomedImgOffset = ref({ left: 0, top: 0 });
 const screenSize = ref(1080);
 const loaded = ref(false);
 const error = ref(false);
-const isClient = ref(false);
 
-const slots = useSlots();
 const zoomComponentRef = useTemplateRef("zoomComponent");
 
 const isDrag = computed(
   () => props.zoomType === "drag" || screenSize.value < 768,
 );
-
-const isLoading = computed(() => {
-  if (props.loading) {
-    return !!slots.loading;
-  } else {
-    return (!isClient.value || !loaded.value) && !!slots.loading;
-  }
-});
 
 const windowPosition = computed(() => {
   if (currentScale.value !== 1) {
@@ -116,7 +105,13 @@ const handleError = () => {
 
 onMounted(() => {
   screenSize.value = window?.innerWidth ?? 1080;
-  isClient.value = true;
+  if (zoomComponentRef.value?.vzImgRef?.complete) {
+    loaded.value = true;
+  }
+});
+
+onUpdated(() => {
+  loaded.value = Boolean(zoomComponentRef.value?.vzImgRef?.complete);
 });
 </script>
 
