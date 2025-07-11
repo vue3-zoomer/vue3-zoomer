@@ -11,6 +11,7 @@
     <img
       class="vz-zoomimg-img h-full w-full object-fill"
       ref="vzImg"
+      draggable="false"
       :src
       :alt
       :style="{
