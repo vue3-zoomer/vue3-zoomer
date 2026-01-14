@@ -21,3 +21,21 @@
     }
   }
 }
+
+/* Make room for top banner */
+.VPNav {
+  margin-top: var(--vp-banner-height, 0);
+}
+
+.VPSidebar {
+  margin-top: var(--vp-banner-height, 0);
+}
+
+/* If there's a banner, add the height variable */
+body {
+  --vp-banner-height: 0px;
+}
+
+body:has(#bb-banner) {
+  --vp-banner-height: 72px;
+}

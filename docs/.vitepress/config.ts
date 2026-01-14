@@ -65,6 +65,15 @@ export default defineConfig({
         content: "UwPimFC7pZ67l3VejqZhlU959GVThm_sFfwSvR-j1mg",
       },
     ],
+    [
+      "script",
+      {
+        src: "https://media.bitterbrains.com/main.js?from=VUEZOOMER&type=top",
+        // @ts-expect-error: vitepress bug
+        async: true,
+        type: "text/javascript",
+      },
+    ],
   ],
   vite: {
     resolve: {
