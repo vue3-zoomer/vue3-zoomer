@@ -26,12 +26,13 @@ You can also increase or decrease the magnifier size using the mouse wheel.
 
 ### Props
 
-| Name        | Type     | Default        | Description                                                  |
-| ----------- | -------- | -------------- | ------------------------------------------------------------ |
-| `src`       | `String` | `required`     | The source URL of the image to be zoomed.                    |
-| `alt`       | `String` | `"zoomed-img"` | Alternative text description of the image for accessibility. |
-| `zoomScale` | `Number` | `2`            | The desired zoom scale of the image.                         |
-| `size`      | `Number` | `200`          | The initial magnifier size in pixels.                        |
+| Name            | Type      | Default        | Description                                                  |
+| --------------- | --------- | -------------- | ------------------------------------------------------------ |
+| `src`           | `String`  | `required`     | The source URL of the image to be zoomed.                    |
+| `alt`           | `String`  | `"zoomed-img"` | Alternative text description of the image for accessibility. |
+| `zoomScale`     | `Number`  | `2`            | The desired zoom scale of the image.                         |
+| `size`          | `Number`  | `200`          | The initial magnifier size in pixels.                        |
+| `resizeOnWheel` | `Boolean` | `true`         | Allow magnifier resize on mouse wheel.                       |
 
 ### Events
 
