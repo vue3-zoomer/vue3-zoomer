@@ -17,6 +17,24 @@
     <slot v-if="!loaded" name="loading" />
     <slot v-if="error" name="error" />
 
+    <!-- Fullscreen Button Slot -->
+    <slot
+      v-if="fullscreenMode"
+      name="fullscreen-button"
+      :open-fullscreen="openFullscreen"
+    >
+      <button
+        class="absolute right-2 top-2 z-10 flex h-8 w-8 items-center justify-center rounded-sm bg-white/50 shadow-md hover:bg-white/70"
+        @click="openFullscreen"
+      >
+        <img
+          src="/src/assets/icons/fullscreen.svg"
+          alt="Fullscreen"
+          class="h-4 w-4"
+        />
+      </button>
+    </slot>
+
     <ZoomButtons
       v-if="showZoomBtns"
       v-model:zoomed-img-offset="zoomedImgOffset"
@@ -37,6 +55,33 @@
       :position="windowPosition"
       @update:position="updateOffset"
     />
+
+    <FullscreenViewer
+      :src
+      :alt
+      :zoom-scale
+      :close-button
+      :is-open="isFullscreenOpen"
+      @close="closeFullscreen"
+    >
+      <component
+        v-model:current-scale="currentScale"
+        v-model:zoomed-img-offset="zoomedImgOffset"
+        v-bind="props"
+        ref="zoomComponent"
+        class="h-full w-full"
+        :alt
+        :is="isDrag ? DragZoomImg : MoveZoomImg"
+      />
+
+      <!-- Fullscreen Buttons -->
+      <template #close-button="states">
+        <slot name="close-button" v-bind="states" />
+      </template>
+      <template #fullscreen-controls="states">
+        <slot name="fullscreen-controls" v-bind="states" />
+      </template>
+    </FullscreenViewer>
   </div>
 </template>
 
@@ -48,6 +93,7 @@ import DragZoomImg from "~/components/core/DragZoomImg.vue";
 import MoveZoomImg from "~/components/core/MoveZoomImg.vue";
 import ZoomButtons from "~/components/controls/ZoomButtons.vue";
 import ZoomMap from "~/components/core/ZoomMap.vue";
+import FullscreenViewer from "~/components/FullscreenViewer.vue";
 
 const emit = defineEmits(["error", "load"]);
 const props = withDefaults(defineProps<ZoomImgProps>(), {
@@ -59,6 +105,8 @@ const zoomedImgOffset = ref({ left: 0, top: 0 });
 const screenSize = ref(1080);
 const loaded = ref(false);
 const error = ref(false);
+const isFullscreenOpen = ref(false);
+const position = ref({ x: 0, y: 0 });
 
 const zoomComponentRef = useTemplateRef("zoomComponent");
 
@@ -101,6 +149,21 @@ const handleLoad = () => {
 const handleError = () => {
   error.value = true;
   emit("error");
+};
+
+// Fullscreen functionality
+const openFullscreen = () => {
+  resetTransform();
+  isFullscreenOpen.value = true;
+};
+
+const closeFullscreen = () => {
+  isFullscreenOpen.value = false;
+};
+
+const resetTransform = () => {
+  currentScale.value = 1;
+  position.value = { x: 0, y: 0 };
 };
 
 onMounted(() => {
