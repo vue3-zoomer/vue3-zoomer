@@ -70,6 +70,32 @@ The Multi-Step Zoom feature allows users to zoom in and out with multiple clicks
 Multi zoom is disabled by default. To enable it, provide a value to the `step` prop which accepts any number, including fractions.
 :::
 
+## Fullscreen Mode
+
+The fullscreen mode provides an immersive image viewing experience with gesture support and configurable buttons. When enabled, a fullscreen button appears in the top-right corner of the image.
+
+<ZoomImg
+    class="h-[30rem]"
+    zoom-type="drag"
+    :src="imageSrc"
+    :zoom-scale="3"
+    fullscreen
+  />
+
+```vue
+<ZoomImg
+  class="h-[30rem]"
+  zoom-type="drag"
+  :src="imageSrc"
+  :zoom-scale="3"
+  fullscreen
+/>
+```
+
+::: tip Note
+For detailed fullscreen documentation including custom buttons, gestures, and examples, see [Fullscreen Mode](/guide/fullscreen.html).
+:::
+
 ## Slots
 
 ### `loading`
@@ -123,6 +149,9 @@ Use the `error` slot to set the content of the zoom image when there is an error
 | `persist`      | `Boolean`            | false          | Whether the zoom state should persist on mouse leave.                      |
 | `showZoomBtns` | `Boolean`            | false          | Show controls to increase or decrease the zoom scale from buttons.         |
 | `showImgMap`   | `Boolean`            | false          | Whether to display the image map overlay.                                  |
+| `fullscreen`   | `Boolean`            | false          | Enable fullscreen mode with gesture support and slot-based customization.  |
+| `showFullscreenToolbar` | `Boolean` | true           | Show toolbar with controls in fullscreen mode.                             |
+| `enableGestures` | `Boolean`            | true           | Enable touch and mouse gestures in fullscreen mode.                        |
 
 ### Events
 
