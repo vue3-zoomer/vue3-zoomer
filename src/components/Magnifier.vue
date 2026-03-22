@@ -3,7 +3,7 @@
     class="vz-magnifier-img-container relative"
     ref="container"
     @mousemove="handleMouseMove"
-    @wheel.prevent="handleWheel"
+    @wheel="handleWheel"
     @touchmove.prevent="handleTouchMove"
   >
     <img
@@ -63,6 +63,10 @@ const props = defineProps({
     type: Number,
     default: 200,
   },
+  resizeOnWheel: {
+    type: Boolean,
+    default: true,
+  },
 });
 
 const containerRef = useTemplateRef("container");
@@ -111,16 +115,19 @@ const handleMouseMove = (event: MouseEvent) => {
 };
 
 const handleWheel = (event: WheelEvent) => {
-  if (event.deltaY > 0) {
-    magnifierSize.value = Math.max(
-      (containerRef.value?.clientWidth ?? 1) / 12,
-      magnifierSize.value - 10,
-    );
-  } else {
-    magnifierSize.value = Math.min(
-      (containerRef.value?.clientWidth ?? 1) / 1.5,
-      magnifierSize.value + 10,
-    );
+  if (props.resizeOnWheel) {
+    event.preventDefault();
+    if (event.deltaY > 0) {
+      magnifierSize.value = Math.max(
+        (containerRef.value?.clientWidth ?? 1) / 12,
+        magnifierSize.value - 10,
+      );
+    } else {
+      magnifierSize.value = Math.min(
+        (containerRef.value?.clientWidth ?? 1) / 1.5,
+        magnifierSize.value + 10,
+      );
+    }
   }
 };
 
