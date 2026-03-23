@@ -1,5 +1,5 @@
 <template>
-  <Teleport to="body">
+  <Teleport v-if="enabled && isOpen" to="body">
     <div
       v-if="isOpen"
       class="vz-full-screen-backdrop fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm"
@@ -25,9 +25,19 @@
       </div>
     </div>
   </Teleport>
+  <template v-else>
+    <slot></slot>
+  </template>
+
+  <slot v-if="enabled" name="full-screen-button" :open-full-screen="isOpen">
+    <button class="open-button" @click="isOpen = true" />
+  </slot>
 </template>
 
 <script setup lang="ts">
+defineProps<{
+  enabled?: boolean;
+}>();
 const isOpen = defineModel<boolean>("is-open");
 
 const emit = defineEmits<{
@@ -52,5 +62,10 @@ const close = () => {
 .close-button {
   @apply flex h-8 w-8 items-center justify-center rounded-sm bg-white/50 p-1 shadow-md hover:bg-white/70 disabled:cursor-not-allowed disabled:bg-white/30;
   content: url("~/assets/icons/close.svg");
+}
+
+.open-button {
+  @apply absolute right-2 top-2 flex h-8 w-8 items-center justify-center rounded-sm bg-white/50 p-1 shadow-md hover:bg-white/70 disabled:cursor-not-allowed disabled:bg-white/30;
+  content: url("~/assets/icons/fullscreen.svg");
 }
 </style>

@@ -1,19 +1,42 @@
 <template>
   <div class="vz-zoomimg-container relative">
-    <component
-      v-model:current-scale="currentScale"
-      v-model:zoomed-img-offset="zoomedImgOffset"
-      v-bind="props"
-      ref="zoomComponent"
-      class="h-full w-full"
-      :alt
-      :is="isDrag ? DragZoomImg : MoveZoomImg"
-      :class="{
-        hidden: (!loaded && $slots.loading) || (error && $slots.error),
-      }"
-      @error="handleError"
-      @load="handleLoad"
-    />
+    <FullScreenViewer
+      v-model:is-open="isFullscreenOpen"
+      :enabled="fullScreenMode"
+    >
+      <component
+        v-model:current-scale="currentScale"
+        v-model:zoomed-img-offset="zoomedImgOffset"
+        v-bind="props"
+        ref="zoomComponent"
+        class="h-full w-full"
+        :alt
+        :is="isDrag ? DragZoomImg : MoveZoomImg"
+        :class="{
+          hidden: (!loaded && $slots.loading) || (error && $slots.error),
+        }"
+        @error="handleError"
+        @load="handleLoad"
+      />
+
+      <!-- Fullscreen Buttons -->
+      <template #close-button>
+        <slot name="close-button" :close="closeFullscreen" />
+      </template>
+
+      <template #full-screen-button>
+        <slot name="full-screen-button" :open="openFullScreen" />
+      </template>
+
+      <template #controls>
+        <slot
+          name="controls"
+          :current-scale
+          :zoom-in="handleZoomIn"
+          :zoom-out="handleZoomOut"
+        />
+      </template>
+    </FullScreenViewer>
 
     <slot v-if="!loaded" name="loading" />
     <slot v-if="error" name="error" />
@@ -38,43 +61,6 @@
       :position="windowPosition"
       @update:position="updateOffset"
     />
-
-    <slot
-      v-if="fullScreenMode"
-      name="full-screen-button"
-      :open-full-screen="openFullScreen"
-    >
-      <button
-        class="full-screen-button absolute right-2 top-2 z-10 flex h-8 w-8 items-center justify-center rounded-sm bg-white/50 p-1 shadow-md hover:bg-white/70"
-        @click="openFullScreen"
-      >
-        <img src="../assets/icons/fullscreen.svg" />
-      </button>
-    </slot>
-
-    <FullScreenViewer v-model:is-open="isFullscreenOpen">
-      <component
-        v-model:current-scale="currentScale"
-        v-model:zoomed-img-offset="zoomedImgOffset"
-        v-bind="props"
-        ref="zoomComponentx"
-        :alt
-        :is="isDrag ? DragZoomImg : MoveZoomImg"
-      />
-
-      <!-- Fullscreen Buttons -->
-      <template #close-button>
-        <slot name="close-button" :close="closeFullscreen" />
-      </template>
-      <template #controls>
-        <slot
-          name="controls"
-          :current-scale
-          :zoom-in="handleZoomIn"
-          :zoom-out="handleZoomOut"
-        />
-      </template>
-    </FullScreenViewer>
   </div>
 </template>
 
