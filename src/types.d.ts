@@ -10,6 +10,7 @@ export interface ZoomImgCoreProps {
   trigger?: "click" | "hover";
   step?: number;
   persist?: boolean;
+  rotate?: number;
 }
 
 export interface ZoomImgProps extends ZoomImgCoreProps {
@@ -18,5 +19,6 @@ export interface ZoomImgProps extends ZoomImgCoreProps {
   showImgMap?: boolean;
   fullScreenMode?: boolean;
   closeButton?: boolean;
+  closeOnClickOutside?: boolean;
   loading?: boolean;
 }

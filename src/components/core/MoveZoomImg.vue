@@ -2,7 +2,10 @@
   <div
     class="vz-zoomimg-img-container cursor-zoom-in overflow-clip border-none"
     ref="container"
-    :style="{ cursor: zoomDir === 'OUT' ? 'zoom-out' : 'zoom-in' }"
+    :style="{
+      cursor: zoomDir === 'OUT' ? 'zoom-out' : 'zoom-in',
+      transform: `rotate(${props.rotate}deg)`,
+    }"
     @mouseenter="handleMouseEnter"
     @mouseleave="handleMouseLeave"
     @mousemove="handleMouseMove"
@@ -37,6 +40,7 @@ defineEmits(["error", "load"]);
 const props = withDefaults(defineProps<ZoomImgCoreProps>(), {
   zoomScale: 2,
   trigger: "click",
+  rotate: 0,
 });
 
 const currentScale = defineModel("currentScale", {
@@ -64,7 +68,11 @@ const { zoomDir, multiStepZoomIn } = useMultiZoom(
 
 const handleMouseEnter = (event: MouseEvent) => {
   if (props.trigger === "hover") {
-    const { pos: relPos } = getRelCursorPosition(event, containerRef.value);
+    const { pos: relPos } = getRelCursorPosition(
+      event,
+      containerRef.value,
+      props.rotate,
+    );
     startTransition();
     multiStepZoomIn(currentScale.value, relPos, props.step ?? props.zoomScale);
   }
@@ -76,7 +84,11 @@ const handleMouseLeave = () => {
 };
 
 const handleClick = (event: MouseEvent) => {
-  const { pos: relPos } = getRelCursorPosition(event, containerRef.value);
+  const { pos: relPos } = getRelCursorPosition(
+    event,
+    containerRef.value,
+    props.rotate,
+  );
   startTransition();
   multiStepZoomIn(currentScale.value, relPos, props.step ?? props.zoomScale);
 };
@@ -85,6 +97,7 @@ const handleMouseMove = (event: MouseEvent) => {
   const { pos: cursorPosition, isOutside } = getRelCursorPosition(
     event,
     containerRef.value,
+    props.rotate,
   );
 
   if (!isOutside && isZoomed.value && !isTransition.value) {

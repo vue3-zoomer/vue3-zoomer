@@ -3,7 +3,7 @@
     <div
       v-if="isOpen"
       class="vz-full-screen-backdrop fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm"
-      @click.self="close()"
+      @click.self="closeOnClickOutside && close()"
     >
       <!-- Main Image Container -->
       <slot />
@@ -27,17 +27,19 @@
   </Teleport>
   <template v-else>
     <slot></slot>
-  </template>
 
-  <slot v-if="enabled" name="full-screen-button" :open-full-screen="isOpen">
-    <button class="open-button" @click="isOpen = true" />
-  </slot>
+    <slot v-if="enabled" name="full-screen-button" :open-full-screen="isOpen">
+      <button class="open-button" @click="isOpen = true" />
+    </slot>
+  </template>
 </template>
 
 <script setup lang="ts">
 defineProps<{
   enabled?: boolean;
+  closeOnClickOutside?: boolean;
 }>();
+
 const isOpen = defineModel<boolean>("is-open");
 
 const emit = defineEmits<{

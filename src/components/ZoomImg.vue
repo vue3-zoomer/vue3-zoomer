@@ -3,6 +3,8 @@
     <FullScreenViewer
       v-model:is-open="isFullscreenOpen"
       :enabled="fullScreenMode"
+      :close-on-click-outside
+      @close="emit('closeFullScreen')"
     >
       <component
         v-model:current-scale="currentScale"
@@ -74,9 +76,10 @@ import ZoomButtons from "~/components/controls/ZoomButtons.vue";
 import ZoomMap from "~/components/core/ZoomMap.vue";
 import FullScreenViewer from "~/components/controls/FullScreenViewer.vue";
 
-const emit = defineEmits(["error", "load"]);
+const emit = defineEmits(["error", "load", "closeFullScreen"]);
 const props = withDefaults(defineProps<ZoomImgProps>(), {
   zoomType: "move",
+  rotate: 0,
 });
 
 const currentScale = ref(1);
@@ -136,6 +139,7 @@ const openFullScreen = () => {
 };
 
 const closeFullscreen = () => {
+  emit("closeFullScreen");
   isFullscreenOpen.value = false;
 };
 
@@ -154,6 +158,11 @@ onMounted(() => {
 onUpdated(() => {
   if (!loaded.value)
     loaded.value = Boolean(zoomComponentRef.value?.vzImgRef?.complete);
+});
+
+defineExpose({
+  currentScale,
+  zoomComponentRef,
 });
 </script>
 
