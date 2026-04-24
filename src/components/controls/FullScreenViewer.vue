@@ -1,37 +1,26 @@
 <template>
-  <Teleport v-if="enabled && isOpen" to="body">
+  <div
+    v-show="isOpen"
+    id="vz-backdrop"
+    class="vz-full-screen-backdrop fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm"
+    @click.self="closeOnClickOutside && close()"
+  >
+    <!-- Close Button Slot -->
     <div
-      v-if="isOpen"
-      class="vz-full-screen-backdrop fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm"
-      @click.self="closeOnClickOutside && close()"
+      class="vz-full-screen-close-button-container absolute right-0 top-0 z-10 p-6"
     >
-      <!-- Main Image Container -->
-      <slot />
-
-      <!-- Close Button Slot -->
-      <div
-        class="vz-full-screen-close-button-container absolute right-0 top-0 z-10 p-6"
-      >
-        <slot name="close-button">
-          <button class="close-button" @click="close"></button>
-        </slot>
-      </div>
-
-      <!-- Controls Slot -->
-      <div
-        class="vz-full-controls-container absolute bottom-0 left-0 right-0 z-10 flex justify-center gap-2 bg-gradient-to-t from-black/50 to-transparent p-4"
-      >
-        <slot name="controls" />
-      </div>
+      <slot name="close-button">
+        <button class="close-button" @click="close"></button>
+      </slot>
     </div>
-  </Teleport>
-  <template v-else>
-    <slot></slot>
 
-    <slot v-if="enabled" name="full-screen-button" :open-full-screen="isOpen">
-      <button class="open-button" @click="isOpen = true" />
-    </slot>
-  </template>
+    <!-- Controls Slot -->
+    <div
+      class="vz-full-controls-container absolute bottom-0 left-0 right-0 z-10 flex justify-center gap-2 bg-gradient-to-t from-black/50 to-transparent p-4"
+    >
+      <slot name="controls" />
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -64,10 +53,5 @@ const close = () => {
 .close-button {
   @apply flex h-8 w-8 items-center justify-center rounded-sm bg-white/50 p-1 shadow-md hover:bg-white/70 disabled:cursor-not-allowed disabled:bg-white/30;
   content: url("~/assets/icons/close.svg");
-}
-
-.open-button {
-  @apply absolute right-2 top-2 flex h-8 w-8 items-center justify-center rounded-sm bg-white/50 p-1 shadow-md hover:bg-white/70 disabled:cursor-not-allowed disabled:bg-white/30;
-  content: url("~/assets/icons/fullscreen.svg");
 }
 </style>

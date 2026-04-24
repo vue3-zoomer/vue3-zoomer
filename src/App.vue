@@ -3,13 +3,16 @@
     <ZoomImg
       class="h-[30rem]"
       trigger="hover"
-      zoom-type="drag"
+      zoom-type="move"
       :src="red"
       :zoom-scale="3"
       :step="1"
-      :fullScreenMode="true"
       :show-zoom-btns="true"
       :rotate="rotation"
+      :show-img-map-in-full-screen="true"
+      full-screen-mode
+      persist
+      :show-img-map="true"
       @close-full-screen="rotation = 0"
     >
       <template #controls="{ zoomIn, zoomOut }">

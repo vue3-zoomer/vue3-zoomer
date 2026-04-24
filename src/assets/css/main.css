@@ -1,3 +1,8 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.open-button {
+  @apply absolute right-2 top-2 flex h-8 w-8 items-center justify-center rounded-sm bg-white/50 p-1 shadow-md hover:bg-white/70 disabled:cursor-not-allowed disabled:bg-white/30;
+  content: url("~/assets/icons/fullscreen.svg");
+}
