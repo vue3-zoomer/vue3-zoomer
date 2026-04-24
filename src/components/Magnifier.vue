@@ -3,6 +3,7 @@
     class="vz-magnifier-img-container relative"
     ref="container"
     @mousemove="handleMouseMove"
+    @mouseleave="handleMouseLeave"
     @wheel.prevent="handleWheel"
     @touchmove.prevent="handleTouchMove"
   >
@@ -87,27 +88,24 @@ const zoomedImgOffset = computed(() => {
 });
 
 const handleMouseMove = (event: MouseEvent) => {
-  if (containerRef.value) {
-    const { pos, isOutside: outside } = getRelCursorPosition(
-      event,
-      containerRef.value,
-    );
+  if (!containerRef.value) return;
 
-    isOutside.value = outside;
+  const { pos, isOutside: outside } = getRelCursorPosition(
+    event,
+    containerRef.value,
+  );
+  isOutside.value = outside;
 
-    if (!isOutside.value) {
-      // Update position for the magnifier
-      position.value = {
-        left: pos.left - magnifierSize.value / 2,
-        top: pos.top - magnifierSize.value / 2,
-      };
-    }
+  if (!isOutside.value) {
+    position.value = {
+      left: pos.left - magnifierSize.value / 2,
+      top: pos.top - magnifierSize.value / 2,
+    };
   }
-  const containerRect = containerRef.value?.getBoundingClientRect() as DOMRect;
-  position.value = {
-    left: event.clientX - containerRect?.left - magnifierSize.value / 2,
-    top: event.clientY - containerRect?.top - magnifierSize.value / 2,
-  };
+};
+
+const handleMouseLeave = () => {
+  isOutside.value = true;
 };
 
 const handleWheel = (event: WheelEvent) => {
