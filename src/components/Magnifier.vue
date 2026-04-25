@@ -65,6 +65,10 @@ const props = defineProps({
     type: Number,
     default: 200,
   },
+  resizeOnWheel: {
+    type: Boolean,
+    default: true,
+  },
 });
 
 const containerRef = useTemplateRef("container");
@@ -112,16 +116,19 @@ const handleMouseLeave = () => {
 };
 
 const handleWheel = (event: WheelEvent) => {
-  if (event.deltaY > 0) {
-    magnifierSize.value = Math.max(
-      (containerRef.value?.clientWidth ?? 1) / 12,
-      magnifierSize.value - 10,
-    );
-  } else {
-    magnifierSize.value = Math.min(
-      (containerRef.value?.clientWidth ?? 1) / 1.5,
-      magnifierSize.value + 10,
-    );
+  if (props.resizeOnWheel) {
+    event.preventDefault();
+    if (event.deltaY > 0) {
+      magnifierSize.value = Math.max(
+        (containerRef.value?.clientWidth ?? 1) / 12,
+        magnifierSize.value - 10,
+      );
+    } else {
+      magnifierSize.value = Math.min(
+        (containerRef.value?.clientWidth ?? 1) / 1.5,
+        magnifierSize.value + 10,
+      );
+    }
   }
 };
 
