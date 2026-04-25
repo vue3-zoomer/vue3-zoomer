@@ -1,19 +1,27 @@
 <template>
   <div class="vz-zoomimg-container relative">
-    <component
-      v-model:current-scale="currentScale"
-      v-model:zoomed-img-offset="zoomedImgOffset"
-      v-bind="props"
-      ref="zoomComponent"
-      class="h-full w-full"
-      :alt
-      :is="isDrag ? DragZoomImg : MoveZoomImg"
-      :class="{
-        hidden: (!loaded && $slots.loading) || (error && $slots.error),
-      }"
-      @error="handleError"
-      @load="handleLoad"
-    />
+    <!-- conditional teleport if the full screen is open teleport inside it else render in place-->
+    <Teleport
+      defer
+      :to="`#vz-backdrop-${fullScreenId}`"
+      :disabled="!fullScreenMode || !isFullscreenOpen"
+    >
+      <component
+        v-model:current-scale="currentScale"
+        v-model:zoomed-img-offset="zoomedImgOffset"
+        v-bind="props"
+        ref="zoomComponent"
+        class="h-full w-full"
+        :alt
+        :is="isDrag ? DragZoomImg : MoveZoomImg"
+        :class="{
+          hidden: (!loaded && $slots.loading) || (error && $slots.error),
+        }"
+        @error="handleError"
+        @load="handleLoad"
+      />
+    </Teleport>
+
     <slot v-if="!loaded" name="loading" />
     <slot v-if="error" name="error" />
 
@@ -28,15 +36,57 @@
       @zoomOut="handleZoomOut"
     />
 
-    <ZoomMap
+    <Teleport
       v-if="showImgMap"
-      v-show="windowPosition"
-      class="absolute bottom-[28%] left-0 box-content h-[25%] w-[25%] border-8 border-transparent outline outline-2 outline-offset-[-8px] outline-white"
-      :src="src"
-      :zoom-scale="currentScale"
-      :position="windowPosition"
-      @update:position="updateOffset"
-    />
+      defer
+      to="#vz-backdrop"
+      :disabled="!showImgMapInFullScreen"
+    >
+      <ZoomMap
+        v-show="windowPosition"
+        class="absolute bottom-0 left-0 box-content border-8 border-transparent outline outline-2 outline-offset-[-8px] outline-white"
+        ref="miniMap"
+        :src="src"
+        :ratio="imgMapRatio"
+        :imgRef="zoomComponentRef?.vzImgRef"
+        :zoom-scale="currentScale"
+        :position="windowPosition"
+        @update:position="updateOffset"
+      />
+    </Teleport>
+
+    <FullScreenViewer
+      v-if="fullScreenMode"
+      v-model:is-open="isFullscreenOpen"
+      :id="fullScreenId"
+      :close-on-click-outside
+      @close="emit('closeFullScreen')"
+    >
+      <template #close-button>
+        <slot name="close-button" :close="closeFullscreen" />
+      </template>
+
+      <template #full-screen-button>
+        <slot name="full-screen-button" :open="openFullScreen" />
+      </template>
+
+      <template #controls>
+        <slot
+          name="controls"
+          :current-scale
+          :zoom-in="handleZoomIn"
+          :zoom-out="handleZoomOut"
+        />
+      </template>
+    </FullScreenViewer>
+
+    <slot
+      v-if="fullScreenMode"
+      name="full-screen-button"
+      :open-full-screen="isFullscreenOpen"
+    >
+      <button class="open-button" @click="isFullscreenOpen = true" />
+    </slot>
   </div>
 </template>
 
@@ -48,10 +98,13 @@ import DragZoomImg from "~/components/core/DragZoomImg.vue";
 import MoveZoomImg from "~/components/core/MoveZoomImg.vue";
 import ZoomButtons from "~/components/controls/ZoomButtons.vue";
 import ZoomMap from "~/components/core/ZoomMap.vue";
+import FullScreenViewer from "~/components/controls/FullScreenViewer.vue";
 
-const emit = defineEmits(["error", "load"]);
+const emit = defineEmits(["error", "load", "closeFullScreen"]);
 const props = withDefaults(defineProps<ZoomImgProps>(), {
   zoomType: "move",
+  rotate: 0,
+  imgMapRatio: 0.25,
 });
 
 const currentScale = ref(1);
@@ -59,6 +112,8 @@ const zoomedImgOffset = ref({ left: 0, top: 0 });
 const screenSize = ref(1080);
 const loaded = ref(false);
 const error = ref(false);
+const isFullscreenOpen = ref(false);
+const position = ref({ x: 0, y: 0 });
 
 const zoomComponentRef = useTemplateRef("zoomComponent");
 
@@ -66,10 +121,14 @@ const isDrag = computed(
   () => props.zoomType === "drag" || screenSize.value < 768,
 );
 
+const fullScreenId = computed(() => Math.ceil(Math.random() * 1000).toString());
+
 const windowPosition = computed(() => {
   if (currentScale.value !== 1) {
-    // Multiply scale by 4 because the map window is quarter the map container
-    return offset2pos(zoomedImgOffset.value, currentScale.value * 4);
+    return offset2pos(
+      zoomedImgOffset.value,
+      currentScale.value / props.imgMapRatio,
+    );
   }
 });
 
@@ -88,9 +147,11 @@ const handleZoomOut = () => {
 };
 
 const updateOffset = (newPosition?: PositionType) => {
-  // Multiply scale by 4 because the map window is quarter the map container
   if (newPosition)
-    zoomedImgOffset.value = pos2offset(newPosition, currentScale.value * 4);
+    zoomedImgOffset.value = pos2offset(
+      newPosition,
+      currentScale.value / props.imgMapRatio,
+    );
 };
 
 const handleLoad = () => {
@@ -103,6 +164,21 @@ const handleError = () => {
   emit("error");
 };
 
+const openFullScreen = () => {
+  resetTransform();
+  isFullscreenOpen.value = true;
+};
+
+const closeFullscreen = () => {
+  emit("closeFullScreen");
+  isFullscreenOpen.value = false;
+};
+
+const resetTransform = () => {
+  currentScale.value = 1;
+  position.value = { x: 0, y: 0 };
+};
+
 onMounted(() => {
   screenSize.value = window?.innerWidth ?? 1080;
   if (zoomComponentRef.value?.vzImgRef?.complete) {
@@ -111,7 +187,13 @@ onMounted(() => {
 });
 
 onUpdated(() => {
-  loaded.value = Boolean(zoomComponentRef.value?.vzImgRef?.complete);
+  if (!loaded.value)
+    loaded.value = Boolean(zoomComponentRef.value?.vzImgRef?.complete);
+});
+
+defineExpose({
+  currentScale,
+  zoomComponentRef,
 });
 </script>
 

@@ -2,12 +2,43 @@
   <div class="centered-container">
     <ZoomImg
       class="h-[30rem]"
+      trigger="hover"
+      zoom-type="move"
       :src="red"
-      :zoom-scale="5"
-      zoom-type="drag"
+      :zoom-scale="3"
       :step="1"
-      :show-zoom-btns="false"
-    />
+      :show-zoom-btns="true"
+      :rotate="rotation"
+      :show-img-map-in-full-screen="true"
+      full-screen-mode
+      persist
+      :show-img-map="true"
+      @close-full-screen="rotation = 0"
+    >
+      <template #controls="{ zoomIn, zoomOut }">
+        <div class="flex gap-2 p-2">
+          <button
+            class="flex h-10 w-10 items-center justify-center rounded-full bg-white/70 text-xl shadow hover:bg-white"
+            @click="zoomIn"
+          >
+            <img src="./assets/icons/plus.svg" alt="plus icon" />
+          </button>
+          <button
+            class="flex h-10 w-10 items-center justify-center rounded-full bg-white/70 text-xl shadow hover:bg-white"
+            @click="zoomOut"
+          >
+            <img src="./assets/icons/minus.svg" alt="minus icon" />
+          </button>
+
+          <button
+            class="flex h-10 w-10 items-center justify-center rounded-full bg-white/70 text-xl shadow hover:bg-white"
+            @click="handleRotate"
+          >
+            <img src="./assets/icons/rotate.svg" alt="rotate icon" />
+          </button>
+        </div>
+      </template>
+    </ZoomImg>
   </div>
 </template>
 
@@ -15,15 +46,28 @@
 import red from "./assets/images/red.jpg";
 import "./assets/css/main.css";
 import ZoomImg from "./components/ZoomImg.vue";
+import { ref } from "vue";
+
+const rotation = ref(0);
+
+const handleRotate = () => {
+  rotation.value = (rotation.value + 90) % 360;
+};
 </script>
 
-<style scoped>
+<style>
 .centered-container {
   display: flex;
-  height: 100vh;
-  width: 100vw;
+  /* height: 100vh; */
+  /* width: 100vw; */
   align-items: center;
   justify-content: center;
   padding: 1.25rem;
+  gap: 2rem;
+}
+
+.vz-full-screen-backdrop .vz-zoomimg-img-container {
+  width: 750px;
+  height: unset;
 }
 </style>

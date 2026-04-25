@@ -7,6 +7,9 @@
       'cursor-grabbing': isZoomed && isDragging,
       'cursor-zoom-in': !isZoomed,
     }"
+    :style="{
+      transform: `rotate(${props.rotate}deg)`,
+    }"
     @mouseenter="handleMouseEnter"
     @mousedown="handlePressDown"
     @mousemove="drag"
@@ -50,6 +53,7 @@ defineEmits(["error", "load"]);
 const props = withDefaults(defineProps<ZoomImgCoreProps>(), {
   zoomScale: 2,
   trigger: "click",
+  rotate: 0,
 });
 
 const currentScale = defineModel("currentScale", {
@@ -82,7 +86,11 @@ const { multiStepZoomIn, zoomDir } = useMultiZoom(
 
 const handleMouseEnter = (event: MouseEvent) => {
   if (props.trigger === "hover") {
-    const { pos: relPos } = getRelCursorPosition(event, containerRef.value);
+    const { pos: relPos } = getRelCursorPosition(
+      event,
+      containerRef.value,
+      props.rotate,
+    );
     startTransition();
     multiStepZoomIn(currentScale.value, relPos, props.step ?? props.zoomScale);
   }
@@ -115,6 +123,7 @@ const drag = (event: MouseEvent | TouchEvent) => {
     zoomedImgOffset.value,
     containerRef.value,
     currentScale.value,
+    props.rotate,
   );
   prevPosition.value = currentPos;
 };
@@ -157,7 +166,11 @@ const getAbsPos = (event: MouseEvent | TouchEvent) => {
 
 const getRelPos = (event: MouseEvent | TouchEvent) => {
   if (event instanceof MouseEvent) {
-    const { pos: relPos } = getRelCursorPosition(event, containerRef.value);
+    const { pos: relPos } = getRelCursorPosition(
+      event,
+      containerRef.value,
+      props.rotate,
+    );
     return relPos;
   } else {
     return getRelTouchPosition(event, containerRef.value);

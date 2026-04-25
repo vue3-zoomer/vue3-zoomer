@@ -1,5 +1,35 @@
 import type { PositionType } from "~/types";
 
+/**
+ * Inverse-rotate a delta vector (dx, dy) from screen space to image space.
+ */
+function inverseRotateDelta(
+  dx: number,
+  dy: number,
+  rotate: number,
+): { dx: number; dy: number } {
+  const normalizedAngle = ((rotate % 360) + 360) % 360;
+  if (normalizedAngle === 0) return { dx, dy };
+
+  switch (normalizedAngle) {
+    case 90:
+      return { dx: dy, dy: -dx };
+    case 180:
+      return { dx: -dx, dy: -dy };
+    case 270:
+      return { dx: -dy, dy: dx };
+    default: {
+      const rad = (-rotate * Math.PI) / 180;
+      const cos = Math.cos(rad);
+      const sin = Math.sin(rad);
+      return {
+        dx: dx * cos - dy * sin,
+        dy: dx * sin + dy * cos,
+      };
+    }
+  }
+}
+
 export function calZoomedImgOffset(
   pos: PositionType,
   element: HTMLDivElement | null,
@@ -9,7 +39,7 @@ export function calZoomedImgOffset(
     const w = element.clientWidth;
     const h = element.clientHeight;
 
-    // Calculate the ratio of the mouse position relative to the element's dimensions
+    // pos is already in element-local coordinates (rotation handled by getRelCursorPosition)
     const xRatio = pos.left / w;
     const yRatio = pos.top / h;
 
@@ -41,17 +71,19 @@ export function calcDragOffset(
   oldOffset: PositionType,
   element: HTMLDivElement | null,
   scale: number,
+  rotate: number = 0,
 ) {
   if (element) {
     const w = element.clientWidth;
     const h = element.clientHeight;
 
     const maxYOffset = h - h * scale;
-
     const maxXOffset = w - w * scale;
 
-    const dx = pos2.left - pos1.left;
-    const dy = pos2.top - pos1.top;
+    // Rotate the drag delta from screen space to image space
+    const screenDx = pos2.left - pos1.left;
+    const screenDy = pos2.top - pos1.top;
+    const { dx, dy } = inverseRotateDelta(screenDx, screenDy, rotate);
 
     const offset = {
       left: Math.max(Math.min(oldOffset.left + dx, 0), maxXOffset),
