@@ -6,6 +6,7 @@
     @mouseleave="handleMouseLeave"
     @wheel.prevent="handleWheel"
     @touchmove.prevent="handleTouchMove"
+    @touchend="handleTouchEnd"
   >
     <img
       class="vz-magnifier-img h-full w-full object-fill"
@@ -42,7 +43,7 @@
 import type { PositionType } from "~/types";
 import { ref, computed, useTemplateRef } from "vue";
 import { getRelCursorPosition } from "~/utils/cursorPosition";
-import { getAbsTouchPosition } from "~/utils/touchPosition";
+import { getRelTouchPosition } from "~/utils/touchPosition";
 import { pos2offset } from "~/utils/zoom";
 
 defineEmits(["error", "load"]);
@@ -72,18 +73,20 @@ const position = ref<PositionType>({ left: 0, top: 0 });
 const isOutside = ref(true);
 const magnifierSize = ref(props.size);
 
+const magnifierRadius = computed(() => magnifierSize.value / 2);
+
 const zoomedImgOffset = computed(() => {
   // Add half magnifier size to the position before converting to offset
   const pos = {
-    left: position.value.left + magnifierSize.value / 2,
-    top: position.value.top + magnifierSize.value / 2,
+    left: position.value.left + magnifierRadius.value,
+    top: position.value.top + magnifierRadius.value,
   };
   const offset = pos2offset(pos, props.zoomScale);
 
   // Remove the added size after conversion
   return {
-    left: offset.left + magnifierSize.value / 2,
-    top: offset.top + magnifierSize.value / 2,
+    left: offset.left + magnifierRadius.value,
+    top: offset.top + magnifierRadius.value,
   };
 });
 
@@ -98,8 +101,8 @@ const handleMouseMove = (event: MouseEvent) => {
 
   if (!isOutside.value) {
     position.value = {
-      left: pos.left - magnifierSize.value / 2,
-      top: pos.top - magnifierSize.value / 2,
+      left: pos.left - magnifierRadius.value,
+      top: pos.top - magnifierRadius.value,
     };
   }
 };
@@ -123,12 +126,31 @@ const handleWheel = (event: WheelEvent) => {
 };
 
 const handleTouchMove = (event: TouchEvent) => {
-  const containerRect = containerRef.value?.getBoundingClientRect() as DOMRect;
-  const touch = getAbsTouchPosition(event);
+  if (!containerRef.value) return;
+
+  const pos = getRelTouchPosition(event, containerRef.value);
+  const { clientWidth: width, clientHeight: height } = containerRef.value;
+
+  if (pos.left < 0 || pos.top < 0 || pos.left > width || pos.top > height) {
+    isOutside.value = true;
+    return;
+  }
+
+  isOutside.value = false;
   position.value = {
-    left: touch.left - containerRect.left - magnifierSize.value / 2,
-    top: touch.top - containerRect.top - magnifierSize.value / 2,
+    left: Math.min(
+      Math.max(pos.left - magnifierRadius.value, -magnifierRadius.value),
+      width - magnifierRadius.value,
+    ),
+    top: Math.min(
+      Math.max(pos.top - magnifierRadius.value, -magnifierRadius.value),
+      height - magnifierRadius.value,
+    ),
   };
+};
+
+const handleTouchEnd = () => {
+  isOutside.value = true;
 };
 </script>
 
