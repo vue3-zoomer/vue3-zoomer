@@ -1,8 +1,8 @@
 <template>
   <div
     v-show="isOpen"
-    id="vz-backdrop"
     class="vz-full-screen-backdrop fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm"
+    :id="`vz-backdrop-${id}`"
     @click.self="closeOnClickOutside && close()"
   >
     <!-- Close Button Slot -->
@@ -25,7 +25,7 @@
 
 <script setup lang="ts">
 defineProps<{
-  enabled?: boolean;
+  id: string;
   closeOnClickOutside?: boolean;
 }>();
 

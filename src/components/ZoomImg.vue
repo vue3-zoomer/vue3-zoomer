@@ -1,7 +1,11 @@
 <template>
   <div class="vz-zoomimg-container relative">
     <!-- conditional teleport if the full screen is open teleport inside it else render in place-->
-    <Teleport :disabled="!isFullscreenOpen" to="#vz-backdrop" defer>
+    <Teleport
+      defer
+      :to="`#vz-backdrop-${fullScreenId}`"
+      :disabled="!fullScreenMode || !isFullscreenOpen"
+    >
       <component
         v-model:current-scale="currentScale"
         v-model:zoomed-img-offset="zoomedImgOffset"
@@ -52,8 +56,9 @@
     </Teleport>
 
     <FullScreenViewer
+      v-if="fullScreenMode"
       v-model:is-open="isFullscreenOpen"
-      :enabled="fullScreenMode"
+      :id="fullScreenId"
       :close-on-click-outside
       @close="emit('closeFullScreen')"
     >
@@ -115,6 +120,8 @@ const zoomComponentRef = useTemplateRef("zoomComponent");
 const isDrag = computed(
   () => props.zoomType === "drag" || screenSize.value < 768,
 );
+
+const fullScreenId = computed(() => Math.ceil(Math.random() * 1000).toString());
 
 const windowPosition = computed(() => {
   if (currentScale.value !== 1) {
