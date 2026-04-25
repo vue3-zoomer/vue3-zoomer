@@ -70,16 +70,62 @@ The Multi-Step Zoom feature allows users to zoom in and out with multiple clicks
 Multi zoom is disabled by default. To enable it, provide a value to the `step` prop which accepts any number, including fractions.
 :::
 
+## Trigger
+
+The `trigger` prop controls how zooming is activated. Use `"click"` to toggle zoom on click (the default), or `"hover"` to zoom while the cursor is over the image.
+
+<ZoomImg
+    class="h-[30rem]"
+    zoom-type="move"
+    trigger="hover"
+    :src="imageSrc"
+    :zoom-scale="3"
+/>
+
+```vue
+<ZoomImg
+  class="h-[30rem]"
+  zoom-type="move"
+  trigger="hover"
+  :src="imageSrc"
+  :zoom-scale="3"
+/>
+```
+
+## Persist
+
+By default, hovering away from the image resets the zoom. Enable `persist` to keep the current zoom state when the cursor leaves the image.
+
+<ZoomImg
+    class="h-[30rem]"
+    zoom-type="move"
+    trigger="hover"
+    :src="imageSrc"
+    :zoom-scale="3"
+    persist
+/>
+
+```vue
+<ZoomImg
+  class="h-[30rem]"
+  zoom-type="move"
+  trigger="hover"
+  :src="imageSrc"
+  :zoom-scale="3"
+  persist
+/>
+```
+
 ## Fullscreen Mode
 
-The fullscreen mode provides an immersive image viewing experience with gesture support and configurable buttons. When enabled, a fullscreen button appears in the top-right corner of the image.
+The fullscreen mode provides an immersive image viewing experience with slot-based customization. When enabled, a fullscreen trigger can be rendered over the image and the zoom component is teleported into a full-screen backdrop.
 
 <ZoomImg
     class="h-[30rem]"
     zoom-type="drag"
     :src="imageSrc"
     :zoom-scale="3"
-    fullscreen
+    full-screen-mode
   />
 
 ```vue
@@ -88,12 +134,12 @@ The fullscreen mode provides an immersive image viewing experience with gesture 
   zoom-type="drag"
   :src="imageSrc"
   :zoom-scale="3"
-  fullscreen
+  full-screen-mode
 />
 ```
 
 ::: tip Note
-For detailed fullscreen documentation including custom buttons, gestures, and examples, see [Fullscreen Mode](/guide/fullscreen.html).
+For detailed fullscreen documentation including custom buttons, controls, and examples, see [Fullscreen Mode](/guide/controls.html#fullscreen-mode).
 :::
 
 ## Slots
@@ -138,24 +184,27 @@ Use the `error` slot to set the content of the zoom image when there is an error
 
 ### Props
 
-| Name           | Type                 | Default        | Description                                                                |
-| -------------- | -------------------- | -------------- | -------------------------------------------------------------------------- |
-| `src`          | `String`             | `required`     | The source URL of the image to be zoomed.                                  |
-| `alt`          | `String`             | `"zoomed-img"` | Alternative text description of the image for accessibility.               |
-| `zoomScale`    | `Number`             | `2`            | The desired zoom scale of the image.                                       |
-| `trigger`      | `"click" \| "hover"` | `"click"`      | The event that triggers the zoom functionality, either "click" or "hover". |
-| `zoomType`     | `"move" \| "drag"`   | `"move"`       | The type of zoom interaction, either "move" or "drag".                     |
-| `step`         | `Number`             | -              | The step value for the zoom scale.                                         |
-| `persist`      | `Boolean`            | false          | Whether the zoom state should persist on mouse leave.                      |
-| `showZoomBtns` | `Boolean`            | false          | Show controls to increase or decrease the zoom scale from buttons.         |
-| `showImgMap`   | `Boolean`            | false          | Whether to display the image map overlay.                                  |
-| `fullscreen`   | `Boolean`            | false          | Enable fullscreen mode with gesture support and slot-based customization.  |
-| `showFullscreenToolbar` | `Boolean` | true           | Show toolbar with controls in fullscreen mode.                             |
-| `enableGestures` | `Boolean`            | true           | Enable touch and mouse gestures in fullscreen mode.                        |
+| Name                     | Type                 | Default        | Description                                                                |
+| ------------------------ | -------------------- | -------------- | -------------------------------------------------------------------------- |
+| `src`                    | `String`             | `required`     | The source URL of the image to be zoomed.                                  |
+| `alt`                    | `String`             | `"zoomed-img"` | Alternative text description of the image for accessibility.               |
+| `zoomScale`              | `Number`             | `2`            | The desired zoom scale of the image.                                       |
+| `trigger`                | `"click" \| "hover"` | `"click"`      | The event that triggers the zoom functionality, either "click" or "hover". |
+| `zoomType`               | `"move" \| "drag"`   | `"move"`       | The type of zoom interaction, either "move" or "drag".                     |
+| `step`                   | `Number`             | -              | The step value for the zoom scale.                                         |
+| `persist`                | `Boolean`            | `false`        | Whether the zoom state should persist on mouse leave.                      |
+| `rotate`                 | `Number`             | `0`            | Rotation angle applied to the image, in degrees. Best used in fullscreen mode or when the component is taken out of the normal document flow (e.g. `position: absolute` or `fixed`), since rotation does not adjust the layout box. |
+| `showZoomBtns`           | `Boolean`            | `false`        | Show controls to increase or decrease the zoom scale from buttons.         |
+| `showImgMap`             | `Boolean`            | `false`        | Whether to display the image map overlay.                                  |
+| `showImgMapInFullScreen` | `Boolean`            | `false`        | Render the image map inside the fullscreen viewer as well.                 |
+| `imgMapRatio`            | `Number`             | `0.25`         | Size ratio of the image map relative to the source image.                  |
+| `fullScreenMode`         | `Boolean`            | `false`        | Enable the fullscreen viewer for the image.                                |
+| `closeOnClickOutside`    | `Boolean`            | `false`        | Close fullscreen when clicking on the backdrop outside the image.          |
 
 ### Events
 
-| Name    | Description                                         |
-| ------- | --------------------------------------------------- |
-| `load`  | Triggered when the image has successfully loaded.   |
-| `error` | Triggered when there is an error loading the image. |
+| Name              | Description                                         |
+| ----------------- | --------------------------------------------------- |
+| `load`            | Triggered when the image has successfully loaded.   |
+| `error`           | Triggered when there is an error loading the image. |
+| `closeFullScreen` | Triggered when the fullscreen viewer is closed.     |

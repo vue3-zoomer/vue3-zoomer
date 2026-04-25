@@ -43,17 +43,30 @@ Then, use the `ZoomImg` component in your template:
 
 ### Props
 
-| Name           | Type                 | Default        | Description                                                                |
-| -------------- | -------------------- | -------------- | -------------------------------------------------------------------------- |
-| `src`          | `String`             | `required`     | The source URL of the image to be zoomed.                                  |
-| `alt`          | `String`             | `"zoomed-img"` | Alternative text description of the image for accessibility.               |
-| `zoomScale`    | `Number`             | `2`            | The desired zoom scale of the image.                                       |
-| `trigger`      | `"click" \| "hover"` | `"click"`      | The event that triggers the zoom functionality, either "click" or "hover". |
-| `zoomType`     | `"move" \| "drag"`   | `"move"`       | The type of zoom interaction, either "move" or "drag".                     |
-| `step`         | `Number`             | -              | The step value for the zoom scale.                                         |
-| `persist`      | `Boolean`            | false          | Whether the zoom state should persist on mouse leave.                      |
-| `showZoomBtns` | `Boolean`            | false          | Show controls to increase or decrease the zoom scale from buttons.         |
-| `showImgMap`   | `Boolean`            | false          | Whether to display the image map overlay.                                  |
+| Name                     | Type                 | Default        | Description                                                                |
+| ------------------------ | -------------------- | -------------- | -------------------------------------------------------------------------- |
+| `src`                    | `String`             | `required`     | The source URL of the image to be zoomed.                                  |
+| `alt`                    | `String`             | `"zoomed-img"` | Alternative text description of the image for accessibility.               |
+| `zoomScale`              | `Number`             | `2`            | The desired zoom scale of the image.                                       |
+| `trigger`                | `"click" \| "hover"` | `"click"`      | The event that triggers the zoom functionality, either "click" or "hover". |
+| `zoomType`               | `"move" \| "drag"`   | `"move"`       | The type of zoom interaction, either "move" or "drag".                     |
+| `step`                   | `Number`             | -              | The step value for the zoom scale.                                         |
+| `persist`                | `Boolean`            | `false`        | Whether the zoom state should persist on mouse leave.                      |
+| `rotate`                 | `Number`             | `0`            | Rotation angle applied to the image, in degrees. Best used in fullscreen mode or when the component is taken out of the normal document flow (e.g. `position: absolute` or `fixed`), since rotation does not adjust the layout box. |
+| `showZoomBtns`           | `Boolean`            | `false`        | Show controls to increase or decrease the zoom scale from buttons.         |
+| `showImgMap`             | `Boolean`            | `false`        | Whether to display the image map overlay.                                  |
+| `showImgMapInFullScreen` | `Boolean`            | `false`        | Render the image map inside the fullscreen viewer as well.                 |
+| `imgMapRatio`            | `Number`             | `0.25`         | Size ratio of the image map relative to the source image.                  |
+| `fullScreenMode`         | `Boolean`            | `false`        | Enable fullscreen viewer mode for the image.                               |
+| `closeOnClickOutside`    | `Boolean`            | `false`        | Close fullscreen when clicking on the backdrop outside the image.          |
+
+### Events
+
+| Name              | Description                                         |
+| ----------------- | --------------------------------------------------- |
+| `load`            | Triggered when the image has successfully loaded.   |
+| `error`           | Triggered when there is an error loading the image. |
+| `closeFullScreen` | Triggered when the fullscreen viewer is closed.     |
 
 ## Magnifier
 
