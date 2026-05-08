@@ -39,7 +39,7 @@
     <Teleport
       v-if="showImgMap"
       defer
-      to="#vz-backdrop"
+      :to="`#vz-backdrop-${fullScreenId}`"
       :disabled="!showImgMapInFullScreen"
     >
       <ZoomMap
@@ -47,7 +47,7 @@
         class="absolute bottom-0 left-0 box-content border-8 border-transparent outline outline-2 outline-offset-[-8px] outline-white"
         ref="miniMap"
         :src="src"
-        :ratio="imgMapRatio"
+        :ratio="imageMapRatio"
         :imgRef="zoomComponentRef?.vzImgRef"
         :zoom-scale="currentScale"
         :position="windowPosition"
@@ -114,6 +114,7 @@ const loaded = ref(false);
 const error = ref(false);
 const isFullscreenOpen = ref(false);
 const position = ref({ x: 0, y: 0 });
+const imageMapRatio = ref(props.imgMapRatio > 1 ? 1 : props.imgMapRatio);
 
 const zoomComponentRef = useTemplateRef("zoomComponent");
 
@@ -127,7 +128,7 @@ const windowPosition = computed(() => {
   if (currentScale.value !== 1) {
     return offset2pos(
       zoomedImgOffset.value,
-      currentScale.value / props.imgMapRatio,
+      currentScale.value / imageMapRatio.value,
     );
   }
 });
@@ -150,7 +151,7 @@ const updateOffset = (newPosition?: PositionType) => {
   if (newPosition)
     zoomedImgOffset.value = pos2offset(
       newPosition,
-      currentScale.value / props.imgMapRatio,
+      currentScale.value / imageMapRatio.value,
     );
 };
 
@@ -191,10 +192,7 @@ onUpdated(() => {
     loaded.value = Boolean(zoomComponentRef.value?.vzImgRef?.complete);
 });
 
-defineExpose({
-  currentScale,
-  zoomComponentRef,
-});
+defineExpose({ currentScale, zoomComponentRef });
 </script>
 
 <style scoped src="../assets/css/main.css"></style>
