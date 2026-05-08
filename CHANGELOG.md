@@ -1,6 +1,42 @@
 # Changelog
 
 ## 🚀 Feature
+- 🌟 feat: add resizeOnWheel prop to magnifier 9e58fd8 @ahmedd-mahmoud
+- 🌟 feat: implement full screen viewer d32a961 @ahmedd-mahmoud
+- 🌟 feat: add img rotation support 43a6dea @HossinAmin
+- 🌟 feat: support mini map in full screen mode 1203956 @HossinAmin
+## 🐛 Bugs
+- 🐞 fix: hide magnifier on leaving container e9126c3 @HossinAmin
+- 🐞 fix: prevent magnifier from moving outside container in mobile mode 77d0ccb @HossinAmin
+- 🐞 fix: generate a unique id for fullscreen teleport to avoid duplication bf703ca @HossinAmin
+- 🐞 fix: update image map ratio handling for fullscreen teleport 19551aa @ahmedd-mahmoud
+## ♻️ Refactors
+- 🐝 refactor: hoist  the fullscreen controls to top level c6dc528 @HossinAmin
+- 🐝 refactor: make full screen viewer a wrapper component ab00b81 @HossinAmin
+## 📚 Documentation
+- 📖 docs: update docs f6046e9 @ahmedd-mahmoud
+- 📖 docs: update magnifier props 1212b18 @ahmedd-mahmoud
+- 📖 docs: add full screen viewer docs 432f941 @ahmedd-mahmoud
+- 📖 docs: add new full screen control to docs f39e110 @HossinAmin
+## CI&CD
+- 💢 ci: update deploy and release workflows package versions 626ea81 @ahmedd-mahmoud
+## 🔧 Chores 
+- 💄 chore(release): v1.0.8 0949197 @github-actions-bot
+- 💄 chore: update packages d515f1a @ahmedd-mahmoud
+- 💄 chore: add test cases c1cc149 @ahmedd-mahmoud
+- 💄 chore: update packages 36a6dc6 @ahmedd-mahmoud
+- 📄 Merge pull request #80 from vue3-zoomer/dev 8d77c41 @ahmedd-mahmoud
+- 📄 Merge pull request #84 from vue3-zoomer/dev c426cd7 @ahmedd-mahmoud
+- 📄 Merge pull request #88 from vue3-zoomer/docs/update-docs 6ef1dd3 @ahmedd-mahmoud
+- 📄 Merge pull request #89 from vue3-zoomer/dev 9de293e @ahmedd-mahmoud
+- 📄 Merge pull request #91 from vue3-zoomer/feature/add-resize-on-mouse-wheel-magnifier-prop cada9aa @HossinAmin
+- 📄 Merge branch 'dev' into feature/Image-viewer b6f62d4 @HossinAmin
+- 📄 Merge pull request #94 from vue3-zoomer/feature/Image-viewer a2b30d1 @HossinAmin
+- 📄 Merge pull request #95 from vue3-zoomer/Fix/Fullscreen-bugs 73d563b @ahmedd-mahmoud
+- 📄 Merge pull request #96 from vue3-zoomer/CI/update-workflows 363e110 @ahmedd-mahmoud
+- 📄 Merge pull request #97 from vue3-zoomer/dev 5e86a12 @ahmedd-mahmoud
+
+## 🚀 Feature
 - 🌟 feat: add exports entry to package.json to make the component compatible with Vitest ffd3824 @-
 - 🌟 feat: reload image on src change 8036a05 @HossinAmin
 ## 🐛 Bugs
