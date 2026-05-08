@@ -1,7 +1,11 @@
 <template>
   <div
-    class="vz-map-container relative select-none overflow-clip"
-    ref="backdrop"
+    class="vz-map-container z-50 select-none overflow-clip"
+    ref="zoomMap"
+    :style="{
+      width: `${mapSize.width}px`,
+      height: `${mapSize.height}px`,
+    }"
     @click="moveToCursor"
     @mouseleave="stopMoving"
   >
@@ -40,28 +44,32 @@ import {
 import type { PositionType } from "~/types";
 import { getRelCursorPosition } from "~/utils/cursorPosition";
 
-defineProps({
-  src: {
-    type: String,
-    required: true,
+const props = withDefaults(
+  defineProps<{
+    src: string;
+    alt?: string;
+    zoomScale?: number;
+    ratio?: number;
+    imgRef?: HTMLImageElement | null;
+  }>(),
+  {
+    ratio: 0.25,
+    zoomScale: 2,
+    alt: "zoomed-img",
   },
-  alt: {
-    type: String,
-    default: "zoomed-img",
-  },
-  zoomScale: {
-    type: Number,
-    default: 2,
-  },
-});
+);
 
 const position = defineModel("position", {
   type: Object as PropType<PositionType>,
 });
 
+let resizeObserver: ResizeObserver | null = null;
+
 const mouseHold = ref(false);
-const backdropRef = useTemplateRef("backdrop");
+const backdropRef = useTemplateRef("zoomMap");
 const movableWindowRef = useTemplateRef("movableWindow");
+
+const mapSize = ref({ width: 0, height: 0 });
 
 // Store the elementX and elementY as reactive values
 const elementX = ref(0);
@@ -75,24 +83,6 @@ const updateCursorPosition = (event: MouseEvent) => {
     elementY.value = pos.top;
   }
 };
-
-onMounted(() => {
-  if (backdropRef.value) {
-    backdropRef.value.addEventListener("mousemove", updateCursorPosition);
-  }
-});
-
-onBeforeUnmount(() => {
-  if (backdropRef.value) {
-    backdropRef.value.removeEventListener("mousemove", updateCursorPosition);
-  }
-});
-
-watchEffect(() => {
-  if (mouseHold.value) {
-    moveToCursor();
-  }
-});
 
 const moveToCursor = () => {
   position.value = getMovableWindowNewPosition();
@@ -133,4 +123,50 @@ const getMovableWindowNewPosition = () => {
     console.error("couldn't get movable window new position");
   }
 };
+
+const updateMapSize = (imgEl: HTMLImageElement) => {
+  mapSize.value = {
+    width: Math.round(imgEl.clientWidth * props.ratio),
+    height: Math.round(imgEl.clientHeight * props.ratio),
+  };
+};
+
+const observeImgRef = (imgEl: HTMLImageElement | null | undefined) => {
+  resizeObserver?.disconnect();
+  if (!imgEl) return;
+
+  updateMapSize(imgEl);
+
+  resizeObserver = new ResizeObserver(([entry]) => {
+    const { inlineSize, blockSize } = entry.contentBoxSize[0];
+    mapSize.value = {
+      width: Math.round(inlineSize * props.ratio),
+      height: Math.round(blockSize * props.ratio),
+    };
+  });
+
+  resizeObserver.observe(imgEl);
+};
+
+watchEffect(() => observeImgRef(props.imgRef));
+
+onMounted(() => {
+  if (backdropRef.value) {
+    backdropRef.value.addEventListener("mousemove", updateCursorPosition);
+  }
+});
+
+onBeforeUnmount(() => {
+  resizeObserver?.disconnect();
+
+  if (backdropRef.value) {
+    backdropRef.value.removeEventListener("mousemove", updateCursorPosition);
+  }
+});
+
+watchEffect(() => {
+  if (mouseHold.value) {
+    moveToCursor();
+  }
+});
 </script>
