@@ -19,6 +19,7 @@ export default defineConfig({
       entry: path.resolve(__dirname, "src/index.ts"),
       name: "vue3-zoomer",
       fileName: (format) => `vue3-zoomer.${format}.js`,
+      cssFileName: "style",
       formats: ["es"],
     },
     rollupOptions: {
