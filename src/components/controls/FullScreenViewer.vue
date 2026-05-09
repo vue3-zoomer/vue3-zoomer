@@ -55,3 +55,5 @@ const close = () => {
   content: url("~/assets/icons/close.svg");
 }
 </style>
+
+<style scoped src="../../assets/css/main.css"></style>

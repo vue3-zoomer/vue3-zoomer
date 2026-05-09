@@ -1,26 +1,19 @@
 <template>
   <div class="vz-zoomimg-container relative">
-    <!-- conditional teleport if the full screen is open teleport inside it else render in place-->
-    <Teleport
-      defer
-      :to="`#vz-backdrop-${fullScreenId}`"
-      :disabled="!fullScreenMode || !isFullscreenOpen"
-    >
-      <component
-        v-model:current-scale="currentScale"
-        v-model:zoomed-img-offset="zoomedImgOffset"
-        v-bind="props"
-        ref="zoomComponent"
-        class="h-full w-full"
-        :alt
-        :is="isDrag ? DragZoomImg : MoveZoomImg"
-        :class="{
-          hidden: (!loaded && $slots.loading) || (error && $slots.error),
-        }"
-        @error="handleError"
-        @load="handleLoad"
-      />
-    </Teleport>
+    <component
+      v-model:current-scale="currentScale"
+      v-model:zoomed-img-offset="zoomedImgOffset"
+      v-bind="props"
+      ref="zoomComponent"
+      class="h-full w-full"
+      :alt
+      :is="isDrag ? DragZoomImg : MoveZoomImg"
+      :class="{
+        hidden: (!loaded && $slots.loading) || (error && $slots.error),
+      }"
+      @error="handleError"
+      @load="handleLoad"
+    />
 
     <slot v-if="!loaded" name="loading" />
     <slot v-if="error" name="error" />
@@ -36,24 +29,18 @@
       @zoomOut="handleZoomOut"
     />
 
-    <Teleport
+    <ZoomMap
       v-if="showImgMap"
-      defer
-      :to="`#vz-backdrop-${fullScreenId}`"
-      :disabled="!showImgMapInFullScreen"
-    >
-      <ZoomMap
-        v-show="windowPosition"
-        class="absolute bottom-0 left-0 box-content border-8 border-transparent outline outline-2 outline-offset-[-8px] outline-white"
-        ref="miniMap"
-        :src="src"
-        :ratio="imageMapRatio"
-        :imgRef="zoomComponentRef?.vzImgRef"
-        :zoom-scale="currentScale"
-        :position="windowPosition"
-        @update:position="updateOffset"
-      />
-    </Teleport>
+      v-show="windowPosition"
+      class="absolute bottom-0 left-0 box-content border-8 border-transparent outline outline-2 outline-offset-[-8px] outline-white"
+      ref="miniMap"
+      :src="src"
+      :ratio="imageMapRatio"
+      :imgRef="zoomComponentRef?.vzImgRef"
+      :zoom-scale="currentScale"
+      :position="windowPosition"
+      @update:position="updateOffset"
+    />
 
     <FullScreenViewer
       v-if="fullScreenMode"
@@ -92,7 +79,17 @@
 
 <script setup lang="ts">
 import type { PositionType, ZoomImgProps } from "~/types";
-import { ref, computed, onMounted, useTemplateRef, onUpdated } from "vue";
+import {
+  ref,
+  computed,
+  watch,
+  nextTick,
+  onMounted,
+  onBeforeUnmount,
+  useTemplateRef,
+  onUpdated,
+  useId,
+} from "vue";
 import { offset2pos, pos2offset } from "~/utils/zoom";
 import DragZoomImg from "~/components/core/DragZoomImg.vue";
 import MoveZoomImg from "~/components/core/MoveZoomImg.vue";
@@ -117,12 +114,39 @@ const position = ref({ x: 0, y: 0 });
 const imageMapRatio = ref(props.imgMapRatio > 1 ? 1 : props.imgMapRatio);
 
 const zoomComponentRef = useTemplateRef("zoomComponent");
+const miniMapRef = useTemplateRef("miniMap");
 
 const isDrag = computed(
   () => props.zoomType === "drag" || screenSize.value < 768,
 );
 
-const fullScreenId = computed(() => Math.ceil(Math.random() * 1000).toString());
+const fullScreenId = useId();
+
+let zoomPlaceholder: Comment | null = null;
+let mapPlaceholder: Comment | null = null;
+
+const moveToBackdrop = (
+  el: HTMLElement | undefined,
+  setPlaceholder: (c: Comment | null) => void,
+) => {
+  if (!el) return;
+  const target = document.getElementById(`vz-backdrop-${fullScreenId}`);
+  if (!target) return;
+  const placeholder = document.createComment("");
+  el.parentNode?.insertBefore(placeholder, el);
+  target.appendChild(el);
+  setPlaceholder(placeholder);
+};
+
+const restoreFromBackdrop = (
+  el: HTMLElement | undefined,
+  placeholder: Comment | null,
+  setPlaceholder: (c: Comment | null) => void,
+) => {
+  if (!el || !placeholder) return;
+  placeholder.parentNode?.replaceChild(el, placeholder);
+  setPlaceholder(null);
+};
 
 const windowPosition = computed(() => {
   if (currentScale.value !== 1) {
@@ -190,6 +214,34 @@ onMounted(() => {
 onUpdated(() => {
   if (!loaded.value)
     loaded.value = Boolean(zoomComponentRef.value?.vzImgRef?.complete);
+});
+
+watch(
+  () => props.fullScreenMode && isFullscreenOpen.value,
+  async (active) => {
+    await nextTick();
+    const el = zoomComponentRef.value?.$el as HTMLElement | undefined;
+    if (active) moveToBackdrop(el, (c) => (zoomPlaceholder = c));
+    else restoreFromBackdrop(el, zoomPlaceholder, (c) => (zoomPlaceholder = c));
+  },
+);
+
+watch(
+  () =>
+    props.showImgMap && props.showImgMapInFullScreen && isFullscreenOpen.value,
+  async (active) => {
+    await nextTick();
+    const el = (miniMapRef.value as { $el?: HTMLElement } | null)?.$el;
+    if (active) moveToBackdrop(el, (c) => (mapPlaceholder = c));
+    else restoreFromBackdrop(el, mapPlaceholder, (c) => (mapPlaceholder = c));
+  },
+);
+
+onBeforeUnmount(() => {
+  const zEl = zoomComponentRef.value?.$el as HTMLElement | undefined;
+  restoreFromBackdrop(zEl, zoomPlaceholder, (c) => (zoomPlaceholder = c));
+  const mEl = (miniMapRef.value as { $el?: HTMLElement } | null)?.$el;
+  restoreFromBackdrop(mEl, mapPlaceholder, (c) => (mapPlaceholder = c));
 });
 
 defineExpose({ currentScale, zoomComponentRef });
