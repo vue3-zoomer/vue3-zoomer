@@ -1,6 +1,19 @@
 # Changelog
 
 ## 🐛 Bugs
+- 🐞 fix: replace teleport with programmatic DOM replace a5b8e32 @HossinAmin
+## 🔧 Chores 
+- 💄 chore(release): v1.0.8 0949197 @github-actions-bot
+- 💄 chore(release): v1.0.9 1853941 @github-actions-bot
+- 💄 chore(release): v1.0.10 2aad6aa @github-actions-bot
+- 📄 Merge pull request #80 from vue3-zoomer/dev 8d77c41 @ahmedd-mahmoud
+- 📄 Merge pull request #84 from vue3-zoomer/dev c426cd7 @ahmedd-mahmoud
+- 📄 Merge pull request #89 from vue3-zoomer/dev 9de293e @ahmedd-mahmoud
+- 📄 Merge pull request #97 from vue3-zoomer/dev 5e86a12 @ahmedd-mahmoud
+- 📄 Merge pull request #100 from vue3-zoomer/dev 23d5c70 @ahmedd-mahmoud
+- 📄 Merge pull request #101 from vue3-zoomer/dev 21575cb @ahmedd-mahmoud
+
+## 🐛 Bugs
 - 🐞 fix: add css file name to vite configs bb5abbf @ahmedd-mahmoud
 ## CI&CD
 - 💢 ci: change release workflow trigger 5a27b81 @ahmedd-mahmoud
