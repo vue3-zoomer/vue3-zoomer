@@ -44,3 +44,5 @@ defineEmits(["zoomIn", "zoomOut"]);
   content: url("~/assets/icons/plus.svg");
 }
 </style>
+
+<style scoped src="../../assets/css/main.css"></style>
