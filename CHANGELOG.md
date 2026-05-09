@@ -1,5 +1,20 @@
 # Changelog
 
+## 🐛 Bugs
+- 🐞 fix: add css file name to vite configs bb5abbf @ahmedd-mahmoud
+## CI&CD
+- 💢 ci: change release workflow trigger 5a27b81 @ahmedd-mahmoud
+## 🔧 Chores 
+- 💄 chore(release): v1.0.8 0949197 @github-actions-bot
+- 💄 chore(release): v1.0.9 1853941 @github-actions-bot
+- 📄 Merge pull request #80 from vue3-zoomer/dev 8d77c41 @ahmedd-mahmoud
+- 📄 Merge pull request #84 from vue3-zoomer/dev c426cd7 @ahmedd-mahmoud
+- 📄 Merge pull request #89 from vue3-zoomer/dev 9de293e @ahmedd-mahmoud
+- 📄 Merge pull request #97 from vue3-zoomer/dev 5e86a12 @ahmedd-mahmoud
+- 📄 Merge pull request #98 from vue3-zoomer/CI/update-release-workflow 9268bde @ahmedd-mahmoud
+- 📄 Merge pull request #99 from vue3-zoomer/Fix/bundling-issues 86e2b71 @ahmedd-mahmoud
+- 📄 Merge pull request #100 from vue3-zoomer/dev 23d5c70 @ahmedd-mahmoud
+
 ## 🚀 Feature
 - 🌟 feat: add resizeOnWheel prop to magnifier 9e58fd8 @ahmedd-mahmoud
 - 🌟 feat: implement full screen viewer d32a961 @ahmedd-mahmoud
